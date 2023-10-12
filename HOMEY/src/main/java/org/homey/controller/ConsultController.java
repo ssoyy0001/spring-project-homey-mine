@@ -25,7 +25,7 @@ public class ConsultController {
 	
 	 private ConsultService consultService;
 	
-	   // 견적상담 등록 페이지로 이동하는 GET 요청을 처리
+	   // 견적상담 등록 페이지로 이동하는 GET 요청을 처리 ㅇㄴㅁㅇㄴㅁㅇㅁㄴㅇ뾰
 	    @GetMapping("register")
 	    @PreAuthorize("isAuthenticated") // 로그인 했을 시만 권한 적용
 	    public void register() {
