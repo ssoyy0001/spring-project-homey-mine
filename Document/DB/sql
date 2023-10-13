@@ -1,1 +1,34 @@
---전체 sql이며, 수정 될 때 마다 커밋메시지에 뭘 수정했는지도 써주세요
+--<<전체 sql이며, 수정 될 때 마다 커밋메시지에 뭘 수정했는지도 써주세요>>
+
+--<< 0. homey 기존 유저 삭제하고 싶을 때, (처음에는 1번부터 시작해주세요) >>
+--sys 계정으로 들어가
+select sid,serial#,username,status from v$session where schemaname = 'TALKDOG';
+--그 후 sid, serial를 차례대로 ','안에 넣음 (여러 개 일시 모두 다 )
+alter system kill SESSION 'sid,serial';
+--삭제
+DROP USER TALKDOG CASCADE;
+
+--<< 1. homey user 등록하기 (SYS 계정에서 실시) >>
+CREATE USER homey IDENTIFIED BY 1111; GRANT RESOURCE, CREATE SESSION TO homey;
+
+--<< 1-2. 계정에 권한을 생성 >>
+grant connect, dba, resource to homey;
+
+--<< 2. homey 오라클 db에 접속하기>>
+
+--<< 3. 테이블 CREATE, ALTER(key값)>>
+
+--<< 4. 시퀀스, 트리거 생성>>
+
+	-- notice 시퀀스
+	CREATE SEQUENCE NOTICE_SEQ INCREMENT BY 1 START WITH 1;
+
+--<< 5. 각 테이블에 테스트용 데이터 insert 하기 >>
+
+-- notice insert
+INSERT INTO notice values(NOTICE_SEQ.NEXTVAL, '공지사항', '공지사항입니다', '8월 16일 오전 9시부터 서버 점검이 있을 예정입니다. 홈페이지 이용에 참고 바랍니다.', 0, '../resources/images/null', SYSDATE);
+INSERT INTO notice values(NOTICE_SEQ.NEXTVAL, '이벤트', '230707이벤트!', '이벤트 시작합니다!', 0, '../resources/images/null', '2023-07-07');
+
+--<< 6. 번외 테이블을 삭제하고 싶다면? >>
+---- 테이블 삭제 구문
+DROP TABLE notice;
