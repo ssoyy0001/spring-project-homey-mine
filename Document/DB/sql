@@ -208,13 +208,14 @@ INSERT INTO notice values(NOTICE_SEQ.NEXTVAL, '이벤트', '230707이벤트!', '
 ---- 테이블 삭제 구문
 
 --하영시작
-DROP TABLE consult;
+--테이블 삭제 순서대로 해야함
 DROP TABLE quotation;
-DROP TABLE notice;
-DROP TABLE item;
-DROP TABLE noticeAttach;
 DROP TABLE visit;
-
+DROP TABLE item;
+DROP TABLE consult;
+DROP TABLE noticeAttach;
+DROP TABLE notice;
+DROP TABLE member;
 --하영끝
 
 
