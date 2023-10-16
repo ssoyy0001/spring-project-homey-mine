@@ -18,17 +18,197 @@ grant connect, dba, resource to homey;
 
 --<< 3. 테이블 CREATE, ALTER(key값)>>
 
+--하영시작
+CREATE TABLE "consult" (
+	"consultNo"	NUMBER		NOT NULL,
+	"mid"	VARCHAR2(50)		NOT NULL,
+	"mphone"	VARCHAR2(50)		NOT NULL,
+	"postcode"	VARCHAR2(50)		NOT NULL,
+	"address"	VARCHAR2(100)		NOT NULL,
+	"detailAddress"	VARCHAR2(100)		NOT NULL,
+	"buildingType"	VARCHAR2(100)		NOT NULL,
+	"scheduledDate"	VARCHAR2(50)		NOT NULL,
+	"budget"	NUMBER		NOT NULL,
+	"size"	NUMBER		NOT NULL,
+	"happyCall"	VARCHAR2(100)		NOT NULL,
+	"consultDate"	DATE	DEFAULT SYSDATE	NOT NULL,
+	"status"	VARCHAR2(100)		NOT NULL
+);
+
+CREATE TABLE "quotation" (
+	"quoNo"	NUMBER		NOT NULL,
+	"itemNo"	NUMBER		NOT NULL,
+	"consultNo"	NUMBER		NOT NULL,
+	"quoDate"	DATE	DEFAULT SYSDATE	NOT NULL,
+	"constScheduleStart"	VARCHAR2(100)		NOT NULL,
+	"constScheduleEnd"	VARCHAR2(100)		NOT NULL,
+	"constTotal"	NUMBER		NOT NULL,
+	"demolTotal"	NUMBER		NOT NULL,
+	"total"	NUMBER		NOT NULL
+);
+CREATE TABLE "notice" (
+	"notNo"	NUMBER		NOT NULL,
+	"mid"	VARCHAR2(50)		NOT NULL,
+	"notCategory"	VARCHAR2(50)		NOT NULL,
+	"notTitle"	VARCHAR2(999)		NOT NULL,
+	"notCont"	VARCHAR2(999)		NOT NULL,
+	"notHit"	NUMBER		NOT NULL,
+	"notImage"	VARCHAR2(100)		NULL,
+	"notDate"	DATE	DEFAULT SYSDATE	NOT NULL
+);
+
+CREATE TABLE "item" (
+	"itemNo"	NUMBER		NOT NULL,
+	"consultNo"	NUMBER		NOT NULL,
+	"tiling"	NUMBER		NULL,
+	"tilingD"	NUMBER		NULL,
+	"flooring"	NUMBER		NULL,
+	"flooringD"	NUMBER		NULL,
+	"kitchen"	NUMBER		NULL,
+	"kitchenD"	NUMBER		NULL,
+	"bathroom"	NUMBER		NULL,
+	"bathroomD"	NUMBER		NULL,
+	"entrance"	NUMBER		NULL,
+	"entranceD"	NUMBER		NULL,
+	"balcony"	NUMBER		NULL,
+	"balconyD"	NUMBER		NULL,
+	"lighting"	NUMBER		NULL,
+	"lightingD"	NUMBER		NULL,
+	"door"	NUMBER		NULL,
+	"doorD"	NUMBER		NULL,
+	"others"	NUMBER		NULL,
+	"othersD"	NUMBER		NULL
+);
+
+CREATE TABLE "noticeAttach" (
+	"uuid"	VARCHAR2(100)		NOT NULL,
+	"notNo"	NUMBER		NOT NULL,
+	"upfolder"	VARCHAR2(200)		NOT NULL,
+	"filename"	VARCHAR2(100)		NOT NULL,
+	"image"	CHAR(1 )		NULL
+);
+
+CREATE TABLE "visit" (
+	"visitNo"	NUMBER		NOT NULL,
+	"consultNo"	NUMBER		NOT NULL,
+	"visitDate"	DATE		NOT NULL,
+	"visitStatus"	CHAR(1 )	DEFAULT 0	NOT NULL
+);
+
+ALTER TABLE "consult" ADD CONSTRAINT "PK_CONSULT" PRIMARY KEY (
+	"consultNo"
+);
+
+ALTER TABLE "quotation" ADD CONSTRAINT "PK_QUOTATION" PRIMARY KEY (
+	"quoNo"
+);
+
+ALTER TABLE "notice" ADD CONSTRAINT "PK_NOTICE" PRIMARY KEY (
+	"notNo"
+);
+
+ALTER TABLE "member" ADD CONSTRAINT "PK_MEMBER" PRIMARY KEY (
+	"mid"
+);
+
+ALTER TABLE "item" ADD CONSTRAINT "PK_ITEM" PRIMARY KEY (
+	"itemNo"
+);
+
+
+ALTER TABLE "noticeAttach" ADD CONSTRAINT "PK_NOTICEATTACH" PRIMARY KEY (
+	"uuid"
+);
+
+ALTER TABLE "visit" ADD CONSTRAINT "PK_VISIT" PRIMARY KEY (
+	"visitNo"
+);
+
+ALTER TABLE "consult" ADD CONSTRAINT "FK_member_TO_consult_1" FOREIGN KEY (
+	"mid"
+)
+REFERENCES "member" (
+	"mid"
+);
+
+ALTER TABLE "quotation" ADD CONSTRAINT "FK_item_TO_quotation_1" FOREIGN KEY (
+	"itemNo"
+)
+REFERENCES "item" (
+	"itemNo"
+);
+
+ALTER TABLE "quotation" ADD CONSTRAINT "FK_consult_TO_quotation_1" FOREIGN KEY (
+	"consultNo"
+)
+REFERENCES "consult" (
+	"consultNo"
+);
+
+ALTER TABLE "notice" ADD CONSTRAINT "FK_member_TO_notice_1" FOREIGN KEY (
+	"mid"
+)
+REFERENCES "member" (
+	"mid"
+);
+
+ALTER TABLE "item" ADD CONSTRAINT "FK_consult_TO_item_1" FOREIGN KEY (
+	"consultNo"
+)
+REFERENCES "consult" (
+	"consultNo"
+);
+
+ALTER TABLE "noticeAttach" ADD CONSTRAINT "FK_notice_TO_noticeAttach_1" FOREIGN KEY (
+	"notNo"
+)
+REFERENCES "notice" (
+	"notNo"
+);
+
+ALTER TABLE "visit" ADD CONSTRAINT "FK_consult_TO_visit_1" FOREIGN KEY (
+	"consultNo"
+)
+REFERENCES "consult" (
+	"consultNo"
+);
+--하영끝
+
+--멤버 임시
+CREATE TABLE "member" (
+	"mid"	VARCHAR2(50)		NOT NULL
+);
+-- 멤버 임시 끝
+
+
 --<< 4. 시퀀스, 트리거 생성>>
 
-	-- notice 시퀀스
-	CREATE SEQUENCE NOTICE_SEQ INCREMENT BY 1 START WITH 1;
+--하영시작 
+-- notice 시퀀스
+-- consult 시퀀스
+-- visit 시퀀스
+-- quotation 시퀀스
+--하영 끝
+
 
 --<< 5. 각 테이블에 테스트용 데이터 insert 하기 >>
 
--- notice insert
+--하영시작
+-- notice insert(5번 돌리기)
 INSERT INTO notice values(NOTICE_SEQ.NEXTVAL, '공지사항', '공지사항입니다', '8월 16일 오전 9시부터 서버 점검이 있을 예정입니다. 홈페이지 이용에 참고 바랍니다.', 0, '../resources/images/null', SYSDATE);
 INSERT INTO notice values(NOTICE_SEQ.NEXTVAL, '이벤트', '230707이벤트!', '이벤트 시작합니다!', 0, '../resources/images/null', '2023-07-07');
+--하영끝
 
 --<< 6. 번외 테이블을 삭제하고 싶다면? >>
 ---- 테이블 삭제 구문
-DROP TABLE notice;
+
+--하영시작
+DROP TABLE "consult";
+DROP TABLE "quotation";
+DROP TABLE "notice";
+DROP TABLE "item";
+DROP TABLE "noticeAttach";
+DROP TABLE "visit";
+--하영끝
+
+
