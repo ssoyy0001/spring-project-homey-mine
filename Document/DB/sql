@@ -18,6 +18,12 @@ grant connect, dba, resource to homey;
 
 --<< 3. 테이블 CREATE, ALTER(key값)>>
 
+--멤버 임시
+CREATE TABLE "member" (
+	"mid"	VARCHAR2(50)		NOT NULL
+);
+-- 멤버 임시 끝
+
 --하영시작
 CREATE TABLE "consult" (
 	"consultNo"	NUMBER		NOT NULL,
@@ -174,11 +180,7 @@ REFERENCES "consult" (
 );
 --하영끝
 
---멤버 임시
-CREATE TABLE "member" (
-	"mid"	VARCHAR2(50)		NOT NULL
-);
--- 멤버 임시 끝
+
 
 
 --<< 4. 시퀀스, 트리거 생성>>
