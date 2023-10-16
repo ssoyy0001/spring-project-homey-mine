@@ -7,7 +7,7 @@ select sid,serial#,username,status from vesession where schemaname = 'TALKDOG';
 alter system kill SESSION 'sid,serial';
 --삭제
 DROP USER TALKDOG CASCADE;
-
+ㅇㅁㄴㅇ
 --<< 1. homey user 등록하기 (SYS 계정에서 실시) >>
 CREATE USER homey IDENTIFIED BY 1111; GRANT RESOURCE, CREATE SESSION TO homey;
 
