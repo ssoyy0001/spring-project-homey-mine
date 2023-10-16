@@ -7,7 +7,7 @@ select sid,serial#,username,status from vesession where schemaname = 'TALKDOG';
 alter system kill SESSION 'sid,serial';
 --삭제
 DROP USER TALKDOG CASCADE;
-ㅇㅁㄴㅇ
+
 --<< 1. homey user 등록하기 (SYS 계정에서 실시) >>
 CREATE USER homey IDENTIFIED BY 1111; GRANT RESOURCE, CREATE SESSION TO homey;
 
@@ -17,11 +17,17 @@ grant connect, dba, resource to homey;
 --<< 2. homey 오라클 db에 접속하기>>
 
 --<< 3. 테이블 CREATE, ALTER(key값)>>
---멤버 임시
+--멤버
 CREATE TABLE member (
-    mid VARCHAR2(50) NOT NULL
+    mid VARCHAR2(50) NOT NULL,
+    pw VARCHAR2(50) NOT NULL,
+    mname VARCHAR2(50) NOT NULL,
+    maddr VARCHAR2(150) NOT NULL,
+    memail VARCHAR2(100) NOT NULL,
+    mphone VARCHAR2(100) NOT NULL,
+    mdate DATE DEFAULT SYSDATE NULL
 );
--- 멤버 임시 끝
+--멤버끝
 
 --하영시작
 CREATE TABLE consult (
@@ -34,7 +40,7 @@ CREATE TABLE consult (
     buildingType VARCHAR2(100) NOT NULL,
     scheduledDate VARCHAR2(50) NOT NULL,
     budget NUMBER NOT NULL,
-    size NUMBER NOT NULL,
+    pyeongsu NUMBER NOT NULL,
     happyCall VARCHAR2(100) NOT NULL,
     consultDate DATE DEFAULT SYSDATE NOT NULL,
     status VARCHAR2(100) NOT NULL
@@ -82,9 +88,10 @@ CREATE TABLE item (
     lightingD NUMBER NULL,
     door NUMBER NULL,
     doorD NUMBER NULL,
-    others NUMBER NULL,
+    etc NUMBER NULL,
     othersD NUMBER NULL
 );
+
 
 CREATE TABLE noticeAttach (
     uuid VARCHAR2(100) NOT NULL,
