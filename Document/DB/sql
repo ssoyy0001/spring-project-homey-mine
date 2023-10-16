@@ -190,6 +190,10 @@ REFERENCES "consult" (
 -- consult 시퀀스
 -- visit 시퀀스
 -- quotation 시퀀스
+CREATE SEQUENCE notice_seq INCREMENT BY 1 START WITH 1;
+CREATE SEQUENCE consult_seq INCREMENT BY 1 START WITH 1;
+CREATE SEQUENCE visit_seq INCREMENT BY 1 START WITH 1;
+CREATE SEQUENCE quotation_seq INCREMENT BY 1 START WITH 1;
 --하영 끝
 
 
