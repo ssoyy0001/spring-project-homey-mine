@@ -188,6 +188,115 @@ REFERENCES consult (
 );
 --하영끝
 
+--시공의뢰 시작
+CREATE TABLE sireq (
+	sireqNo	NUMBER	NOT NULL,
+	quoNo	NUMBER	NOT NULL,
+	itemNo	NUMBER	NOT NULL,
+	mid	VARCHAR2(50)	NOT NULL,
+	sireqDate	DATE	NOT NULL	DEFAULT SYSDATE,
+	sigongTotal	NUMBER	NOT NULL,
+	sireqStatus	VARCHAR2(30)	NOT NULL	DEFAULT 의뢰접수,
+	payStatus	VARCHAR2(30)	NOT NULL	DEFAULT 계약금미납
+);
+
+CREATE TABLE sireqAttach (
+	uuid	VARCHAR2(100)	NOT NULL,
+	sireqNo	NUMBER	NOT NULL,
+	upFolder	VARCHAR2(200)	NOT NULL,
+	fileName	VARCHAR2(100)	NOT NULL,
+	image	CHAR(1 )	NULL
+);
+--시공의뢰 끝
+
+--시공팀스케줄관리 시작
+CREATE TABLE siche (
+	sicheNo	NUMBER	NOT NULL,
+	sireqNo	NUMBER	NOT NULL,
+	itemNo	NUMBER	NOT NULL,
+	mid	VARCHAR2(50)	NOT NULL,
+	sicheDate	DATE	NOT NULL	DEFAULT SYSDATE,
+	balanceStatus	VARCHAR2(30)	NOT NULL	DEFAULT 잔금처리대기,
+	constructionStatus	VARCHAR2(30)	NOT NULL	DEFAULT 착수전,
+	workCrew	VARCHAR2(20)	NOT NULL
+);
+
+CREATE TABLE sicheAttach (
+	uuid	VARCHAR2(100)	NOT NULL,
+	sicheNo	NUMBER	NOT NULL,
+	upFolder	VARCHAR2(200)	NOT NULL,
+	fileName	VARCHAR2(100)	NOT NULL,
+	image	CHAR(1 )	NULL
+);
+--시공팀스케줄관리 끝
+
+--시공후기 시작
+CREATE TABLE sirev (
+	sirevNo	NUMBER	NOT NULL,
+	sicheNo	NUMBER	NOT NULL,
+	mid	VARCHAR2(50)	NOT NULL,
+	sirevTitle	VARCHAR2(100)	NOT NULL,
+	sirevContent	VARCHAR2(999)	NOT NULL,
+	sirevDate	DATE	NOT NULL
+);
+
+CREATE TABLE sirevAttach (
+	uuid	VARCHAR2(100)	NOT NULL,
+	sirevNo	NUMBER	NOT NULL,
+	upFolder	VARCHAR2(200)	NOT NULL,
+	fileName	VARCHAR2(100)	NOT NULL,
+	image	CHAR(1 )	NULL
+);
+--시공후기 끝
+
+--문의게시판 시작
+CREATE TABLE quest (
+	questNo	NUMBER	NOT NULL,
+	mid	VARCHAR2(50)	NOT NULL,
+	questTitle	VARCHAR2(100)	NOT NULL,
+	questDate	DATE	NOT NULL	DEFAULT SYSDATE,
+	questContent	VARCHAR2(999)	NOT NULL,
+	responseDate	DATE	NOT NULL	DEFAULT SYSDATE,
+	responseContent	VARCHAR2(999)	NULL,
+	responseStatus	VARCHAR2(30)	NOT NULL
+);
+--문의게시판 끝
+
+--PK제약조건 설정(시공의뢰, 시공작업, 문의게시판)
+ALTER TABLE sireq ADD CONSTRAINT PK_SIREQ PRIMARY KEY (
+	sireqNo
+);
+
+ALTER TABLE siche ADD CONSTRAINT PK_SICHE PRIMARY KEY (
+	sicheNo
+);
+
+ALTER TABLE sirev ADD CONSTRAINT PK_SIREV PRIMARY KEY (
+	sirevNo
+);
+
+ALTER TABLE quest ADD CONSTRAINT PK_QUEST PRIMARY KEY (
+	questNo
+);
+
+ALTER TABLE sireqAttach ADD CONSTRAINT PK_SIREQATTACH PRIMARY KEY (
+	uuid
+);
+
+ALTER TABLE sicheAttach ADD CONSTRAINT PK_SICHEATTACH PRIMARY KEY (
+	uuid
+);
+
+ALTER TABLE sirevAttach ADD CONSTRAINT PK_SIREVATTACH PRIMARY KEY (
+	uuid
+);
+--PK제약조건 설정 끝
+
+--FK제약조건 설정
+
+--FK제약조건 설정 끝
+
+
 
 
 >>>>>>>>>>>>>소영 시작
@@ -338,8 +447,6 @@ REFERENCES FpReview (prNo);
 
 
 >>>>>>>>>>>>> 소영 끝
-
-
 
 --<< 4. 시퀀스, 트리거 생성>>
 
