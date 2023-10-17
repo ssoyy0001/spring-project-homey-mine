@@ -89,7 +89,7 @@ CREATE TABLE item (
     door NUMBER NULL,
     doorD NUMBER NULL,
     etc NUMBER NULL,
-    othersD NUMBER NULL
+    etcD NUMBER NULL
 );
 
 
