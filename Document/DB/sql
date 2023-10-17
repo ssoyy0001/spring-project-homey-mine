@@ -262,7 +262,7 @@ CREATE TABLE quest (
 );
 --문의게시판 끝
 
---PK제약조건 설정(시공의뢰, 시공작업, 문의게시판)
+--PK제약조건 설정(시공의뢰, 시공작업, 시공후기, 문의게시판)
 ALTER TABLE sireq ADD CONSTRAINT PK_SIREQ PRIMARY KEY (
 	sireqNo
 );
@@ -292,8 +292,69 @@ ALTER TABLE sirevAttach ADD CONSTRAINT PK_SIREVATTACH PRIMARY KEY (
 );
 --PK제약조건 설정 끝
 
---FK제약조건 설정
+--FK제약조건 설정(시공의뢰, 시공작업, 시공후기, 문의게시판)
+ALTER TABLE sireq ADD CONSTRAINT FK_quotation_TO_sireq_1 FOREIGN KEY (
+	quoNo
+)
+REFERENCES quotation (
+	quoNo
+);
 
+ALTER TABLE sireq ADD CONSTRAINT FK_item_TO_sireq_1 FOREIGN KEY (
+	itemNo
+)
+REFERENCES item (
+	itemNo
+);
+
+ALTER TABLE sireq ADD CONSTRAINT FK_member_TO_sireq_1 FOREIGN KEY (
+	mid
+)
+REFERENCES member (
+	mid
+);
+
+ALTER TABLE siche ADD CONSTRAINT FK_sireq_TO_siche_1 FOREIGN KEY (
+	sireqNo
+)
+REFERENCES sireq (
+	sireqNo
+);
+
+ALTER TABLE siche ADD CONSTRAINT FK_item_TO_siche_1 FOREIGN KEY (
+	itemNo
+)
+REFERENCES item (
+	itemNo
+);
+
+ALTER TABLE siche ADD CONSTRAINT FK_member_TO_siche_1 FOREIGN KEY (
+	mid
+)
+REFERENCES member (
+	mid
+);
+
+ALTER TABLE sirev ADD CONSTRAINT FK_siche_TO_sirev_1 FOREIGN KEY (
+	sicheNo
+)
+REFERENCES siche (
+	sicheNo
+);
+
+ALTER TABLE sirev ADD CONSTRAINT FK_member_TO_sirev_1 FOREIGN KEY (
+	mid
+)
+REFERENCES member (
+	mid
+);
+
+ALTER TABLE quest ADD CONSTRAINT FK_member_TO_quest_1 FOREIGN KEY (
+	mid
+)
+REFERENCES member (
+	mid
+);
 --FK제약조건 설정 끝
 
 
