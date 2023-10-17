@@ -28,7 +28,9 @@ CREATE TABLE member (
     mdate DATE DEFAULT SYSDATE NULL
 );
 --멤버끝
-
+--멤버 테이블 수정사항
+ALTER TABLE Member
+MODIFY pw VARCHAR2(100);
 --하영시작
 CREATE TABLE consult (
     consultNo NUMBER NOT NULL,
