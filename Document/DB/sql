@@ -363,8 +363,26 @@ CREATE SEQUENCE freepdt_seq INCREMENT BY 1 START WITH 1;
 CREATE SEQUENCE fpreq_seq INCREMENT BY 1 START WITH 1;
 CREATE SEQUENCE fpreview_seq INCREMENT BY 1 START WITH 1;
 
+--(시공사례,스크랩 시퀀스)
+CREATE SEQUENCE showcase_seq INCREMENT BY 1 START WITH 1;
+CREATE SEQUENCE scrab_seq INCREMENT BY 1 START WITH 1;
 
+--(시공사례 트리거) <----임시
+CREATE OR REPLACE TRIGGER after_scrab_insert 
+AFTER INSERT ON scrab
+FOR EACH ROW 
+BEGIN
+   UPDATE showcase SET scrabcnt = (SELECT COUNT(*) FROM scrab WHERE scid = :NEW.scid)
+   WHERE pk = :NEW.scid;
+END;
 
+CREATE OR REPLACE TRIGGER after_scrab_delete 
+AFTER DELETE ON scrab
+FOR EACH ROW 
+BEGIN
+   UPDATE showcase SET scrabcnt = (SELECT COUNT(*) FROM scrab WHERE scid = :OLD.scid)
+   WHERE pk = :OLD.scid;
+END;
 
 --<< 5. 각 테이블에 테스트용 데이터 insert 하기 >>
 
