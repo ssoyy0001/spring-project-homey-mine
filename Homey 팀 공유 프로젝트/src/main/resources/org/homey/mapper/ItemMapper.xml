@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.homey.mapper.ItemMapper">
+<!-- 이 안에 실제 sql구문 추가 추가 -->	
+<!-- id는 인터페이스의 메서드 명과 동일해야함 -->
+<!-- resultType은 인터페이스의 이걸로, 알아서 담아줌, 여러개 나오면 리스트, 아니면 1개 나옴-->
+
+   <!-- 시공 및 철거 항목 등록 -->
+  <insert id="insert">
+  INSERT INTO ITEM (ITEMNO, CONSULTNO, TILING, TILINGD, FLOORING, FLOORINGD, KITCHEN, KITCHEND, BATHROOM, BATHROOMD, ENTRANCE, ENTRANCED, BALCONY, BALCONYD, LIGHTING, LIGHTINGD, DOOR, DOORD, ETC, ETCD)
+  VALUES (#{itemNo}, #{consultNo}, #{tiling}, #{tilingD}, #{flooring}, #{flooringD}, #{kitchen}, #{kitchenD}, #{bathroom}, #{bathroomD}, #{entrance}, #{entranceD}, #{balcony}, #{balconyD}, #{lighting}, #{lightingD}, #{door}, #{doorD}, #{etc}, #{etcD})
+  </insert>
+  
+  <select id="select" 
+  	      resultType="org.homey.domain.ItemVO">
+    SELECT * FROM ITEM WHERE itemNo = #{itemNo}
+  </select>
+  
+  <update id="update">
+	UPDATE ITEM
+	SET	
+	TILING = #{tiling},
+    TILINGD = #{tilingD},
+    FLOORING = #{flooring},
+    FLOORINGD = #{flooringD},
+    KITCHEN = #{kitchen},
+    KITCHEND = #{kitchenD},
+    BATHROOM = #{bathroom},
+    BATHROOMD = #{bathroomD},
+    ENTRANCE = #{entrance},
+    ENTRANCED = #{entranceD},
+    BALCONY = #{balcony},
+    BALCONYD = #{balconyD},
+    LIGHTING = #{lighting},
+    LIGHTINGD = #{lightingD},
+    DOOR = #{door},
+    DOORD = #{doorD},
+    ETC = #{etc},
+    ETCD = #{etcD}
+	WHERE itemNo = #{itemNo}  
+  </update>
+  
+  <delete id="delete">
+	DELETE ITEM WHERE itemNo = #{itemNo}
+  </delete>
+
+  
+</mapper>
+
+
+
