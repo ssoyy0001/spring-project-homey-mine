@@ -355,6 +355,27 @@ ALTER TABLE quest ADD CONSTRAINT FK_member_TO_quest_1 FOREIGN KEY (
 REFERENCES member (
 	mid
 );
+
+ALTER TABLE sireqAttach ADD CONSTRAINT FK_sireq_TO_sireqAttach_1 FOREIGN KEY (
+	sireqNo
+)
+REFERENCES sireq (
+	sireqNo
+);
+
+ALTER TABLE sicheAttach ADD CONSTRAINT FK_siche_TO_sicheAttach_1 FOREIGN KEY (
+	sicheNo
+)
+REFERENCES siche (
+	sicheNo
+);
+
+ALTER TABLE sirevAttach ADD CONSTRAINT FK_sirev_TO_sirevAttach_1 FOREIGN KEY (
+	sirevNo
+)
+REFERENCES sirev (
+	sirevNo
+);
 --FK제약조건 설정 끝
 
 
@@ -576,4 +597,13 @@ DROP TABLE notice;
 DROP TABLE member;
 --하영끝
 
+--시공의뢰, 시공팀작업스케줄, 시공후기, 문의게시판
+DROP TABLE IF EXISTS quest;
+DROP TABLE IF EXISTS sirevAttach;
+DROP TABLE IF EXISTS sicheAttach;
+DROP TABLE IF EXISTS sireqAttach;
+DROP TABLE IF EXISTS sirev;
+DROP TABLE IF EXISTS siche;
+DROP TABLE IF EXISTS sireq;
+--
 
