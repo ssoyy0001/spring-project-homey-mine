@@ -190,14 +190,14 @@ REFERENCES consult (
 
 --시공의뢰 시작
 CREATE TABLE sireq (
-	sireqNo	NUMBER	NOT NULL,
-	quoNo	NUMBER	NOT NULL,
-	itemNo	NUMBER	NOT NULL,
-	mid	VARCHAR2(50)	NOT NULL,
-	sireqDate	DATE	NOT NULL	DEFAULT SYSDATE,
-	sigongTotal	NUMBER	NOT NULL,
-	sireqStatus	VARCHAR2(30)	NOT NULL	DEFAULT 의뢰접수,
-	payStatus	VARCHAR2(30)	NOT NULL	DEFAULT 계약금미납
+    sireqNo NUMBER NOT NULL,
+    quoNo NUMBER NOT NULL,
+    itemNo NUMBER NOT NULL,
+    mid VARCHAR2(50) NOT NULL,
+    sireqDate DATE DEFAULT SYSDATE NOT NULL,
+    sigongTotal NUMBER NOT NULL,
+    sireqStatus VARCHAR2(30) DEFAULT '의뢰접수' NOT NULL,
+    payStatus VARCHAR2(30) DEFAULT '계약금미납' NOT NULL
 );
 
 CREATE TABLE sireqAttach (
