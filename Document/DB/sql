@@ -31,6 +31,17 @@ CREATE TABLE member (
 --멤버 테이블 수정사항
 ALTER TABLE Member
 MODIFY pw VARCHAR2(100);
+
+--권한
+CREATE TABLE memberAuth (
+    mid VARCHAR2(50) NOT NULL,
+    auth VARCHAR2(50) NOT NULL,
+    CONSTRAINT fk_memberAuth
+        FOREIGN KEY (mid)
+        REFERENCES member(mid)
+);
+
+
 --하영시작
 CREATE TABLE consult (
     consultNo NUMBER NOT NULL,
