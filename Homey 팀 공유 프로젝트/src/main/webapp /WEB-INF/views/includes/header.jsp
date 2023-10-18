@@ -75,34 +75,22 @@
 					HOMEY<span>.</span>
 				</h1>
 			</a> 
-			<!-- 회원가입 : c:if문으로 보일지 말지 판별해주세요 -->
-			<div class="login-button">
-            <a href="#"> &nbsp; 회원가입</a>
-            <!-- 회원가입  END -->
-        	</div>
 			<i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i> 
 			<i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
 			
 			<!-- 헤더 메뉴 시작 -->
 			<nav id="navbar" class="navbar">
 				<ul>
-					<!-- common 시작, 보이는건 c:if문으로 판별해주세요 -->
-					<li class="dropdown"><a href="#"><span>🔑<span> <i
-					class="bi bi-chevron-down dropdown-indicator"></i></a>
-					<ul>
-					<li><a href="#">로그인</a></li>  <!-- 로그인 시 test님 로그인 중 -->
-					<li><a href="#">로그아웃</a></li>
-					<li><a href="#">마이페이지</a></li>
-					<li><a href="#">관리자페이지</a></li>
-					</ul></li>
-					<!-- common end -->
-					
 					<li><a href="#">시공사례</a></li>
 					<li><a href="/consult/register">견적상담</a></li>
 					<li><a href="#">시공후기</a></li>
-					<li><a href="#">원데이클래스</a></li>
-					<li><a href="#">제품나눔</a></li>
-					<li><a href="#">이벤트</a></li>
+					<li class="dropdown"><a href="#"><span>이벤트</span> 
+					<i class="bi bi-chevron-down dropdown-indicator"></i></a>
+					<ul>
+						<li><a href="#">원데이클래스</a></li>
+						<li><a href="#">제품 나눔</a></li>
+						<li><a href="#">무료 시공 이벤트</a></li>
+					</ul></li>
 					<li class="dropdown"><a href="#"><span>리뷰</span> <i
 							class="bi bi-chevron-down dropdown-indicator"></i></a>
 						<ul>
@@ -119,6 +107,13 @@
 						</ul></li>
 				</ul>
 			</nav>
+						<!-- common 시작, 보이는건 c:if문으로 판별해주세요 -->
+			<div class="login-button">
+            <a href="#"> &nbsp; 회원가입</a>
+            <a href="#"> &nbsp; 로그인</a> <!-- 로그인 시 test님 로그인 중 -->
+            <a href="#"> &nbsp; 마이페이지</a> <!-- 관리자 페이지 -->
+            <!-- common end -->
+        	</div>
 			<!-- .navbar -->
 			<!-- 헤더 메뉴 끝  -->
 
