@@ -539,17 +539,18 @@ REFERENCES FpReview (prNo);
   eno NUMBER PRIMARY KEY,
   title VARCHAR2(100) NOT NULL,
   content VARCHAR2(4000) NOT NULL,
-  regDate DEFAULT SYSDATE NOT NULL,
-  updateDate DEFAULT SYSDATE NOT NULL,
+  regDate DATE DEFAULT SYSDATE NOT NULL,
+  updateDate DATE DEFAULT SYSDATE NOT NULL,
   startDate DATE NOT NULL,
   endDate DATE NOT NULL,
-  status VARCHAR2(50)NOT NULL,
-  winnerid VARCHAR2(50) NULL,
-  mid VARCHAR2(50)NOT NULL,
+  status VARCHAR2(50) NOT NULL,
+  winnerid VARCHAR2(50),
+  mid VARCHAR2(50) NOT NULL
 );
+
 -- 이벤트 첨부 파일
 
-CREATE TABLE EvnetAttach (
+CREATE TABLE EventAttach (
 	uuid VARCHAR2(999) NOT NULL,
 	upFolder VARCHAR2(999) NOT NULL,
 	fileName VARCHAR2(999) NOT NULL,
@@ -561,8 +562,7 @@ CREATE TABLE EventApplicant (
   ano NUMBER PRIMARY KEY,
   memail VARCHAR2(100) NOT NULL,
   mid VARCHAR2(50) NOT NULL, 
-  eno NUMBER NOT NULL, 
-
+  eno NUMBER NOT NULL
 );
 
 -- AS문의 게시판
@@ -572,24 +572,24 @@ CREATE TABLE Asboard (
   title VARCHAR2(100) NOT NULL,
   content VARCHAR2(4000) NOT NULL,
   mid VARCHAR2(50) NOT NULL,
-  regDate DEFAULT SYSDATE NOT NULL,
-  updateDate DEFAULT SYSDATE NOT NULL,
+  regDate DATE DEFAULT SYSDATE NOT NULL,
+  updateDate DATE DEFAULT SYSDATE NOT NULL,
   status VARCHAR2(50) NOT NULL,
   memail VARCHAR2(100) NOT NULL,
-  replyContentVARCHAR2(4000) NOT NULL,
-  replyRegDate DEFAULT SYSDATE NOT NULL,
-  replyUpdateDate DEFAULT SYSDATE NOT NULL,
-  replyMid VARCHAR2(50)VARCHAR2(50) NOT NULL
+  replyContent VARCHAR2(4000),  
+  replyRegDate DATE DEFAULT SYSDATE,  
+  replyUpdateDate DATE DEFAULT SYSDATE,  
+  replyMid VARCHAR2(50)  
 );
+
 
 -- AS 첨부파일
 
-CREATE TABLE AsboardApplicant (
+CREATE TABLE AsboardAttach (
   ano NUMBER PRIMARY KEY,
   memail VARCHAR2(100) NOT NULL,
   mid VARCHAR2(50) NOT NULL, 
-  eno NUMBER NOT NULL, 
-
+  bno NUMBER NOT NULL
 );
 
 --FK 제약조건 설정 : 이벤트 (게시글, 신청, 첨부파일)
@@ -597,7 +597,7 @@ ALTER TABLE Event
 ADD CONSTRAINT FK_Event_Member FOREIGN KEY (mid) REFERENCES Member(mid);
 
 ALTER TABLE EventAttach
-ADD CONSTRAINT FK_EventAttach_Evnet FOREIGN KEY (eno) REFERENCES Evnet(eno);
+ADD CONSTRAINT FK_EventAttach_Evnet FOREIGN KEY (eno) REFERENCES Event(eno);
 
 ALTER TABLE EventApplicant
 ADD CONSTRAINT FK_EventApplicant_Event FOREIGN KEY (eno) REFERENCES Event(eno);
@@ -606,17 +606,18 @@ ALTER TABLE EventApplicant
 ADD CONSTRAINT FK_EventApplicant_Member FOREIGN KEY (mid) REFERENCES Member(mid);
 
 ALTER TABLE EventApplicant
-ADD CONSTRAINT FK_EventApplicant_Member FOREIGN KEY (memail) REFERENCES Member(memail);
+ADD CONSTRAINT FK_EventApplicant_Member_Email FOREIGN KEY (memail) REFERENCES Member(memail);
+
 
 --FK 제약조건 설정 : AS 문의 게시판 (게시글, 첨부파일) 
 ALTER TABLE Asboard
 ADD CONSTRAINT FK_Asboard_Member FOREIGN KEY (mid) REFERENCES Member(mid);
 
 ALTER TABLE Asboard
-ADD CONSTRAINT FK_Asboard_Member FOREIGN KEY (memail) REFERENCES Member(memail);
+ADD CONSTRAINT FK_Asboard_Member_Email FOREIGN KEY (memail) REFERENCES Member(memail);
 
 ALTER TABLE AsboardAttach
-ADD CONSTRAINT FK_EventAttach_Asboard FOREIGN KEY (bno) REFERENCES Asvoard(bno);
+ADD CONSTRAINT FK_AsboardAttach_Asboard FOREIGN KEY (bno) REFERENCES Asboard(bno)
 
 >>>>>>>>>>>>> 지수 끝
 
