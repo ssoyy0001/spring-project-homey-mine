@@ -537,10 +537,13 @@ REFERENCES FpReview (prNo);
 -- consult 시퀀스
 -- visit 시퀀스
 -- quotation 시퀀스
+-- item 시퀀스
 CREATE SEQUENCE notice_seq INCREMENT BY 1 START WITH 1;
 CREATE SEQUENCE consult_seq INCREMENT BY 1 START WITH 1;
 CREATE SEQUENCE visit_seq INCREMENT BY 1 START WITH 1;
 CREATE SEQUENCE quotation_seq INCREMENT BY 1 START WITH 1;
+CREATE SEQUENCE item_seq INCREMENT BY 1 START WITH 1;
+
 --하영 끝
 
 -- (시공의뢰, 시공작업, 시공후기, 문의게시판 시퀀스)
