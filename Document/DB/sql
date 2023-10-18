@@ -529,6 +529,8 @@ REFERENCES FpReview (prNo);
 
 
 >>>>>>>>>>>>> 소영 끝
+
+	
 >>>>>>>>>>>>> 지수 시작
 	
  -- 이벤트 게시판
@@ -547,7 +549,7 @@ REFERENCES FpReview (prNo);
 );
 -- 이벤트 첨부 파일
 
-CREATE TABLE AsboardAttach (
+CREATE TABLE EvnetAttach (
 	uuid VARCHAR2(999) NOT NULL,
 	upFolder VARCHAR2(999) NOT NULL,
 	fileName VARCHAR2(999) NOT NULL,
@@ -589,7 +591,37 @@ CREATE TABLE AsboardApplicant (
   eno NUMBER NOT NULL, 
 
 );
+
+--FK 제약조건 설정 : 이벤트 (게시글, 신청, 첨부파일)
+ALTER TABLE Event
+ADD CONSTRAINT FK_Event_Member FOREIGN KEY (mid) REFERENCES Member(mid);
+
+ALTER TABLE EventAttach
+ADD CONSTRAINT FK_EventAttach_Evnet FOREIGN KEY (eno) REFERENCES Evnet(eno);
+
+ALTER TABLE EventApplicant
+ADD CONSTRAINT FK_EventApplicant_Event FOREIGN KEY (eno) REFERENCES Event(eno);
+
+ALTER TABLE EventApplicant
+ADD CONSTRAINT FK_EventApplicant_Member FOREIGN KEY (mid) REFERENCES Member(mid);
+
+ALTER TABLE EventApplicant
+ADD CONSTRAINT FK_EventApplicant_Member FOREIGN KEY (memail) REFERENCES Member(memail);
+
+--FK 제약조건 설정 : AS 문의 게시판 (게시글, 첨부파일) 
+ALTER TABLE Asboard
+ADD CONSTRAINT FK_Asboard_Member FOREIGN KEY (mid) REFERENCES Member(mid);
+
+ALTER TABLE Asboard
+ADD CONSTRAINT FK_Asboard_Member FOREIGN KEY (memail) REFERENCES Member(memail);
+
+ALTER TABLE AsboardAttach
+ADD CONSTRAINT FK_EventAttach_Asboard FOREIGN KEY (bno) REFERENCES Asvoard(bno);
+
 >>>>>>>>>>>>> 지수 끝
+
+
+	
 --<< 4. 시퀀스, 트리거 생성>>
 
 --하영시작 
