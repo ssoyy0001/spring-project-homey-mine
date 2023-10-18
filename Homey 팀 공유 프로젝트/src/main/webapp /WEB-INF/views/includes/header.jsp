@@ -48,8 +48,10 @@
 	<script src="../resources/assets/vendor/purecounter/purecounter_vanilla.js"></script>
 	<script src="../resources/assets/vendor/php-email-form/validate.js"></script>
 
-	<!-- Template Main JS File -->
-	<script src="../resources/assets/js/main.js"></script>
+<!-- jquery -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<!-- Template Main JS File -->
+<script src="../resources/assets/js/main.js"></script>
 
 <!-- =======================================================
   * Template Name: UpConstruction
@@ -109,8 +111,14 @@
 			</nav>
 						<!-- common 시작, 보이는건 c:if문으로 판별해주세요 -->
 			<div class="login-button">
+			<sec:authorize access="isAnonymous()">
+            <a href="/gen/login"> &nbsp; 로그인</a> <!-- 로그인 시 test님 로그인 중 -->
             <a href="#"> &nbsp; 회원가입</a>
-            <a href="#"> &nbsp; 로그인</a> <!-- 로그인 시 test님 로그인 중 -->
+            </sec:authorize>
+            <sec:authorize access="isAuthenticated()">
+             <span>[<sec:authentication property="principal.Username"/>님]</span>
+            <a href="/gen/logout"> &nbsp; 로그아웃</a>
+            </sec:authorize>
             <a href="#"> &nbsp; 마이페이지</a> <!-- 관리자 페이지 -->
             <!-- common end -->
         	</div>
