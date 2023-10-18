@@ -4,13 +4,13 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-<title>UpConstruction Bootstrap Template - Index</title>
+<title>HOMEY</title>
 <meta content="" name="description">
 <meta content="" name="keywords">
 
@@ -58,10 +58,14 @@
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
+
+<style type="text/css">
+</style>
+
 </head>
 
 <body>
-
+  
 	<!-- ======= Header ======= -->
 	<header id="header" class="header d-flex align-items-center">
 		<div
@@ -74,34 +78,34 @@
 				</h1>
 			</a> <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i> <i
 				class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+			
+			<!-- 헤더 1 시작 -->
 			<nav id="navbar" class="navbar">
 				<ul>
-					<li><a href="index.html" class="active">Home</a></li>
-					<li><a href="about.html">About</a></li>
-					<li><a href="services.html">Services</a></li>
-					<li><a href="projects.html">Projects</a></li>
-					<li><a href="blog.html">Blog</a></li>
-					<li class="dropdown"><a href="#"><span>Dropdown</span> <i
+					<li><a href="#">시공사례</a></li>
+					<li><a href="#">견적상담</a></li>
+					<li><a href="#">시공후기</a></li>
+					<li><a href="#">원데이클래스</a></li>
+					<li><a href="#">제품나눔</a></li>
+					<li><a href="#">이벤트</a></li>
+					<li class="dropdown"><a href="#"><span>리뷰게시판</span> <i
 							class="bi bi-chevron-down dropdown-indicator"></i></a>
 						<ul>
-							<li><a href="#">Dropdown 1</a></li>
-							<li class="dropdown"><a href="#"><span>Deep
-										Dropdown</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
-								<ul>
-									<li><a href="#">Deep Dropdown 1</a></li>
-									<li><a href="#">Deep Dropdown 2</a></li>
-									<li><a href="#">Deep Dropdown 3</a></li>
-									<li><a href="#">Deep Dropdown 4</a></li>
-									<li><a href="#">Deep Dropdown 5</a></li>
-								</ul></li>
-							<li><a href="#">Dropdown 2</a></li>
-							<li><a href="#">Dropdown 3</a></li>
-							<li><a href="#">Dropdown 4</a></li>
+							<li><a href="#">원데이클래스 리뷰게시판</a></li>
+							<li><a href="#">제품 나눔 리뷰게시판</a></li>
 						</ul></li>
-					<li><a href="contact.html">Contact</a></li>
+					<li><a href="#">인테리어 매거진</a></li>
+					<li class="dropdown"><a href="#"><span>기타</span> <i
+							class="bi bi-chevron-down dropdown-indicator"></i></a>
+						<ul>
+							<li><a href="#">문의게시판</a></li>
+							<li><a href="#">AS 게시판</a></li>
+							<li><a href="#">공지게시판</a></li>
+						</ul></li>
 				</ul>
 			</nav>
 			<!-- .navbar -->
+			<!-- 헤더 1 끝  -->
 
 		</div>
 	</header>
