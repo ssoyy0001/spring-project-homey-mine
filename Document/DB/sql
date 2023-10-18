@@ -529,7 +529,67 @@ REFERENCES FpReview (prNo);
 
 
 >>>>>>>>>>>>> 소영 끝
+>>>>>>>>>>>>> 지수 시작
+	
+ -- 이벤트 게시판
+	
+  CREATE TABLE Event (
+  eno NUMBER PRIMARY KEY,
+  title VARCHAR2(100) NOT NULL,
+  content VARCHAR2(4000) NOT NULL,
+  regDate DEFAULT SYSDATE NOT NULL,
+  updateDate DEFAULT SYSDATE NOT NULL,
+  startDate DATE NOT NULL,
+  endDate DATE NOT NULL,
+  status VARCHAR2(50)NOT NULL,
+  winnerid VARCHAR2(50) NULL,
+  mid VARCHAR2(50)NOT NULL,
+);
+-- 이벤트 첨부 파일
 
+CREATE TABLE AsboardAttach (
+	uuid VARCHAR2(999) NOT NULL,
+	upFolder VARCHAR2(999) NOT NULL,
+	fileName VARCHAR2(999) NOT NULL,
+	eno NUMBER NOT NULL
+);
+-- 이벤트 신청
+
+CREATE TABLE EventApplicant (
+  ano NUMBER PRIMARY KEY,
+  memail VARCHAR2(100) NOT NULL,
+  mid VARCHAR2(50) NOT NULL, 
+  eno NUMBER NOT NULL, 
+
+);
+
+-- AS문의 게시판
+
+CREATE TABLE Asboard (
+  bno NUMBER PRIMARY KEY,
+  title VARCHAR2(100) NOT NULL,
+  content VARCHAR2(4000) NOT NULL,
+  mid VARCHAR2(50) NOT NULL,
+  regDate DEFAULT SYSDATE NOT NULL,
+  updateDate DEFAULT SYSDATE NOT NULL,
+  status VARCHAR2(50) NOT NULL,
+  memail VARCHAR2(100) NOT NULL,
+  replyContentVARCHAR2(4000) NOT NULL,
+  replyRegDate DEFAULT SYSDATE NOT NULL,
+  replyUpdateDate DEFAULT SYSDATE NOT NULL,
+  replyMid VARCHAR2(50)VARCHAR2(50) NOT NULL
+);
+
+-- AS 첨부파일
+
+CREATE TABLE AsboardApplicant (
+  ano NUMBER PRIMARY KEY,
+  memail VARCHAR2(100) NOT NULL,
+  mid VARCHAR2(50) NOT NULL, 
+  eno NUMBER NOT NULL, 
+
+);
+>>>>>>>>>>>>> 지수 끝
 --<< 4. 시퀀스, 트리거 생성>>
 
 --하영시작 
