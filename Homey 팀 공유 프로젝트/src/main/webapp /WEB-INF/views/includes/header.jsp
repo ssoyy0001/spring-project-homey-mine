@@ -47,12 +47,11 @@
 	<script src="../resources/assets/vendor/swiper/swiper-bundle.min.js"></script>
 	<script src="../resources/assets/vendor/purecounter/purecounter_vanilla.js"></script>
 	<script src="../resources/assets/vendor/php-email-form/validate.js"></script>
-
-<!-- jquery -->
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-<!-- Template Main JS File -->
-<script src="../resources/assets/js/main.js"></script>
-
+	
+	<!-- Template Main JS File -->
+	<script src="../resources/assets/js/main.js"></script>
+	<!-- jquery -->
+	<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <!-- =======================================================
   * Template Name: UpConstruction
   * Updated: Sep 18 2023 with Bootstrap v5.3.2
@@ -62,6 +61,7 @@
   ======================================================== -->
 
 <style type="text/css">
+
 </style>
 </head>
 
@@ -113,13 +113,19 @@
 			<div class="login-button">
 			<sec:authorize access="isAnonymous()">
             <a href="/gen/login"> &nbsp; 로그인</a> <!-- 로그인 시 test님 로그인 중 -->
-            <a href="#"> &nbsp; 회원가입</a>
+            <a href="/gen/join"> &nbsp; 회원가입</a>
+            <a href="/gen/login"> &nbsp; 마이페이지</a> <!-- 관리자 페이지 -->
             </sec:authorize>
             <sec:authorize access="isAuthenticated()">
              <span>[<sec:authentication property="principal.Username"/>님]</span>
             <a href="/gen/logout"> &nbsp; 로그아웃</a>
             </sec:authorize>
-            <a href="#"> &nbsp; 마이페이지</a> <!-- 관리자 페이지 -->
+            <sec:authorize access="hasRole('ROLE_MEMBER')">
+            <a href="/gen/myPage"> &nbsp; 마이페이지</a> <!-- 관리자 페이지 -->
+            </sec:authorize>
+            <sec:authorize access="hasRole('ROLE_ADMIN')">
+            <a href="/gen/admin"> &nbsp; 관리자페이지</a> 
+            </sec:authorize>
             <!-- common end -->
         	</div>
 			<!-- .navbar -->
