@@ -667,6 +667,7 @@ CREATE SEQUENCE freepdt_seq INCREMENT BY 1 START WITH 1;
 CREATE SEQUENCE fpreq_seq INCREMENT BY 1 START WITH 1;
 CREATE SEQUENCE fpreview_seq INCREMENT BY 1 START WITH 1;
 
+---승호 시작
 --(시공사례,스크랩 시퀀스)
 CREATE SEQUENCE showcase_seq INCREMENT BY 1 START WITH 1;
 CREATE SEQUENCE scrab_seq INCREMENT BY 1 START WITH 1;
@@ -687,7 +688,14 @@ BEGIN
    UPDATE showcase SET scrabcnt = (SELECT COUNT(*) FROM scrab WHERE scid = :OLD.scid)
    WHERE pk = :OLD.scid;
 END;
-
+--->추가 트리거
+CREATE OR REPLACE TRIGGER member_insert_trigger
+AFTER INSERT ON member
+FOR EACH ROW
+BEGIN
+  INSERT INTO memberauth (mid, auth) VALUES (:new.mid, 'ROLE_MEMBER');
+END;
+----승호 끝
 --<< 5. 각 테이블에 테스트용 데이터 insert 하기 >>
 
 --하영시작
