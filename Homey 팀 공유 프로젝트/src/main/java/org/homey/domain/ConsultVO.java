@@ -9,11 +9,9 @@ public class ConsultVO {
 
 	//ConsultVO: 견적 상담 정보
 	
-	//itemVO가 들어감 0원으로  0, 0, 0, 0, 0, 1 1 1 //체크를 했고
-
 	private int consultNo; // 견적상담번호(PK)
-	
-	private MemberVO member; //회원 정보가 담긴 VO : 아이디, 이름을 가져올 예정
+	private String mid; //회원 id
+//	private MemberVO member; //회원 정보가 담긴 VO : 아이디, 이름을 가져올 예정
 	
     private String mphone; // 연락처
     private String postcode; // 우편 번호
@@ -24,7 +22,7 @@ public class ConsultVO {
     private int pyeongsu; //평수
     private int budget; // 예산
     
-    private ItemVO item; //시공 항목들을 담은 VO
+    private ItemVO item;; //시공 항목들을 담은 VO
     
     private String happyCall; // 해피콜 희망일시
     private Date consultDate; // 견적 상담 신청날짜
@@ -36,6 +34,11 @@ public class ConsultVO {
     // 페이지가 같을 때 각 정보가 담긴vo를 list로 불러와야한다.
     private List<VisitVO> vvoList;
     private List<QuotationVO> qvoList;
+
+    //itemVO가 들어감 0원으로  0, 0, 0, 0, 0, 1 1 1 //체크를 했고
+    public void setConsultNo(int consultNo) {
+        this.consultNo = consultNo;
+    }
 
   
 }
