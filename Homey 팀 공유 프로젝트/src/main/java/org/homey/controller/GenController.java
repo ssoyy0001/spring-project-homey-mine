@@ -1,0 +1,164 @@
+package org.homey.controller;
+
+import org.homey.domain.MemberVO;
+import org.homey.domain.ScCriteria;
+import org.homey.mapper.MemberMapper;
+import org.homey.service.MemberService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
+
+@Log4j
+@Controller
+@RequestMapping("/gen/*")
+@AllArgsConstructor
+public class GenController {
+	private MemberService memberService;
+	private PasswordEncoder pwEncoder;
+	@GetMapping("main")
+	public void mainPage() {
+	}
+
+	@GetMapping("admin")
+	public void adminPage() {
+	}
+
+	@GetMapping("mypage")
+	public void myPage() {
+	}
+
+	@GetMapping("join") // 회원가입과 로그인
+	public void join() {
+	}
+
+	@PostMapping("join")
+	public String join(MemberVO mvo, RedirectAttributes rttr) {
+		String pw= mvo.getPw();
+		mvo.setPw(pwEncoder.encode(pw));
+		memberService.regist(mvo);
+		log.info(mvo);
+		return "redirect:/gen/login";
+	}
+	@GetMapping("jusoPopup")
+	public void jusoApi() {}
+
+	@PostMapping("checkId")
+	@ResponseBody
+	public ResponseEntity<String> checkId(@RequestParam("mid") String mid) {// 아이디 중복체크
+		return memberService.chkId(mid)
+				 ? new ResponseEntity<>("success", HttpStatus.OK)
+						   : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	@GetMapping("login") // 회원가입과 로그인
+	public String login(String error, String logout, Model model) {
+		log.info("Login()");
+		log.info("error:" + error);
+		log.info("logout:" + logout);
+
+		if (error != null) {
+			model.addAttribute("error", "로그인 에러 ");
+		}
+		if (logout != null) {
+			model.addAttribute("logout", "로그아웃이 완료되었습니다. ");
+		}
+		return "/gen/login";
+	}
+
+	@GetMapping("logout")
+	public String customLogout() {
+		return "/gen/logout";
+	}
+
+	@GetMapping("findID")
+	public void findId() {
+
+	}
+
+	@PostMapping("findID")
+	@ResponseBody
+	public ResponseEntity<String> findId(@RequestParam("mname") String mname, @RequestParam("mphone") String mphone) {
+		String username = memberService.findId(mname, mphone);
+
+		if (username != null) {
+			return ResponseEntity.ok(username);
+		} else {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@GetMapping("findPW")
+	public void findPw() {
+	}
+
+	@PostMapping("findPW")
+	public String findPW( String mid, String mname,
+			 String mphone,RedirectAttributes rttr) {
+		String user = memberService.findPw(mid, mname, mphone);
+		if (user != null) {
+			rttr.addAttribute("mid",user);
+			return "redirect:/gen/pwModify";
+		} else {
+			rttr.addAttribute("msg","다시 입력해 주세요");
+			return "redirect:/gen/findPW";
+		}
+	}
+
+	@GetMapping("pwModify")
+	public void modifyPW(@RequestParam("mid") String mid) {	
+	}
+
+	@PostMapping("pwModify")
+	public String modifyPW(String mid, String newPW, RedirectAttributes rttr) {
+		String pw=pwEncoder.encode(newPW);
+		
+		if (memberService.modifyPw(mid, pw)) {
+			rttr.addAttribute("modifyPWresult", "success");
+			return "redirect:/gen/login";
+		} else {
+			rttr.addAttribute("modifyPWresult", "fail");
+			return "redirect:/gen/pwModify";
+		}
+	}
+
+	@GetMapping({"memberView","memberModify"})
+	public void view(String mid, Model model, @ModelAttribute("cri") ScCriteria cri) {
+		log.info("view or modify......");
+		model.addAttribute("bvo", memberService.view(mid));
+	}
+	@PostMapping("memberModify")
+	public String memberModify(MemberVO mvo, RedirectAttributes rttr, 
+		     			 @ModelAttribute("cri") ScCriteria cri) {
+		return null;
+		
+	}
+	@PostMapping("memberRemove")
+	public String membterRemove(String mid, RedirectAttributes rttr, 
+		     			 @ModelAttribute("cri") ScCriteria cri) {
+	new SecurityContextLogoutHandler().logout(null, null, null);//<-이거 잘쓰면됨
+		return null;
+	}
+	@PostMapping("adminRemove")
+	public String adminRemove(String mid, RedirectAttributes rttr, 
+			@ModelAttribute("cri") ScCriteria cri) {
+		new SecurityContextLogoutHandler().logout(null, null, null);//<-이거 잘쓰면됨
+		return null;
+	}
+	@GetMapping("memberList")
+	public void memberList(Model model, @ModelAttribute("cri") ScCriteria cri) {// 12개씩 페이징할듯
+	}
+
+}
