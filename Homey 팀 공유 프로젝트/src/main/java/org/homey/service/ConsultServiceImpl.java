@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.homey.domain.ConsultVO;
 import org.homey.domain.Criteria;
+import org.homey.domain.ItemVO;
 import org.homey.domain.MemberVO;
 import org.homey.mapper.ConsultMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -18,12 +20,27 @@ public class ConsultServiceImpl implements ConsultService {
 	@Setter(onMethod_ = @Autowired)
 	private ConsultMapper consultMapper;
 	
-	//견적 상담 등록 - 완 
+	//견적 상담 등록 및 시공항목 등록
 	@Override
-	public boolean register(ConsultVO cvo) {
-		log.info("견적 상담 register ServiceImpl...");
-		return consultMapper.insert(cvo) == 1; // insert 메서드 실행 결과가 1이면 true 반환, 그렇지 않으면 false 반환
-	}
+    public int register(ConsultVO cvo, ItemVO ivo) {
+        // ConsultVO 등록
+        int result = consultMapper.insert(cvo);
+
+        if (result > 0) {
+            // ConsultVO 등록에 성공한 경우 consultNo를 얻어옴
+            int consultNo = cvo.getConsultNo();
+
+            // 그 후 ItemVO에 consultNo 설정
+            ivo.setConsultNo(consultNo);
+
+            // item 테이블에 데이터 등록
+            int itemResult = consultMapper.insertItem(ivo);
+            if (itemResult == 1) { //성공하면 true 반환
+                return consultNo;
+            }
+        }
+        return -1;
+    }
 
 	//견적 상담 전체목록 조회 + 페이징 - 완
 	@Override
@@ -76,12 +93,5 @@ public class ConsultServiceImpl implements ConsultService {
 		log.info("견적 상담 totalCount ServiceImpl...");
 		return consultMapper.totalCount(cri);
 	}
-
-// 페이징 없는 견적상담 전체 조회
-//	@Override
-//	public List<ConsultVO> list() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
 	
 }
