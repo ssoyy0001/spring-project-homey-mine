@@ -67,24 +67,24 @@
               <h2>1. 어떤 건물을 인테리어 하실건가요?</h2>
 				<div class="form-group">
 				    <label class="radio-inline">
-				        <input type="radio" name="buildingType" id="buildingType" value="아파트" required>
+				        <input type="radio" name="buildingType" id="buildingType1" value="아파트" required>
 				        아파트 &nbsp;		
 				    </label>
 				    <label class="radio-inline">
-				        <input type="radio" name="buildingType" id="buildingType" value="빌라">
+				        <input type="radio" name="buildingType" id="buildingType2" value="빌라">
 				        빌라 &nbsp;		
 				    </label>
 				    <label class="radio-inline">
-				        <input type="radio" name="buildingType" id="buildingType" value="주택">
+				        <input type="radio" name="buildingType" id="buildingType3" value="주택">
 				        주택 &nbsp;
 				    </label>
 				    <label class="radio-inline">
-				        <input type="radio" name="buildingType" id="buildingType" value="오피스텔">
+				        <input type="radio" name="buildingType" id="buildingType4" value="오피스텔">
 				        오피스텔 &nbsp;
 				    </label>
 				    <label class="radio-inline">
-				        <input type="radio" name="buildingType" id="buildingType" value="그 외">
-				        그 외 <input type="text" placeholder="건물 유형을 입력해주세요">
+				        <input type="radio" name="buildingType" id="buildingType5"  value="그 외">
+				        그 외 <input type="text" name="buildingType" placeholder="건물 유형을 입력해주세요" >
 				    </label>
 				</div>
 				<hr>
@@ -103,20 +103,20 @@
               <h2>3. 공사 예정일이 언제인가요?</h2>
 				<div class="form-group">
 				    <label class="radio-inline">
-				        <input type="radio" name="scheduledDate" id="scheduledDate" value="1개월 이내" required>
+				        <input type="radio" name="scheduledDate" id="scheduledDate1" value="1개월 이내" required>
 				        1개월 이내 &nbsp;		
 				    </label>
 				    <label class="radio-inline">
-				        <input type="radio" name="scheduledDate" id="scheduledDate" value="3개월 이내">
+				        <input type="radio" name="scheduledDate" id="scheduledDate2" value="3개월 이내">
 				        3개월 이내 &nbsp;		
 				    </label>
 				    <label class="radio-inline">
-				        <input type="radio" name="scheduledDate" id="scheduledDate" value="미정">
+				        <input type="radio" name="scheduledDate" id="scheduledDate3" value="미정">
 				        미정 &nbsp;
 				    </label>
 				    <label class="radio-inline">
-				        <input type="radio" name="scheduledDate" id="scheduledDate" value="그 외">
-				        그 외 <input type="text" placeholder="기간을 직접 입력해주세요">
+				        <input type="radio" name="scheduledDate" id="scheduledDate4" value="그 외">
+				        그 외 <input type="text" name="scheduledDate" placeholder="기간을 직접 입력해주세요">
 				    </label>
 				    <br>
 				    <div id="callout">
@@ -139,33 +139,34 @@
               <!-- BUDGET END -->
               <!-- ITEM -->
               <h2>5. 원하시는 시공을 모두 선택해주세요.</h2>
+              	<!-- 조건 : 체크박스가 선택되면 1로, 선택되지 않으면 0으로  -->
 				<div class="form-group" style="display:inline-block; width:300px; line-height:50px;">
 				    <label class="checkbox-inline">
-				        <input type="checkbox" required>도배/벽 &nbsp;
+				        <input type="checkbox" name="tiling" id="tilingCheck" class="item" value="1">도배/벽 &nbsp;
 				    </label>
 				    <label class="checkbox-inline">
-				        <input type="checkbox">바닥 &nbsp;
+				        <input type="checkbox" name="flooring" id="flooringCheck" class="item" value="1">바닥 &nbsp;
 				    </label>
 				    <label class="checkbox-inline">
-				        <input type="checkbox">주방 &nbsp;
+				        <input type="checkbox" name="kitchen" id="kitchenCheck" class="item" value="1">주방 &nbsp;
 				    </label>
 				    <label class="checkbox-inline">
-				        <input type="checkbox">욕실 &nbsp;
+				        <input type="checkbox" name="bathroom" id="bathroomCheck" class="item" value="1">욕실 &nbsp;
 				    </label>
 				    <label class="checkbox-inline">
-				        <input type="checkbox">현관 &nbsp;
+				        <input type="checkbox" name="entrance" id="entranceCheck" class="item" value="1">현관 &nbsp;
 				    </label>
 				    <label class="checkbox-inline">
-				        <input type="checkbox">발코니 &nbsp;
+				        <input type="checkbox" name="balcony" id="balconyCheck" class="item" value="1">발코니 &nbsp;
 				    </label>
 				    <label class="checkbox-inline">
-				        <input type="checkbox">조명 &nbsp;
+				        <input type="checkbox" name="lighting" id="lightingCheck" class="item" value="1">조명 &nbsp;
 				    </label>
 				    <label class="checkbox-inline">
-				        <input type="checkbox">문 &nbsp;
+				        <input type="checkbox" name="door" id="doorCheck" class="item" value="1">문 &nbsp;
 				    </label> 
 				    <label class="checkbox-inline">
-				        <input type="checkbox">그 외(문의) &nbsp;
+				        <input type="checkbox" name="etc" id="etcCheck" class="item" value="1">그 외(문의) &nbsp;
 				    </label>
 				</div>
 				<hr>
@@ -203,8 +204,8 @@
 					
 					<hr>
 					<!-- 약관동의 -->
-					<div class="form-check">
-						<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+					<div class="form-check"> <!--flexCheckDefault이면 미체크, flexCheckChecked이면 체크된 상태로 나타남 -->
+						<input class="form-check-input" type="checkbox" id="flexCheckDefault" required>
 						<label class="form-check-label" for="flexCheckDefault" style="font-weight: bold;">
 							HOMEY 약관 & 개인정보 수집 및 이용에 대한 안내 동의 (필수) &nbsp;
 						</label>
@@ -257,7 +258,7 @@
 				<button type="button" class="btn btn-secondary"
 						onclick="history.back()">
 					Cancel</button>
-				<button type="submit" class="btn btn-warning">
+				<button type="submit" class="btn btn-warning" id="submit">
 					견적상담 신청</button>  
 			</div>           
             	<!-- 시큐리티 -->
@@ -307,6 +308,56 @@
 <!-- ======= script ======= -->
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
+//라디오박스, 체크박스 하나이상 체크 알림 -----------------------------------------
+document.getElementById('submit').onclick = function() {
+    var radioBuildingType = document.querySelector('input[type=radio][name=buildingType]:checked');
+    var radioScheduledDate = document.querySelector('input[type=radio][name=scheduledDate]:checked');
+    //var checkItem = document.querySelector('input[type=checkbox][name=item]:checked');
+    var checkItem = document.querySelector('input[type=checkbox][class=item]:checked');
+    
+    if (!radioBuildingType && ! radioScheduledDate) {
+        alert('1. 어떤 건물을 인테리어 하실건지 체크해주세요.\n3. 공사예정일이 언제인지 체크해주세요.');
+    }
+    else if (!radioBuildingType) {
+        alert('1. 어떤 건물을 인테리어 하실건지 체크해주세요.');
+    }
+    else if (!radioScheduledDate) {
+        alert('3. 공사예정일이 언제인지 체크해주세요.');
+    }
+    else if (!checkItem) { //checkbox는 required 하면 모든 체크박스 선택을 요구해서 대안
+        alert('5. 원하시는 시공을 선택해주세요');
+        event.preventDefault();
+    }
+    
+}//end
+//라디오박스, 체크박스 하나이상 체크 알림 -----------------------------------------
+
+// 141번 라인 체크박스 해당 항목에 대한 값을 1로 설정하고, 선택되지 않았을 때는 0으로 설정-----------------------------------------
+document.addEventListener('DOMContentLoaded', function() {
+    // 각 체크박스의 요소를 가져옵니다
+    var tilingCheck = document.getElementById('tilingCheck');
+    var flooringCheck = document.getElementById('flooringCheck');
+    var kitchenCheck = document.getElementById('kitchenCheck');
+    var bathroomCheck = document.getElementById('bathroomCheck');
+    var entranceCheck = document.getElementById('entranceCheck');
+    var balconyCheck = document.getElementById('balconyCheck');
+    var lightingCheck = document.getElementById('lightingCheck');
+    var doorCheck = document.getElementById('doorCheck');
+    var etcCheck = document.getElementById('etcCheck');
+
+    // 체크박스 상태가 변경되면 실행할 함수를 정의합니다
+    function handleCheckboxChange(checkbox, value) {
+        if (checkbox.checked) {
+            // 체크박스가 선택된 경우 1로 설정
+            value.value = 1;
+        } else {
+            // 체크박스가 선택되지 않은 경우 0으로 설정
+            value.value = 0;
+        }
+    }
+});
+//END 체크박스 해당 항목에 대한 값을 1로 설정하고, 선택되지 않았을 때는 0으로 설정 -----------------------------------------
+
 
 //카카오 주소 API -----------------------------------------
  // 우편번호 찾기 찾기 화면을 넣을 element
