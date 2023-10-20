@@ -48,10 +48,10 @@
   </delete>
 
   
-  <insert id="insert">
-	INSERT INTO consult(consultNo, mphone, postcode, address, detailAddress, buildingType, scheduledDate, budget, size, happyCall, consultDate, status)
-	VALUES(consult_seq.NEXTVAL, #{mphone}, #{postcode}, #{address}, #{detailAddress}, #{buildingType}, #{scheduledDate}, #{budget}, #{size}, #{happyCall}, #{consultDate}, #{status})  
-  </insert>
+	<insert id="insert">
+	  INSERT INTO consult(consultNo, mid, mphone, postcode, address, detailAddress, buildingType, scheduledDate, budget, pyeongsu, happyCall, consultDate, status)
+	  VALUES(consult_seq.NEXTVAL, #{mid}, #{mphone}, #{postcode}, #{address}, #{detailAddress}, #{buildingType}, #{scheduledDate}, #{budget}, #{pyeongsu}, #{happyCall}, SYSDATE, '해피콜 예정')
+	</insert>
 
 	<select id="selectAllPaging" resultType="org.homey.domain.ConsultVO">
 	  <![CDATA[
