@@ -43,7 +43,7 @@
 	            
 	            <div class="form-group mt-3">
 	                <label class="regiItemNm"><strong>* 진행일시</strong></label>
-	                <input type="datetime-local" name="odDate" class="regiItem">
+	                <input type="text" name="odTime" class="regiItem" placeholder="ex) 2023/01/01 18:00">
 	            </div>
 	            
 	            <div class="form-group mt-3">
@@ -68,7 +68,7 @@
 	            
 	            <div class="form-group mt-3">
 	                <label class="regiItemNm"><strong>* 모집마감일</strong></label>
-	                <input type="datetime-local" name="odDeadline" class="regiItem">
+	                <input type="date" name="date" value="2023-06-21" min="2020-01-01" max="2030-12-31">
 	            </div>
 	            
 	            <div class="form-group mt-3">
