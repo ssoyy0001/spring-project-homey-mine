@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.homey.mapper.MemberMapper">
+
+	<resultMap type="org.homey.domain.MemberVO" id="memberMap">
+		<id property="mid" column="mid" />
+		<result property="pw" column="pw" />
+		<result property="mname" column="mname" />
+		<result property="maddr" column="maddr" />
+		<result property="memail" column="memail" />
+		<result property="mphone" column="mphone" />
+		<result property="mdate" column="mdate" />
+		<collection property="authList" resultMap="authMap"></collection>
+	</resultMap>
+	<resultMap type="org.homey.domain.AuthVO" id="authMap">
+		<result property="mid" column="mid" />
+		<result property="auth" column="auth" />
+	</resultMap>
+	<select id="select" resultMap="memberMap">
+		SELECT m.*,a.auth
+		FROM member m
+		JOIN memberAuth a
+		on m.mid=a.mid
+		WHERE m.mid=#{mid}
+	</select>
+
+	<select id="selectAll" resultType="org.homey.domain.MemberVO">
+
+	</select>
+	
+	<select id="chkId" resultType="int">
+	SELECT COUNT(*) FROM member WHERE mid=#{mid}
+	</select>
+	
+	<select id="selectId" resultType="String">
+	SELECT mid FROM member WHERE mname=#{mname} and mphone=#{mphone} 
+	</select>
+	<select id="selectPw" resultType="String">
+	SELECT mid FROM member WHERE mid=#{mid} and mname=#{mname} and mphone=#{mphone} 
+	</select>
+	<select id="totalCount" resultType="int">
+		SELECT COUNT(*) FROM member
+	</select>
+	<update id="updatePw">
+	 UPDATE member SET pw=#{pw} WHERE mid=#{mid}
+	</update>
+	<update id="update">
+		UPDATE tbl_board
+		SET title = #{title}, content =
+		#{content},
+		writer = #{writer}, updateDate = SYSDATE
+		WHERE bno = #{bno}
+	</update>
+
+	<delete id="delete">
+		DELETE member WHERE mid = #{mid }
+	</delete>
+
+
+	<insert id="insert">
+		INSERT INTO
+		member(mid,pw,mname,maddr,memail,mphone)
+		VALUES(#{mid},#{pw},#{mname},#{maddr},#{memail},#{mphone})
+	</insert>
+
+	
+
+
+</mapper>
+
+
+
