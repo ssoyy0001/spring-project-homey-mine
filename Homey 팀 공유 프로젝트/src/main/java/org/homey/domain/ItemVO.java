@@ -33,8 +33,11 @@ public class ItemVO {
     private int door; // 문에 대한 시공비용
     private int doorD; // 문에 대한 철거비용
 
-    private int others; // 그 외 항목에 대한 시공비용
-    private int othersD; // 그 외 항목에 대한 철거비용
+    private int etc; // 그 외 항목에 대한 시공비용
+    private int etcD; // 그 외 항목에 대한 철거비용
     
-  
+    public void setItemNo(int itemNo) {
+        this.itemNo = itemNo;
+    }
+    
 }
