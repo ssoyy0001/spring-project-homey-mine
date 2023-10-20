@@ -46,11 +46,16 @@
   <delete id="delete">
 	DELETE consult WHERE consultNo = #{consultNo}
   </delete>
-
-  
-	<insert id="insert">
+	 
+	<insert id="insert" useGeneratedKeys="true" keyProperty="consultNo"  keyColumn="consultNo">
 	  INSERT INTO consult(consultNo, mid, mphone, postcode, address, detailAddress, buildingType, scheduledDate, budget, pyeongsu, happyCall, consultDate, status)
 	  VALUES(consult_seq.NEXTVAL, #{mid}, #{mphone}, #{postcode}, #{address}, #{detailAddress}, #{buildingType}, #{scheduledDate}, #{budget}, #{pyeongsu}, #{happyCall}, SYSDATE, '해피콜 예정')
+	</insert>
+
+	<!-- 견적상담 등록과 동시에 시공항목 insert -->
+	<insert id="insertItem" useGeneratedKeys="true" keyProperty="itemNo"  keyColumn="itemNo">
+	  INSERT INTO item (itemNo, consultNo, tiling, tilingD, flooring, flooringD, kitchen, kitchenD, bathroom, bathroomD, entrance, entranceD, balcony, balconyD, lighting, lightingD, door, doorD, etc, etcD)
+	  VALUES(item_seq.NEXTVAL, #{consultNo}, #{tiling}, #{tilingD}, #{flooring}, #{flooringD}, #{kitchen}, #{kitchenD}, #{bathroom}, #{bathroomD}, #{entrance}, #{entranceD}, #{balcony}, #{balconyD}, #{lighting}, #{lightingD}, #{door}, #{doorD}, #{etc}, #{etcD})
 	</insert>
 
 	<select id="selectAllPaging" resultType="org.homey.domain.ConsultVO">
@@ -87,13 +92,10 @@
 	    ORDER BY consultNo DESC
     ]]>
   </select>
-  
+
   <select id="select" 
   	      resultType="org.homey.domain.ConsultVO">
-    SELECT * FROM consult WHERE consultNo = #{consultNo}
+	 SELECT * FROM consult WHERE consultNo = #{consultNo}
   </select>
   
 </mapper>
-
-
-
