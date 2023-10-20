@@ -6,6 +6,7 @@ import org.homey.domain.Criteria;
 import org.homey.domain.ItemVO;
 import org.homey.domain.PageDTO;
 import org.homey.service.ConsultService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,7 +32,7 @@ public class ConsultController {
 	
 	    // 견적상담 등록 페이지로 이동하는 GET 요청을 처리
 	    @GetMapping("register")
-//	    @PreAuthorize("isAuthenticated") // 로그인 했을 시만 권한 적용
+	    @PreAuthorize("principal.username == #mid or hasRole('ROLE_ADMIN')") //로그인 했을 시에만 접근 가능
 	    public void register(Model model) {
 	    	log.info("Consult의 register.jsp . . .");
 	    	
@@ -49,7 +50,7 @@ public class ConsultController {
 
 	    // 견적상담을 등록하는 POST 요청을 처리
 	    @PostMapping("register")
-//	    @PreAuthorize("isAuthenticated")
+	    @PreAuthorize("principal.username == #mid or hasRole('ROLE_ADMIN')") //로그인 했을 시에만 등록 가능
 	    public String register(ConsultVO cvo, ItemVO ivo, RedirectAttributes rttr) {
 	        log.info("Consult의 register. . .");
 
@@ -131,5 +132,60 @@ public class ConsultController {
 	        rttr.addAttribute("amount", cri.getAmount());
 	        return "redirect:/consult/list";
 	    }
+
+//백업용 공간
+//	    // 견적상담을 수정하는 POST 요청을 처리
+//	    @PostMapping("modify")
+//	    @ResponseBody //Ajax 요청임을 나타냄
+//      @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+//	    public String modify(ConsultVO cvo, RedirectAttributes rttr, @ModelAttribute("cri") Criteria cri) {
+//	    	log.info("Consult의 Modify . .");
+//	    	if (consultService.modify(cvo)) {
+//	            rttr.addFlashAttribute("result", "success");
+//	        }
+//	        rttr.addAttribute("type", cri.getType());
+//	        rttr.addAttribute("keyword", cri.getKeyword());
+//	        rttr.addAttribute("pageNum", cri.getPageNum());
+//	        rttr.addAttribute("amount", cri.getAmount());
+//	        return "redirect:/consult/list";
+//	    }
+	    
+	    // 견적상담을 등록하는 POST 요청을 처리
+//	    @PostMapping("register")
+////	    @PreAuthorize("isAuthenticated")
+//	    public String register(ConsultVO cvo, RedirectAttributes rttr) {
+//	    	log.info("Consult의 register. . .");
+//	    	if (consultService.register(cvo)) {
+//	            rttr.addFlashAttribute("result", cvo.getConsultNo());
+//	        }
+//	    	//견적상담 등록 성공 시 메인페이지로 이동
+//	        return "redirect:/gen/main";
+//	    }	    
+	    // 견적상담을 등록하는 POST 요청을 처리
+//	    @PostMapping("register")
+////	    @PreAuthorize("isAuthenticated")
+//	    public String register(ConsultVO cvo, ItemVO ivo, RedirectAttributes rttr) {
+//	        log.info("Consult의 register. . .");
+//
+//	        // 사용자 이름(mid) 가져오기
+//	        String mid = null;
+//	        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//
+//	        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+//	            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+//	            mid = userDetails.getUsername();
+//	        }
+//	        // MID를 ConsultVO 객체에 설정
+//	        cvo.setMid(mid);
+//	        
+//	    	if (consultService.register(cvo)) {
+//            rttr.addFlashAttribute("result", cvo.getConsultNo());
+//            log.info(ivo);
+//	        }
+//	    	
+//	    	//견적상담 등록 성공 시 메인페이지로 이동
+//	        return "redirect:/gen/main";
+//	    }
+	
 
 } // ConsultController end
