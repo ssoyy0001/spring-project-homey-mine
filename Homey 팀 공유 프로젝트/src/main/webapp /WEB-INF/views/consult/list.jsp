@@ -6,7 +6,11 @@
 <meta charset="UTF-8">
 <title>견적상담 전체 조회</title>
 <style type="text/css">
-
+/* 페이징 버튼 가운데 정렬 */
+.pagination {
+	justify-content: center;
+	margin-top: 10px;
+}
 </style>
 </head>
 <body>
@@ -31,9 +35,9 @@
      <h3>견적 신청내역 ${totalCount }개</h3>
      <hr><!-- END 견적상담 개수 표시 구간  -->
     
-    <!-- 검색  타입 및 검색 키워드 :: 견적 상담번호, 건물 유형 -->
+    <!-- 검색 타입 및 검색 키워드 :: 견적 상담번호, 건물 유형 -->
 		<form action="/consult/list" id="searchFrm">
-		    <select name="type">
+		    <select name="type" style="height: 30px"> <!-- 검색어 입력칸과 높이 맞추기 -->
 		        <option value="C" <c:if test="${pageDTO.cri.type == 'C'}">selected</c:if>>견적상담번호</option> <!--  검색 타입 남겨놓기-->
 		        <option value="B" <c:if test="${pageDTO.cri.type == 'B'}">selected</c:if>>건물유형</option>
 		    </select>
@@ -51,7 +55,7 @@
 
 		<!-- 반복될 구간 -->
 		<c:forEach items="${consultList}" var="cvo"> <!-- 컨트롤러 model에 담은 이름 그대로 -->
-          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+          <div class="col-lg-4 col-md-6 move" data-aos="fade-up" data-aos-delay="100">
             <div class="service-item  position-relative">
               <div class="icon">
                 <i class="fa-solid fa-mountain-city"></i>
@@ -59,16 +63,16 @@
               <h3>${cvo.buildingType}, ${cvo.address}</h3> <!-- 제목 -->
               <p>견적 상담 번호 : ${cvo.consultNo}</p>
               <p>견적 신청 날짜 : <fmt:formatDate value="${cvo.consultDate}" pattern="yyyy-MM-dd"/></p>
-              <a href="/consult/consultManage" class="readmore stretched-link">상세조회 <i class="bi bi-arrow-right"></i></a>
-              		<!-- 상세 조회 값 보내야할 견적상담번호 표시-->
+              <a href="/consult/consultManage" class="readmore stretched-link" data-consultno="${cvo.consultNo}">상세조회 <i class="bi bi-arrow-right"></i></a>
+              	<!-- data-consultno : 상세 조회 값 보내야할 견적상담번호 표시-->
             </div>
           </div><!-- End Service Item -->
          </c:forEach> 
 		<!-- 반복될 구간 END -->
     
     <!-- 페이징 -->
-   <div class="pull-right">
-		<ul class="pagination">
+   <div>
+		<ul class="pagination"> <!-- bootstrap4부터는 pull이 아니라 float , float-end는 오른쪽 끝-->
 			<%-- 이전 버튼 --%>
 			<c:if test="${pageDTO.prev }">
 			<li class="page-item">
@@ -90,7 +94,7 @@
 				<a href="${pageDTO.end + 1}" 
 				   class="page-link">Next &raquo;</a></c:if>
 		</ul>					
-             </div>    
+    </div>    
     <!-- 페이징 END -->
     
 <!-- 현재 페이지 번호 및 출력 게시물 수 전송 폼 -->
@@ -109,6 +113,21 @@
 <!-- ======= script ======= -->
 <script>
 $(function(){
+	//58번 라인부터 하나의 견적상담 내용 클릭 시 이벤트 처리(상세조회로 보낼 값) -----------------------
+	$('.move').on('click', function(e){
+		e.preventDefault();
+		const consultNo = $(this).find('.readmore').data('consultno');
+		
+		//hidden 태그를 생성하여 이름을 consultNo로 지정하고
+		// 클릭한 요소의 "data-consultno" 값을 추가
+		actionFrm.append("<input type='hidden' name='consultNo' value='" + consultNo + "'>");
+
+		actionFrm.attr('action', '/consult/consultManage');
+		
+		actionFrm.submit();
+	});
+	//END 하나의 견적상담 내용 클릭 시 이벤트 처리-------------------
+	
 	//검색 버튼 이벤트 처리 ---------------------------
 		var searchFrm = $('#searchFrm');
 	
