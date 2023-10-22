@@ -207,18 +207,18 @@ CREATE TABLE sireq (
     mid VARCHAR2(50),
     mname VARCHAR2(50),
     sireqDate DATE DEFAULT SYSDATE,
-    sigongTotal NUMBER NOT NULL,
+    sigongTotal NUMBER,
     sireqStatus VARCHAR2(30) DEFAULT '의뢰접수',
     payStatus VARCHAR2(30) DEFAULT '계약금미납',
     sireqUpdateDate DATE DEFAULT SYSDATE
 );
 
 CREATE TABLE sireqAttach (
-	uuid	VARCHAR2(100)	NOT NULL,
-	sireqNo	NUMBER	NOT NULL,
-	upFolder	VARCHAR2(200)	NOT NULL,
-	fileName	VARCHAR2(100)	NOT NULL,
-	image	CHAR(1 )	NULL
+	uuid	VARCHAR2(100),
+	sireqNo	NUMBER,
+	upFolder	VARCHAR2(200),
+	fileName	VARCHAR2(100),
+	image	CHAR(1 )
 );
 --시공의뢰 끝
 
