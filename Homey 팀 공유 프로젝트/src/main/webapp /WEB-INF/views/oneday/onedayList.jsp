@@ -36,6 +36,7 @@ table td.title {    text-align: left;	}
   
 </style>
 
+
 </head>
 <body>
 <!-- ======= header ======= -->
@@ -50,6 +51,14 @@ table td.title {    text-align: left;	}
     <h2>Oneday Class</h2>
   </div>
 </div><!-- End Breadcrumbs -->
+
+
+<!-- 문의글 등록/삭제 완료 메시지가 있는 경우, qnaListAll.jsp로 돌아오면서 msg내용을 alert으로 띄우기 --> 
+<c:if test="${!empty msg }">
+	<script>
+			alert('${msg}');
+	</script>
+</c:if>
 
 
 <!-- ======= 원데이클래스 게시글 목록 ======= -->
@@ -76,7 +85,7 @@ table td.title {    text-align: left;	}
 						<option value="TC" ${pageDTO.cri.type == 'TC' ? 'selected' : ''}>제목 or 내용</option>
 					</select>
 					<input type="text" name="keyword" value="${pageDTO.cri.keyword }"/>
-					<button class="btn btn-success btn-sm searchBtn">검색</button>
+					<button class="btn btn-outline-warning btn-xs searchBtn">검색</button>
 		                	
 					<input type="hidden" name="pageNum" value="${pageDTO.cri.pageNum}">
 		          	<input type="hidden" name="amount"  value="${pageDTO.cri.amount}">
@@ -178,29 +187,6 @@ table td.title {    text-align: left;	}
 					<input type="hidden" name="keyword"  value="${pageDTO.cri.keyword}">
 				</form>		
 
-			<!-- Modal 게시물 등록 완료 시 표시 -->
-                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" 
-                                		data-dismiss="modal" aria-hidden="true">&times;</button>
-                                <h4 class="modal-title" id="myModalLabel">
-                                	MESSAGE</h4>
-                            </div>
-                            <div class="modal-body">
-                                처리가 완료되었습니다.
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" data-dismiss="modal">닫기</button>
-                            </div>
-                        </div>  <!-- /.modal-content -->
-                    </div>		<!-- /.modal-dialog -->
-                </div>          <!-- /.modal -->
-			<!-- END Modal 게시물 등록 완료 시 표시 -->
-			
-		<br>
-
 		</div><!-- End container -->
 	    </div><!-- End portfolio-description -->
     </div><!-- End col-lg-8 mx-auto -->
@@ -232,7 +218,7 @@ table td.title {    text-align: left;	}
 
 <script>
 
-// 스크립트 맨 윗부분에 $(function(){를 넣어야 할지도..? 일단 안넣고 시도
+//	$(function(){				//이거 붙여야 할 수도..? 게시글 등록, 삭제 후 목록으로 접속한 경우, 스크립트태그를 먼저 스캔하게 하려고
 
 //검색 버튼 이벤트 처리 ---------------------------
 var searchFrm = $('#searchFrm');
@@ -293,29 +279,8 @@ $('.move').on('click', function(e){
 
 
 
-//게시글 등록/삭제 완료 메시지가 있는 경우, msg내용을 alert으로 띄우기 ---------------------------------------
-var msg = '${msg}';
-checkModal(msg);
 
-//모달 창 재출력 방지
-history.replaceState({}, null, null); //history 초기화
-
-function checkModal(msg){
-	//msg 값이 있는 경우에 모달 창 표시 (msg는 등록/삭제 시 컨트롤러에서 보냄)
-	if(msg === '' || history.state) {
-		return;
-	}
-	
-	if( parseInt(msg) > 0) { 			//게시물이 등록된 경우 (msg에 게시물번호가 담김)
-		$('.modal-body').html(msg + '번 게시물이 등록되었습니다.'); 
-	}
-	
-	$('#myModal').modal('show');
-}
-//END 게시물 처리 결과 알림 모달창 처리 ---------------------------------------
-
-
-//	여기에  });//END $ 넣어야 할지도?
+//		});//END 		//일단 다시 뗌
 
 
 </script>
