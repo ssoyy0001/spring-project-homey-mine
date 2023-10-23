@@ -119,7 +119,8 @@ CREATE TABLE visit (
     visitNo NUMBER NOT NULL,
     consultNo NUMBER NOT NULL,
     visitDate DATE NOT NULL,
-    visitStatus CHAR(1) DEFAULT '0' NOT NULL
+    visitStatus CHAR(1) DEFAULT '0' NOT NULL,
+    description VARCHAR2(100) NULL
 );
 
 ALTER TABLE consult ADD CONSTRAINT PK_CONSULT PRIMARY KEY (
