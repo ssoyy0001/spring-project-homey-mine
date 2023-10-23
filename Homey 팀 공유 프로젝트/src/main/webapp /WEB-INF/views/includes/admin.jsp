@@ -18,7 +18,7 @@
 	<section id="blog" class="blog">
 		<div class="container" data-aos="fade-up" data-aos-delay="100">
 			<div class="row g-5">
-				<div class="col-lg-8">
+				<div class="col-lg-9">
 					<article class="blog-details">
 						<div class="post-img">
 							<img src="../resources/assets/img/blog/blog-1.jpg" alt=""
