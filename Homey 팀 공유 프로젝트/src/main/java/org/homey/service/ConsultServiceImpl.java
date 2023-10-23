@@ -66,13 +66,30 @@ public class ConsultServiceImpl implements ConsultService {
 		return null;
 	}
 	
+//	//견적 상담 상세 조회 - 완
+//	@Override
+//	public ConsultVO view(int consultNo) {
+//		log.info("견적 상담 view ServiceImpl...");
+//		return consultMapper.select(consultNo);
+//	}
+//	
 	//견적 상담 상세 조회 - 완
 	@Override
 	public ConsultVO view(int consultNo) {
 		log.info("견적 상담 view ServiceImpl...");
-		return consultMapper.select(consultNo);
+	    // consultMapper.select(consultNo)를 사용하여 견적상담 정보를 조회
+	    ConsultVO consultVO = consultMapper.select(consultNo);
+	    
+	    // consultMapper.selectItem(consultNo)를 사용하여 시공항목 정보를 조회
+	    ItemVO itemVO = consultMapper.selectItem(consultNo);
+	    
+	    // 조회된 시공항목 정보를 ConsultVO에 설정
+	    consultVO.setItem(itemVO);
+	    
+	    return consultVO;
 	}
-
+	
+	
 	//견적 상담 수정 - 완
 	@Override
 	public boolean modify(ConsultVO cvo) {
@@ -93,5 +110,6 @@ public class ConsultServiceImpl implements ConsultService {
 		log.info("견적 상담 totalCount ServiceImpl...");
 		return consultMapper.totalCount(cri);
 	}
+
 	
 }
