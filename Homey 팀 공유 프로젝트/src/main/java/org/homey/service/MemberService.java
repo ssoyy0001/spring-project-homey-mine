@@ -11,7 +11,7 @@ public interface MemberService {
 	public boolean modify(MemberVO mvo);//회원정보 수정
 	public boolean remove(String mid);//탈퇴 및 삭제
 	public boolean regist(MemberVO mvo);//회원 가입
-	
+	public int totalCount(ScCriteria cri);//회원수
 	
 	public String findId(String mname,String mphone);//아이디찾기
 	public String findPw(String mid,String mname,String mphone);//비번찾기
