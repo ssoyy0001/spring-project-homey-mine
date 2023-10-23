@@ -38,7 +38,7 @@
   <update id="update">
 	UPDATE 	consult
 	SET	
-      happyCall = #{happyCall}	
+      happyCall = #{happyCall},	
       status = #{status}
 	WHERE	consultNo = #{consultNo}  
   </update>
@@ -98,4 +98,15 @@
 	 SELECT * FROM consult WHERE consultNo = #{consultNo}
   </select>
   
+  <select id="selectItem" resultType="org.homey.domain.ItemVO">
+    <![CDATA[
+    SELECT * 
+    FROM item
+    WHERE consultNo = #{consultNo}
+    ]]>
+</select>
+
 </mapper>
+
+
+
