@@ -39,6 +39,7 @@ CREATE TABLE memberAuth (
     CONSTRAINT fk_memberAuth
         FOREIGN KEY (mid)
         REFERENCES member(mid)
+	ON DELETE CASCADE
 );
 
 
