@@ -1,7 +1,10 @@
 package org.homey.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.homey.domain.MemberVO;
 import org.homey.domain.ScCriteria;
+import org.homey.domain.ScPageDTO;
 import org.homey.service.MemberService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,7 +54,12 @@ public class GenController {
 	public String join(MemberVO mvo, RedirectAttributes rttr) {
 		String pw= mvo.getPw();
 		mvo.setPw(pwEncoder.encode(pw));
-		memberService.regist(mvo);
+		if(memberService.regist(mvo)) {
+		rttr.addFlashAttribute("msg","회원가입이 완료되었습니다");
+		}else {
+			rttr.addFlashAttribute("msg","회원가입 실패!");
+		}
+		
 		log.info(mvo);
 		return "redirect:/gen/login";
 	}
@@ -78,6 +86,7 @@ public class GenController {
 		if (logout != null) {
 			model.addAttribute("logout", "로그아웃이 완료되었습니다. ");
 		}
+
 		return "/gen/login";
 	}
 
@@ -131,7 +140,7 @@ public class GenController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();//시큐리티에서 권한찾아오기 위함
 		String pw=pwEncoder.encode(newPW);
 		if (memberService.modifyPw(mid, pw)) {
-			rttr.addFlashAttribute("modifyPWresult", "success");
+			rttr.addFlashAttribute("msg", "비밀번호 변경이 완료되었습니다.");
 			if (auth == null || !auth.isAuthenticated()) {//로그인 x
 				return "redirect:/gen/login";
 			}else {//로그인 후 회원정보에서 비밀수정으로 들어 왔을 시
@@ -139,7 +148,7 @@ public class GenController {
 			}
 			
 		} else {
-			rttr.addFlashAttribute("modifyPWresult", "fail");
+			rttr.addFlashAttribute("msg", "비밀번호 변경 실패");
 			return "redirect:/gen/pwModify";
 		}
 	}
@@ -155,29 +164,50 @@ public class GenController {
 	public String memberModify(MemberVO mvo, RedirectAttributes rttr, 
 		     			 @ModelAttribute("cri") ScCriteria cri) {
 		if(memberService.modify(mvo)) {
-			rttr.addFlashAttribute("msg","수정 성공");
+			rttr.addFlashAttribute("msg","수정이 완료되었습니다.");
 			log.info("성공");
 		}else {
-			rttr.addFlashAttribute("msg","수정 성공");	
+			rttr.addFlashAttribute("msg","수정 실패!");	
 			log.info("실패");
 		}
 		return "redirect:/gen/memberView?mid="+mvo.getMid();
 		
 	}
 	@PostMapping("memberRemove")
-	public String membterRemove(String mid, RedirectAttributes rttr, 
-		     			 @ModelAttribute("cri") ScCriteria cri) {
-	new SecurityContextLogoutHandler().logout(null, null, null);//<-이거 잘쓰면됨
-		return null;
+	@PreAuthorize("hasRole('ROLE_MEMBER')")
+	public String membterRemove(String mid, RedirectAttributes rttr,
+	                            HttpServletRequest request) {
+	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    if (auth != null) {
+	        new SecurityContextLogoutHandler().logout(request, null, auth);
+	    }
+	    if(memberService.remove(mid)) {
+	    	rttr.addFlashAttribute("msg","탈퇴가 완료 되었습니다.");
+	    }else {
+	    	rttr.addFlashAttribute("msg","탈퇴 실패!");
+	    }
+	    return "redirect:/gen/main";
 	}
 	@PostMapping("adminRemove")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public String adminRemove(String mid, RedirectAttributes rttr, 
 			@ModelAttribute("cri") ScCriteria cri) {
-		new SecurityContextLogoutHandler().logout(null, null, null);//<-이거 잘쓰면됨
-		return null;
+		rttr.addAttribute("pageNum", cri.getPageNum());
+		rttr.addAttribute("amount", cri.getAmount());
+		if(memberService.remove(mid)) {
+			rttr.addFlashAttribute("msg","삭제되었습니다.");
+		}else {
+			rttr.addFlashAttribute("msg","삭제 실패!");
+		}
+		return "redirect:/gen/memberList";
 	}
+	
 	@GetMapping("memberList")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public void memberList(Model model, @ModelAttribute("cri") ScCriteria cri) {// 12개씩 페이징할듯
+		model.addAttribute("list",memberService.list(cri));
+		int totalCount = memberService.totalCount(cri);
+		model.addAttribute("pageDTO", new ScPageDTO(cri, totalCount));
 	}
 
 }
