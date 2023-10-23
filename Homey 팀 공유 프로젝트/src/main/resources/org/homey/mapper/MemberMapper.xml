@@ -27,7 +27,14 @@
 	</select>
 
 	<select id="selectAll" resultType="org.homey.domain.MemberVO">
-
+	<![CDATA[ 
+    	SELECT  mid, mname, maddr, memail,mphone,mdate
+    	FROM   ( SELECT /*+INDEX_ASC(member pk_member) */
+    					rownum rn, mid, mname, maddr, memail,mphone,mdate 
+    			 FROM   member
+    			 WHERE rownum <= #{amount} * #{pageNum} )
+    	WHERE  rn > #{amount} * ( #{pageNum} - 1 )    	
+    ]]>
 	</select>
 	
 	<select id="chkId" resultType="int">
@@ -40,18 +47,18 @@
 	<select id="selectPw" resultType="String">
 	SELECT mid FROM member WHERE mid=#{mid} and mname=#{mname} and mphone=#{mphone} 
 	</select>
+	
 	<select id="totalCount" resultType="int">
 		SELECT COUNT(*) FROM member
 	</select>
+
 	<update id="updatePw">
 	 UPDATE member SET pw=#{pw} WHERE mid=#{mid}
 	</update>
 	<update id="update">
-		UPDATE tbl_board
-		SET title = #{title}, content =
-		#{content},
-		writer = #{writer}, updateDate = SYSDATE
-		WHERE bno = #{bno}
+		UPDATE member
+		SET mname=#{mname},maddr = #{maddr}, mphone =#{mphone},memail = #{memail}
+		WHERE mid = #{mid}
 	</update>
 
 	<delete id="delete">
