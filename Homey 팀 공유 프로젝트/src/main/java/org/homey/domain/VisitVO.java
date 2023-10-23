@@ -12,5 +12,6 @@ public class VisitVO {
     private int visitNo; // 방문 실측 스케줄 번호 (PK)
     private Date visitDate; //실측 일자
     private boolean visitStatus; //실측 여부 O, X
+    private String description; //설명
   
 }
