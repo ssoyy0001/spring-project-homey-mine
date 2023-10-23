@@ -9,6 +9,8 @@
 <style>
 
 #notice {  color: red;		}
+.reqNotice{	text-align: center; 
+					color: red;	}		/*이미 신청했거나 모집마감된 게시글이라고 알려줄 때 */
 #odTitleBox {		border: 2px solid #FFA500; /* 진노랑색 테두리 */
     						padding: 10px; /* 텍스트와 테두리 사이의 간격을 10px로 지정 */		}
 .odTitle {	text-align: center;	}
@@ -167,7 +169,7 @@
                 <p>* 항목은 필수 입력 항목입니다.</p>
                 <br>
                 
-                <form action="/odReq/register" method="post" id="reqFrm" role="form" >
+                <form action="/odReq/register" method="get" id="reqFrm" role="form" >
               
                   <input type="hidden" name="odNo" value="${odvo.odNo}">
 
@@ -207,12 +209,22 @@
 					  <label class="form-check-label" for="deadlineCheck">  모집마감일을 확인하였습니다.</label>
 				  </div>
                   <br>
-                  <c:if test="${odvo.odState == 0 && checkResult == 0}"><!-- 중복신청여부(doubleCheck) : 0일 경우 -->
-	                  <div class="text-center" id="btn-group">
-	                  	<button type="submit"  id="reqBtn" class="btn btn-warning">신청하기</button>
-<!-- 	                  	<input type="submit" id="reqBtn" class="btn btn-warning" value="신청하기"> -->
-					  </div>
-				  </c:if>
+                  <c:choose>
+					    <c:when test="${odvo.odState != 0}">
+					    	<hr>
+					        <h3 class="reqNotice">　<span class="badge bg-danger"> 모집이 마감된 이벤트입니다. </span></h3>
+					    </c:when>
+					    <c:when test="${checkResult != 0}">
+					        <hr>
+					        <h3 class="reqNotice">　<span class="badge bg-success"> 이미 신청한 이벤트입니다. </span></h3>
+					    </c:when>
+					    <c:otherwise>
+					        <div class="text-center" id="btn-group">
+					            <button type="submit" id="reqBtn" class="btn btn-warning">신청하기</button>
+					        </div>
+					    </c:otherwise>
+					</c:choose>
+				  
                 </form>
 
               </div>
