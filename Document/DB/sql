@@ -318,84 +318,84 @@ ALTER TABLE sireq ADD CONSTRAINT FK_quotation_TO_sireq_1 FOREIGN KEY (
 )
 REFERENCES quotation (
 	quoNo
-);
+) ON DELETE CASCADE;
 
 ALTER TABLE sireq ADD CONSTRAINT FK_item_TO_sireq_1 FOREIGN KEY (
 	itemNo
 )
 REFERENCES item (
 	itemNo
-);
+) ON DELETE CASCADE;
 
 ALTER TABLE sireq ADD CONSTRAINT FK_member_TO_sireq_1 FOREIGN KEY (
 	mid
 )
 REFERENCES member (
 	mid
-);
+) ON DELETE CASCADE;
 
 ALTER TABLE siche ADD CONSTRAINT FK_sireq_TO_siche_1 FOREIGN KEY (
 	sireqNo
 )
 REFERENCES sireq (
 	sireqNo
-);
+) ON DELETE CASCADE;
 
 ALTER TABLE siche ADD CONSTRAINT FK_item_TO_siche_1 FOREIGN KEY (
 	itemNo
 )
 REFERENCES item (
 	itemNo
-);
+) ON DELETE CASCADE;
 
 ALTER TABLE siche ADD CONSTRAINT FK_member_TO_siche_1 FOREIGN KEY (
 	mid
 )
 REFERENCES member (
 	mid
-);
+) ON DELETE CASCADE;
 
 ALTER TABLE sirev ADD CONSTRAINT FK_siche_TO_sirev_1 FOREIGN KEY (
 	sicheNo
 )
 REFERENCES siche (
 	sicheNo
-);
+) ON DELETE CASCADE;
 
 ALTER TABLE sirev ADD CONSTRAINT FK_member_TO_sirev_1 FOREIGN KEY (
 	mid
 )
 REFERENCES member (
 	mid
-);
+) ON DELETE CASCADE;
 
 ALTER TABLE quest ADD CONSTRAINT FK_member_TO_quest_1 FOREIGN KEY (
 	mid
 )
 REFERENCES member (
 	mid
-);
+) ON DELETE CASCADE;
 
 ALTER TABLE sireqAttach ADD CONSTRAINT FK_sireq_TO_sireqAttach_1 FOREIGN KEY (
 	sireqNo
 )
 REFERENCES sireq (
 	sireqNo
-);
+) ON DELETE CASCADE;
 
 ALTER TABLE sicheAttach ADD CONSTRAINT FK_siche_TO_sicheAttach_1 FOREIGN KEY (
 	sicheNo
 )
 REFERENCES siche (
 	sicheNo
-);
+) ON DELETE CASCADE;
 
 ALTER TABLE sirevAttach ADD CONSTRAINT FK_sirev_TO_sirevAttach_1 FOREIGN KEY (
 	sirevNo
 )
 REFERENCES sirev (
 	sirevNo
-);
+) ON DELETE CASCADE;
 --FK제약조건 설정 끝
 
 
