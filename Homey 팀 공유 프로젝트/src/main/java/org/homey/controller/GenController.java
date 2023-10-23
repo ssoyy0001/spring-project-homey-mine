@@ -2,10 +2,12 @@ package org.homey.controller;
 
 import org.homey.domain.MemberVO;
 import org.homey.domain.ScCriteria;
-import org.homey.mapper.MemberMapper;
 import org.homey.service.MemberService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
@@ -28,6 +30,7 @@ import lombok.extern.log4j.Log4j;
 public class GenController {
 	private MemberService memberService;
 	private PasswordEncoder pwEncoder;
+	
 	@GetMapping("main")
 	public void mainPage() {
 	}
@@ -36,7 +39,7 @@ public class GenController {
 	public void adminPage() {
 	}
 
-	@GetMapping("mypage")
+	@GetMapping("myPage")
 	public void myPage() {
 	}
 
@@ -101,48 +104,64 @@ public class GenController {
 	}
 
 	@GetMapping("findPW")
-	public void findPw() {
+	public void findPw(String msg,Model model) {
+		model.addAttribute("msg",msg);
 	}
 
 	@PostMapping("findPW")
 	public String findPW( String mid, String mname,
-			 String mphone,RedirectAttributes rttr) {
+			 String mphone,RedirectAttributes rttr,Model model) {
 		String user = memberService.findPw(mid, mname, mphone);
 		if (user != null) {
-			rttr.addAttribute("mid",user);
+			rttr.addFlashAttribute("mid",user);
 			return "redirect:/gen/pwModify";
 		} else {
-			rttr.addAttribute("msg","다시 입력해 주세요");
+			rttr.addFlashAttribute("msg","다시 입력해 주세요");
 			return "redirect:/gen/findPW";
 		}
 	}
 
 	@GetMapping("pwModify")
-	public void modifyPW(@RequestParam("mid") String mid) {	
+	public void modifyPW() {	
+		
 	}
 
 	@PostMapping("pwModify")
 	public String modifyPW(String mid, String newPW, RedirectAttributes rttr) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();//시큐리티에서 권한찾아오기 위함
 		String pw=pwEncoder.encode(newPW);
-		
 		if (memberService.modifyPw(mid, pw)) {
-			rttr.addAttribute("modifyPWresult", "success");
-			return "redirect:/gen/login";
+			rttr.addFlashAttribute("modifyPWresult", "success");
+			if (auth == null || !auth.isAuthenticated()) {//로그인 x
+				return "redirect:/gen/login";
+			}else {//로그인 후 회원정보에서 비밀수정으로 들어 왔을 시
+				return "redirect:/gen/memberView?mid="+mid;
+			}
+			
 		} else {
-			rttr.addAttribute("modifyPWresult", "fail");
+			rttr.addFlashAttribute("modifyPWresult", "fail");
 			return "redirect:/gen/pwModify";
 		}
 	}
 
 	@GetMapping({"memberView","memberModify"})
+	@PreAuthorize("principal.username == #mid or hasRole('ROLE_ADMIN')")
 	public void view(String mid, Model model, @ModelAttribute("cri") ScCriteria cri) {
-		log.info("view or modify......");
-		model.addAttribute("bvo", memberService.view(mid));
+		log.info(mid);
+		model.addAttribute("mvo", memberService.view(mid));
 	}
 	@PostMapping("memberModify")
+	@PreAuthorize("principal.username == #mvo.mid or hasRole('ROLE_ADMIN')")
 	public String memberModify(MemberVO mvo, RedirectAttributes rttr, 
 		     			 @ModelAttribute("cri") ScCriteria cri) {
-		return null;
+		if(memberService.modify(mvo)) {
+			rttr.addFlashAttribute("msg","수정 성공");
+			log.info("성공");
+		}else {
+			rttr.addFlashAttribute("msg","수정 성공");	
+			log.info("실패");
+		}
+		return "redirect:/gen/memberView?mid="+mvo.getMid();
 		
 	}
 	@PostMapping("memberRemove")
