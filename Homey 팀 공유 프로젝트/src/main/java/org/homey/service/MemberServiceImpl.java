@@ -15,26 +15,23 @@ public class MemberServiceImpl implements MemberService {
 	private MemberMapper memberMapper;
 	@Override
 	public List<MemberVO> list(ScCriteria cri) {
-		// TODO Auto-generated method stub
-		return null;
+		return memberMapper.selectAll(cri);
 	}
 
 	@Override
 	public MemberVO view(String mid) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return memberMapper.select(mid);
 	}
 
 	@Override
 	public boolean modify(MemberVO mvo) {
-		// TODO Auto-generated method stub
-		return false;
+		return memberMapper.update(mvo)==1;
 	}
 
 	@Override
 	public boolean remove(String mid) {
-		// TODO Auto-generated method stub
-		return false;
+		return memberMapper.delete(mid)==1;
 	}
 
 	@Override
@@ -58,9 +55,13 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public boolean chkId(String mid) {
-		
+	public boolean chkId(String mid) {		
 		return memberMapper.chkId(mid)==0;
+	}
+
+	@Override
+	public int totalCount(ScCriteria cri) {
+		return memberMapper.totalCount(cri);
 	}
 
 
