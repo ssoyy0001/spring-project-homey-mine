@@ -1,7 +1,5 @@
 package org.homey.domain;
 
-import java.util.Date;
-
 import lombok.Data;
 @Data
 public class VisitVO {
@@ -10,8 +8,9 @@ public class VisitVO {
 	
 	private int consultNo; // 견적상담번호 (FK)
     private int visitNo; // 방문 실측 스케줄 번호 (PK)
-    private Date visitDate; //실측 일자
-    private boolean visitStatus; //실측 여부 O, X
+    private String visitDateStart; //실측 일자 시작
+    private String visitDateEnd; //실측 일자 끝
+    private String visitStatus; //실측 여부
     private String description; //설명
   
 }
