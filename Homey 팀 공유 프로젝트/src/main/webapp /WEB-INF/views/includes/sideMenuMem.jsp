@@ -10,8 +10,8 @@
 								<li><a href="#">나의 시공팀 작업 목록</a></li>
 								<li><a href="#">나의 시공 후기</a></li>
 								<li><a href="#">나의 문의 게시글</a></li>
-								<li><a href="#">나의 원데이 클래스 이벤트</a></li>
-								<li><a href="#">나의 제품 나눔 신청</a></li>
+								<li><a href="/odReq/myList?mid=<sec:authentication property="principal.Username"/>">나의 [ 원데이클래스 ] 신청내역</a></li>
+								<li><a href="/freePdtReq/myList?mid=<sec:authentication property="principal.Username"/>">나의 [ 제품 나눔 ] 신청내역</a></li>
 								<li><a href="#">나의 무료시공 이벤트</a></li>
 								<li><a href="#">나의 AS 문의</a></li>
 								<li><a href="#">내가 작성한 이벤트 리뷰</a></li>
