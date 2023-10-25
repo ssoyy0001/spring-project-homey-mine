@@ -118,9 +118,10 @@ CREATE TABLE noticeAttach (
 CREATE TABLE visit (
     visitNo NUMBER NOT NULL,
     consultNo NUMBER NOT NULL,
-    visitDate DATE NOT NULL,
     visitStatus VARCHAR2(100) NOT NULL,
-    description VARCHAR2(100) NULL
+    description VARCHAR2(100) NULL,
+    visitDateStart DATE NULL,
+    visitDateEnd DATE NULL,
 );
 
 ALTER TABLE consult ADD CONSTRAINT PK_CONSULT PRIMARY KEY (
