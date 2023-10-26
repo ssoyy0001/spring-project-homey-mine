@@ -125,18 +125,19 @@
 
 <!-- ======= script ======= -->
 <script>
-// consult/consultManage에서 견적상담 삭제 성공 시 처리결과 alert창 표시 ----------------
-// 페이지 로드 시 alert로 확인
-$(document).ready(function () {
-    var result = '${result}';
-    checkResult(result);
+// consult/consultManage에서 견적상담 삭제 및 수정 성공 시 처리결과 alert창 표시 ----------------
+$(document).ready(function () { // 페이지 로드하자마자
+    var resultD = '${resultD}';
+    var resultM = '${resultM}';
+    
+    checkResult(resultD, '삭제'); //뒤에오는게 action
+    checkResult(resultM, '수정');
 });
 
-function checkResult(result) {
-	console.log(result); //consultNo이 넘어옴
+function checkResult(result, action) {
     if (result) {
-        showAlert( result +'번 견적상담이 삭제되었습니다.');
-    } //알림창이 잘 오면 n번 견적상담이라고 표시하기
+        showAlert(result + '번 견적상담이 ' + action + '되었습니다.');
+    }
 }
 
 function showAlert(message) {
