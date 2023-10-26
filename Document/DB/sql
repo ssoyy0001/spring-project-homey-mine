@@ -706,16 +706,16 @@ CREATE OR REPLACE TRIGGER after_scrab_insert
 AFTER INSERT ON scrab
 FOR EACH ROW 
 BEGIN
-   UPDATE showcase SET scrabcnt = (SELECT COUNT(*) FROM scrab WHERE scid = :NEW.scid)
-   WHERE pk = :NEW.scid;
+   UPDATE showcase sc SET scrabcnt = (SELECT COUNT(*) FROM scrab WHERE scid = :NEW.scid)
+   WHERE sc.scid = :NEW.scid;
 END;
 
 CREATE OR REPLACE TRIGGER after_scrab_delete 
 AFTER DELETE ON scrab
 FOR EACH ROW 
 BEGIN
-   UPDATE showcase SET scrabcnt = (SELECT COUNT(*) FROM scrab WHERE scid = :OLD.scid)
-   WHERE pk = :OLD.scid;
+   UPDATE showcase sc SET scrabcnt = (SELECT COUNT(*) FROM scrab WHERE scid = :OLD.scid)
+   WHERE sc.scid = :OLD.scid;
 END;
 --->추가 트리거
 CREATE OR REPLACE TRIGGER member_insert_trigger
