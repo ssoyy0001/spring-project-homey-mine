@@ -656,6 +656,47 @@ CREATE SEQUENCE fpreq_seq INCREMENT BY 1 START WITH 1;
 CREATE SEQUENCE fpreview_seq INCREMENT BY 1 START WITH 1;
 
 ---승호 시작
+--(시공사례)-->fk연결 아직안함
+CREATE TABLE showcase (
+    scid NUMBER NOT NULL,
+    sicheNo NUMBER NOT NULL,
+    scTitle VARCHAR2(100) NOT NULL,
+    scContent VARCHAR2(500) NOT NULL,
+    scrabCnt NUMBER NOT NULL,
+    totalrange VARCHAR2(100) NOT NULL,
+    sizerange VARCHAR2(50) NULL,
+    buildingType VARCHAR2(50) NULL,
+    scDate DATE DEFAULT SYSDATE NULL,
+    
+    CONSTRAINT pk_showcase PRIMARY KEY (scid)
+);
+CREATE TABLE showcase_Attach (
+    uuid VARCHAR2(100) NOT NULL,
+    scid NUMBER NOT NULL,
+    upfolder VARCHAR2(200) NOT NULL,
+    filename VARCHAR2(100) NOT NULL,
+
+    CONSTRAINT pk_showcaseAttach PRIMARY KEY (uuid),
+    CONSTRAINT fk_showcaseAttach_scid FOREIGN KEY (scid)
+        REFERENCES showcase (scid)
+        ON DELETE CASCADE
+);
+--(스크랩 테이블)
+CREATE TABLE Scrab (
+	scrabNum	NUMBER		NOT NULL,
+	mid	VARCHAR2(50)	NOT NULL,
+	scid	NUMBER		    NOT NULL,
+	isVaild	NUMBER(1,0)	DEFAULT 1	NOT NULL,
+	
+	CONSTRAINT pk_scrab PRIMARY KEY (scrabNum),
+	CONSTRAINT fk_scrab_mid FOREIGN KEY (mid)
+        REFERENCES member (mid)
+	 ON DELETE CASCADE,
+ 	CONSTRAINT fk_scrab_scid FOREIGN KEY (scid)
+        REFERENCES showcase (scid)
+	 ON DELETE CASCADE
+	
+);
 --(시공사례,스크랩 시퀀스)
 CREATE SEQUENCE showcase_seq INCREMENT BY 1 START WITH 1;
 CREATE SEQUENCE scrab_seq INCREMENT BY 1 START WITH 1;
