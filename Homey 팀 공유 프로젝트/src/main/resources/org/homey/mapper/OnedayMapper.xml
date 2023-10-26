@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.homey.mapper.OnedayMapper">
+
+<!-- 쿼리 보관 -->
+  <sql id="criteria">
+  	 <trim prefix="(" suffix=") AND " prefixOverrides="OR">
+	 	<foreach item="type" collection="typeArr">
+	 	  <trim prefix="OR">
+	 		<choose>
+	 			<when test="type == 'T'.toString()">
+	 				odTitle LIKE '%'||#{keyword}||'%'
+	 			</when>
+	 			<when test="type == 'C'.toString()">
+	 				odContent LIKE '%'||#{keyword}||'%'
+	 			</when>
+	 		</choose>
+	 	  </trim>
+	 	</foreach>
+	 </trim>
+  </sql>
+
+<!-- 원데이클래스 게시글 개수 -->
+
+	<select id="odTotalCount" resultType="int">
+		<![CDATA[
+		SELECT COUNT(*) FROM oneday
+	    WHERE ]]>
+				    <!-- 보관해 둔 쿼리 사용 -->
+				    <include refid="criteria"></include>
+		<![CDATA[ odNo > 0 ]]>		<!-- 보관해둔 쿼리에 AND가 들어있는데, 그걸 만족시키려면 조건이 하나 더 필요해서, 의미없는 조건 하나 덧붙인 것 -->         
+	</select>
+	
+<!-- 원데이클래스 게시글 전체조회 (페이징) -->
+	
+	<select id="odSelectAllPaging" resultType="org.homey.domain.OnedayVO">	<!-- id는 인터페이스의 메서드명, resultType은 임포트내용 / 여러 개면 알아서 List로 바꿔줌 -->
+			<![CDATA[
+	    	SELECT ((#{pageNum} - 1) * #{amount}) +  rownum as odRn, odNo, odTitle, odContent, odName, odDate, odPlace, odTime, odPeople, odMc, odDeadline, odState, odWDate, mid, odImg
+	    	FROM	(	SELECT	rownum rn, odNo, odTitle, odContent, odName, odDate, odPlace, odTime, odPeople, odMc, odDeadline, odState, odWDate, mid, odImg
+	    					FROM	( SELECT * FROM oneday ORDER BY ODNO DESC )
+	    					WHERE	]]>
+	    					<!-- 위에 보관해둔 쿼리 사용 -->
+	    					<include refid="criteria"></include>
+	    					<![CDATA[			
+	    								rownum <= #{amount}	*	#{pageNum}		
+	   						ORDER BY odNo DESC	
+	  					 )
+	    	WHERE		rn		>	#{amount}	*	(	#{pageNum}	 -1	)
+	  		]]>
+	</select>
+	
+<!-- 원데이클래스 게시글 전체조회 : 내가 신청한 원데이클래스 목록 확인 시 필요 -->
+	
+	<!-- 조인0하는 경우에만 id, result태그로 나누어짐 -->
+	<resultMap type="org.homey.domain.OnedayVO" id="onedayMap">		<!-- OnedayVO를 담는 resultMap -->
+		<id			property="odNo"					column="odNo"/><!-- id태그에는 프라이머리키(겹치는 거) / property: VO 속 변수명, column: DB컬럼명 -->
+		<result		property="odRn"				column="odRn"/>		<!-- result에는 컬럼 하나의 값 -->
+		<result		property="odTitle"			column="odTitle"/>
+		<result		property="odContent"		column="odContent"/>
+		<result		property="odName"	column="odName"/>
+		<result		property="odDate"		column="odDate"/>
+		<result		property="odPlace"		column="odPlace"/>
+		<result		property="odTime"		column="odTime"/>
+		<result		property="odPeople"		column="odPeople"/>
+		<result		property="odMc"		column="odMc"/>
+		<result		property="odDeadline"		column="odDeadline"/>
+		<result		property="odState"		column="odState"/>
+		<result		property="odWDate"		column="odWDate"/>
+		<result		property="mid"		column="mid"/>
+		<result		property="odImg"		column="odImg"/>
+		<collection		property="odReqList"	ofType="org.homey.domain.OdReqVO"><!-- 리스트는 단일값이 아니기 때문에 result가 아닌 collection 태그 사용 -->
+			<result		property="odReqRn"			column="odReqRn"/>			
+			<result		property="odReqNo"		column="odReqNo"/>
+			<result		property="odNo"		column="odNo"/>
+			<result		property="mid"		column="mid"/>
+			<result		property="odReqTitle"		column="odReqTitle"/>
+			<result		property="odReqContent"		column="odReqContent"/>
+			<result		property="odReqDate"		column="odReqDate"/>
+			<result		property="odReqWin"		column="odReqWin"/>
+		</collection>
+	</resultMap>
+
+	
+	<select id="odSelectAll" resultMap="onedayMap">	<!-- id는 인터페이스의 메서드명, resultType은 임포트내용 / 여러 개면 알아서 List로 바꿔줌 -->
+	    <![CDATA[
+	    SELECT odRn, odNo, odTitle, odContent, odName, odDate, odPlace, odTime, odPeople, odMc, odDeadline, odState, odWDate, mid, odImg, odReqNo, odReqTitle, odReqContent, odReqDate, odReqWin
+		FROM (
+   				SELECT rownum as odRn, odNo, odTitle, odContent, odName, odDate, odPlace, odTime, odPeople, odMc, odDeadline, odState, odWDate, mid, odImg, odReqNo, odReqTitle, odReqContent, odReqDate, odReqWin
+			    FROM (
+				        SELECT od.odNo, od.odTitle, od.odContent, od.odName, od.odDate, od.odPlace, od.odTime, od.odPeople, od.odMc, od.odDeadline, od.odState, od.odWDate, od.mid, od.odImg, odr.odReqNo, odr.odReqTitle, odr.odReqContent, odr.odReqDate, odr.odReqWin
+				        FROM oneday od
+				        LEFT JOIN odreq odr ON od.odNo = odr.odNo
+				        WHERE odr.mid = #{mid}
+				        ORDER BY od.odNo DESC
+			    )
+			    WHERE rownum <= 20
+			)
+		]]>
+	</select>
+  
+<!-- 원데이클래스 게시글 상세조회  -->
+
+	<select id="odSelect" resultType="org.homey.domain.OnedayVO">	<!-- id는 인터페이스의 메서드명, resultType은 임포트내용 -->
+	 	SELECT rownum as odRn, odNo, odTitle, odContent, odName, odDate, odPlace, odTime, odPeople, odMc, odDeadline, odState, odWDate, mid, odImg
+		FROM oneday 
+		WHERE odNo = #{odNo}
+	</select>
+
+<!-- 원데이클래스 게시글 등록  -->
+
+	<insert id="odInsert" >	
+		INSERT INTO oneday (odNo, odTitle, odContent, odName, odDate, odPlace, odTime, odPeople, odMc, odDeadline, odState, odWDate, mid, odImg)
+		VALUES (oneday_seq.NEXTVAL, #{odTitle}, #{odContent}, #{odName}, #{odDate}, #{odPlace}, #{odTime}, #{odPeople}, #{odMc}, #{odDeadline}, 0, SYSDATE, #{mid}, NVL(#{odImg}, 'default.png'))
+	</insert>
+
+<!-- 원데이클래스 게시글 수정  -->
+
+	<update id="odUpdate">
+	  UPDATE oneday
+	  <set>
+	    <if test="odTitle != null">odTitle = #{odTitle},</if>
+	    <if test="odContent != null">odContent = #{odContent},</if>
+	    <if test="odName != null">odName = #{odName},</if>
+	    <if test="odDate != null">odDate = #{odDate},</if>
+	    <if test="odPlace != null">odPlace = #{odPlace},</if>
+	    <if test="odTime != null">odTime = #{odTime},</if>
+	    <if test="odPeople != null">odPeople = #{odPeople},</if>
+	    <if test="odMc != null">odMc = #{odMc},</if>
+	    <if test="odDeadline != null">odDeadline = #{odDeadline},</if>
+	    <if test="odState != null">odState = #{odState},</if>
+	    <if test="odImg != null">odImg = #{odImg},</if>
+	  </set>
+	  WHERE odNo = #{odNo}
+	</update>
+
+<!-- 원데이클래스 게시글 삭제  -->
+
+	<delete id="odDelete">	
+	    DELETE FROM oneday WHERE odNo=#{odNo}		<!-- 매개변수로 vo를 받기 때문에, vo의 변수명과 DB 컬럼명이 일치해야 함 -->
+	</delete>
+	
+
+  
+</mapper>

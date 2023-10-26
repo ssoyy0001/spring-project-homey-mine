@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.homey.mapper.FpReqMapper">
+
+	
+<!-- 제품 나눔 당첨자 목록조회 : 특정 제품 나눔의 당첨자 -->
+	<resultMap type="org.homey.domain.FPReqVO" id="fpReqMap">
+	    <id property="fpWinNo" column="fpWinNo"/>
+	    <result property="fpWinRn" column="fpWinRn"/>
+	    <result property="fpNo" column="fpNo"/>	    
+	    <result property="mid" column="mid"/>		<!-- 이 부분을 빼면 테스트했을 때 fpReqVO에 mid가 안담김 -->
+	    
+	    <!-- MemberVO 객체 매핑 -->
+	    <association property="mvo" javaType="org.homey.domain.MemberVO">
+	    	<result property="mid" column="mid"/>
+	        <result property="pw" column="pw"/>
+	        <result property="mname" column="mname"/>
+	        <result property="maddr" column="maddr"/>
+	        <result property="memail" column="memail"/>
+	        <result property="mphone" column="mphone"/>
+	        <result property="mdate" column="mdate"/>
+	    </association>
+	</resultMap>
+	
+	<resultMap type="org.homey.domain.MemberVO" id="memberMap">
+	    <result property="mid" column="mid"/>
+	    <result property="pw" column="pw"/>
+        <result property="mname" column="mname"/>
+        <result property="maddr" column="maddr"/>
+        <result property="memail" column="memail"/>
+        <result property="mphone" column="mphone"/>
+        <result property="mdate" column="mdate"/>
+	</resultMap>
+	
+
+	<select id="fpWinSelect" resultMap="fpReqMap">	<!-- id는 인터페이스의 메서드명, resultType은 임포트내용 / 여러 개면 알아서 List로 바꿔줌 -->
+	    	SELECT rownum AS fpWinRn, t.*
+	    	FROM (SELECT fpr.fpWinNo, fpr.fpNo, fpr.mid,
+       							m.pw, m.mname, m.maddr, m.memail, m.mphone, m.mdate
+						FROM fpReq fpr
+						JOIN member m 
+						ON fpr.mid = m.mid
+						WHERE fpr.fpNo = #{fpNo}
+						ORDER BY fpr.fpWinNo ASC) t
+	</select>
+  
+  
+<!-- 제품 나눔 당첨자 목록조회 : 모든 제품 나눔의 당첨자 -->
+	<select id="fpWinSelectAll" resultType="org.homey.domain.FPReqVO">	<!-- id는 인터페이스의 메서드명, resultType은 임포트내용 / 여러 개면 알아서 List로 바꿔줌 -->
+	    	SELECT rownum AS fpWinRn, fpWinNo, fpNo, mid 
+	    	FROM fpReq 
+	   		ORDER BY fpWinNo ASC
+	</select>
+
+  
+<!-- 나의 제품 나눔 신청 목록조회 (20개 조회) -->
+
+	<select id="fpSelectMine" resultType="org.homey.domain.FPReqVO">	<!-- id는 인터페이스의 메서드명, resultType은 임포트내용 -->
+			<![CDATA[
+		    SELECT rownum AS fpWinRn, fpWinNo, fpNo, mid
+		    FROM	(SELECT fpWinNo, fpNo, mid
+		            	FROM fpReq
+		            	WHERE mid = #{mid}
+		            	ORDER BY fpWinNo ASC)
+		    WHERE rownum <= 20
+		    ]]>
+	</select>
+
+<!-- 제품 나눔 신청  -->
+
+	<insert id="fpReqInsert">	
+		INSERT INTO fpReq (fpWinNo, fpNo, mid)
+		VALUES (fpreq_seq.NEXTVAL, #{fpNo}, #{mid})
+	</insert>
+
+
+<!-- 제품 나눔 신청 중복체크  -->
+
+	<select id="fpReqCheck" resultType="int">	<!-- id는 인터페이스의 메서드명, resultType은 임포트내용 / 여러 개면 알아서 List로 바꿔줌 -->
+			SELECT COUNT(*)
+			FROM fpReq
+			WHERE fpNo=#{fpNo} AND mid=#{mid}
+	</select>
+
+
+	
+  
+</mapper>
