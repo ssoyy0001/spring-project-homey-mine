@@ -18,6 +18,21 @@
 	<dependencies> <!-- 외부 라이브러리와 버전 정의 -->
 	<!-- Maven은 이러한 의존성을 중앙 저장소에서 자동으로 다운로드 -->
 
+	<!-- 메일 API 설정 -->
+	<!-- https://mvnrepository.com/artifact/com.sun.mail/javax.mail -->
+	<dependency>
+	    <groupId>com.sun.mail</groupId>
+	    <artifactId>javax.mail</artifactId>
+	    <version>1.6.2</version>
+	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/org.springframework/spring-context-support -->
+	<dependency>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-context-support</artifactId>
+	    <version>5.2.1.RELEASE</version>
+	</dependency>
+
 	<!-- quartz -->
 	<dependency>
 	    <groupId>org.quartz-scheduler</groupId>
