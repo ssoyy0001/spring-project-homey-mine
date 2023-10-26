@@ -186,12 +186,11 @@ REFERENCES member (
     mid
 );
 
-ALTER TABLE item ADD CONSTRAINT FK_consult_TO_item_1 FOREIGN KEY (
-    consultNo
-)
-REFERENCES consult (
-    consultNo
-);
+ALTER TABLE item
+ADD CONSTRAINT FK_consult_TO_item_1
+FOREIGN KEY (consultNo)
+REFERENCES consult(consultNo)
+ON DELETE CASCADE;
 
 ALTER TABLE noticeAttach ADD CONSTRAINT FK_notice_TO_noticeAttach_1 FOREIGN KEY (
     notNo
@@ -737,7 +736,7 @@ INSERT INTO notice values(NOTICE_SEQ.NEXTVAL, '이벤트', '230707이벤트!', '
 ---- 테이블 삭제 구문
 
 --하영시작
---테이블 삭제 순서대로 해야함
+--무조건 테이블 삭제 순서대로 해야함(제약조건 때문에)
 DROP TABLE quotation;
 DROP TABLE visit;
 DROP TABLE item;
@@ -745,6 +744,12 @@ DROP TABLE consult;
 DROP TABLE noticeAttach;
 DROP TABLE notice;
 DROP TABLE member;
+
++ 제약조건 삭제
+ALTER TABLE item DROP CONSTRAINT FK_consult_TO_item_1;
+ALTER TABLE consult DROP CONSTRAINT FK_member_TO_consult_1;
+ALTER TABLE quotation DROP CONSTRAINT  FK_item_TO_quotation_1;
+ALTER TABLE quotation DROP CONSTRAINT  FK_consult_TO_quotation_1;
 --하영끝
 
 --시공의뢰, 시공팀작업스케줄, 시공후기, 문의게시판
