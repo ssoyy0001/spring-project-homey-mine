@@ -61,7 +61,7 @@ $(document).ready(function () {
 
 function checkResult(result) {
     if (result) {
-        showAlert('견적상담이 등록되었습니다.\n 예정시간에 해피콜을 기다려주세요. \n 자세한 사항은 견적상담 내역 조회를 통해 확인해주시길 바랍니다.');
+        showAlert(result+' 번 견적상담이 등록되었습니다.\n예정시간에 해피콜을 기다려주세요.\n자세한 사항은 마이페이지의 나의 견적상담관리를 통해\n확인해주시길 바랍니다.');
     }
 }
 
