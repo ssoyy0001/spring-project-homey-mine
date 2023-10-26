@@ -6,6 +6,19 @@
 <meta charset="UTF-8">
 <title>견적상담 전체 조회</title>
 <style type="text/css">
+/* 현재 클릭된 페이징 버튼 */
+.custom-pagination .page-item.active .page-link {		
+		border-color : 	#ffc107;
+        background-color: 	#ffc107; 
+        color: black; 
+    }
+    
+/* 비활성 버튼 스타일 */
+.custom-pagination .page-item .page-link { 	
+		border-color : 	#ffc107;
+        background-color: white; 
+        color: 	#ffc107; 
+    }
 /* 페이징 버튼 가운데 정렬 */
 .pagination {
 	justify-content: center;
@@ -27,10 +40,9 @@
 </div><!-- End Breadcrumbs -->
 
 <!-- ======= 견적상담 전체 조회 표시 구간 ======= -->
-    <section id="services" class="services section-bg">
+    <section id="services" class="services section-bg blog"> <!-- blog를 추가해야 사이드바 스타일 활성화  -->
       <div class="container" data-aos="fade-up">
-        <div class="row gy-4">
-        
+        <div class="row g-3">
     <!-- 견적상담 개수 표시 구간  -->
      <h3>견적 신청내역 ${totalCount }개</h3>
      <hr><!-- END 견적상담 개수 표시 구간  -->
@@ -63,7 +75,7 @@
               <h3>${cvo.buildingType}, ${cvo.address}</h3> <!-- 제목 -->
               <p>견적 상담 번호 : ${cvo.consultNo}</p>
               <p>견적 신청 날짜 : <fmt:formatDate value="${cvo.consultDate}" pattern="yyyy-MM-dd"/></p>
-              <a href="/consult/consultManage" class="readmore stretched-link" data-consultno="${cvo.consultNo}">상세조회 <i class="bi bi-arrow-right"></i></a>
+              <a href="/consult/consultManage?consultNo=${cvo.consultNo}" class="readmore stretched-link" data-consultno="${cvo.consultNo}">상세조회 <i class="bi bi-arrow-right"></i></a>
               	<!-- data-consultno : 상세 조회 값 보내야할 견적상담번호 표시-->
             </div>
           </div><!-- End Service Item -->
@@ -72,7 +84,7 @@
     
     <!-- 페이징 -->
    <div>
-		<ul class="pagination"> <!-- bootstrap4부터는 pull이 아니라 float , float-end는 오른쪽 끝-->
+		<ul class="pagination custom-pagination"> <!-- bootstrap4부터는 pull이 아니라 float , float-end는 오른쪽 끝-->
 			<%-- 이전 버튼 --%>
 			<c:if test="${pageDTO.prev }">
 			<li class="page-item">
@@ -104,6 +116,7 @@
 	<input type="hidden" name="type"  value="${pageDTO.cri.type}">
 	<input type="hidden" name="keyword"  value="${pageDTO.cri.keyword}"> <!-- VIEW페이지에 갔다왔더라도 검색 기능 남아있음 -->
 </form>
+				<%@ include file="../includes/sideMenuAdm.jsp"%>
     		</div>
         </div>
     </section><!-- End 견적상담 전체 조회 표시 구간  -->
@@ -112,6 +125,25 @@
 
 <!-- ======= script ======= -->
 <script>
+// consult/consultManage에서 견적상담 삭제 성공 시 처리결과 alert창 표시 ----------------
+// 페이지 로드 시 alert로 확인
+$(document).ready(function () {
+    var result = '${result}';
+    checkResult(result);
+});
+
+function checkResult(result) {
+	console.log(result); //consultNo이 넘어옴
+    if (result) {
+        showAlert( result +'번 견적상담이 삭제되었습니다.');
+    } //알림창이 잘 오면 n번 견적상담이라고 표시하기
+}
+
+function showAlert(message) {
+    alert(message);
+}
+// END 결과 확인 및 alert 표시
+
 $(function(){
 	//58번 라인부터 하나의 견적상담 내용 클릭 시 이벤트 처리(상세조회로 보낼 값) -----------------------
 	$('.move').on('click', function(e){
