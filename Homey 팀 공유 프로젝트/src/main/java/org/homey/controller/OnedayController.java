@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.homey.domain.Criteria;
+import org.homey.domain.SoCriteria;
 import org.homey.domain.OnedayVO;
 import org.homey.domain.PageDTO;
 
@@ -45,7 +44,7 @@ public class OnedayController {
 
 	
 	@GetMapping("list")											//클라이언트가 '/oneday/list'로 들어왔을 때
-	public String list(Model model, Criteria cri) {		//결과 페이지(onedayList.jsp)로 보낼 값들을 model에 담음
+	public String list(Model model, SoCriteria cri) {		//결과 페이지(onedayList.jsp)로 보낼 값들을 model에 담음
 		log.info("list......" + cri);
 		
 		//주어진 조건에 맞는 게시물 건수를 계산
@@ -60,7 +59,7 @@ public class OnedayController {
 	
 	@GetMapping("view")									//클라이언트가 '/oneday/view'로 들어왔을 때
 	@PreAuthorize("isAuthenticated()")				//로그인한 경우에만 상세조회 가능
-	public String view(int odNo, String mid, Model model,  @ModelAttribute("cri") Criteria cri) {		//단건조회한 결과를 model에 담아서 보냄
+	public String view(int odNo, String mid, Model model,  @ModelAttribute("cri") SoCriteria cri) {		//단건조회한 결과를 model에 담아서 보냄
 		log.info("view....." + odNo);
 		
 		//원데이클래스 게시글 상세조회 화면에서 "신청하기"버튼 표시할지 말지를 알아야 하니까
@@ -178,7 +177,7 @@ public class OnedayController {
 	
 	@GetMapping("modify")										//list.jsp에서 '/oneday/modify'로 들어왔을 때 수정폼 띄우기
 	@PreAuthorize("hasRole('ROLE_ADMIN')")			//ROLE_ADMIN인 사람이 접근할 때만 해당 메서드 실행
-	public String modify(int odNo, Model model, @ModelAttribute("cri") Criteria cri) {
+	public String modify(int odNo, Model model, @ModelAttribute("cri") SoCriteria cri) {
 		log.info("modify......" + odNo);
 		model.addAttribute("odvo", onedayService.odView(odNo));
 		
@@ -189,7 +188,7 @@ public class OnedayController {
 	
 	@PostMapping("modify")									//클라이언트가 '/product/modify'로 들어왔을 때 수정로직 처리
 	@PreAuthorize("hasRole('ROLE_ADMIN')")			//ROLE_ADMIN인 사람이 접근할 때만 해당 메서드 실행
-	public String modify(OnedayVO odvo, @RequestParam("uploadFile") MultipartFile uploadFile, RedirectAttributes rttr, @ModelAttribute("cri") Criteria cri) {	
+	public String modify(OnedayVO odvo, @RequestParam("uploadFile") MultipartFile uploadFile, RedirectAttributes rttr, @ModelAttribute("cri") SoCriteria cri) {	
 		log.info("modify......" + odvo);
 	
 		String upFileNm =null;
@@ -249,7 +248,7 @@ public class OnedayController {
 
 	@PostMapping("remove")									//클라이언트가 '/oneday/remove'로 들어왔을 때
 	@PreAuthorize("hasRole('ROLE_ADMIN')")			//ROLE_ADMIN인 사람이 접근할 때만 해당 메서드 실행
-	public String remove(@RequestParam("odNo") int odNo, RedirectAttributes rttr, @ModelAttribute("cri") Criteria cri) {
+	public String remove(@RequestParam("odNo") int odNo, RedirectAttributes rttr, @ModelAttribute("cri") SoCriteria cri) {
 		log.info("remove......" + odNo);
 		
 		if(onedayService.odRemove(odNo) == true) {						//odNo번 게시물이 잘 지워졌으면	
