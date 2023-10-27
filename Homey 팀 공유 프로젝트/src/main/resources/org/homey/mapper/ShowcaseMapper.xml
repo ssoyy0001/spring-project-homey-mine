@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.homey.mapper.ShowcaseMapper">
+	<sql id="criteria">		
+					<if test="(sizeRange != null) and (sizeRange != '')">
+						AND sizeRange = #{sizeRange}
+					</if>
+					<if test="(totalRange != null) and (totalRange != '')">
+						AND totalRange = #{totalRange}
+					</if>
+					<if test="(buildingType != null) and (buildingType != '')">
+						AND buildingType = #{buildingType}
+					</if>			
+	</sql>
+
+	<resultMap type="org.homey.domain.ShowcaseVO"
+		id="showcaseMap">
+		<id property="scid" column="scid" />
+		<result property="sicheNo" column="sicheno" />
+		<result property="scTitle" column="sctitle" />
+		<result property="scContent" column="sccontent" />
+		<result property="totalRange" column="totalrange" />
+		<result property="sizeRange" column="sizerange" />
+		<result property="buildingType" column="buildingtype" />
+		<result property="scDate" column="scdate" />
+		<result property="scrabCnt" column="scrabcnt" />
+		<collection property="attachList" resultMap="attachMap" />
+	</resultMap>
+	<resultMap type="org.homey.domain.ShowcaseAttachVO"
+		id="attachMap">
+		<result property="uuid" column="uuid" />
+		<result property="upFolder" column="upFolder" />
+		<result property="fileName" column="fileName" />
+	</resultMap>
+	<select id="selectAllPaging" resultMap="showcaseMap">
+  	<![CDATA[ 
+    	SELECT scid, sctitle,scrabcnt,uuid,upFolder,fileName
+    	FROM   ( SELECT sc.*,rownum rn
+    			 FROM	(SELECT scid, sctitle, scrabcnt, uuid, upFolder, fileName
+						 FROM (SELECT s.scid, sctitle, scrabcnt, uuid, upFolder, fileName,
+    									ROW_NUMBER() OVER (ORDER BY scrabcnt DESC) AS rank
+  								FROM showcase s
+  								JOIN showcase_Attach sa ON s.scid = sa.scid
+  								WHERE isThumbnail = 1)
+						 ORDER BY CASE WHEN rank <= 3 THEN rank END ASC, scid DESC) sc
+    			 where    1=1 ]]>
+		<!-- 보관해 둔 쿼리 사용 -->
+		<include refid="criteria"></include>			
+    <![CDATA[ 	 		 AND rownum <= #{amount} * #{pageNum})
+
+    	WHERE  rn > #{amount} * ( #{pageNum} - 1 )    	
+    ]]>
+	</select>
+
+	<select id="totalCnt" resultType="int">
+  	<![CDATA[ 
+	  	SELECT 	COUNT(*) 
+	  	FROM 	showcase
+	    WHERE	scid>0]]>
+		<!-- 보관해 둔 쿼리 사용 -->
+		<include refid="criteria"></include>
+	<![CDATA[ 	AND 1=1	]]>
+	</select>
+
+	<select id="select" resultMap="showcaseMap">
+		SELECT s.scid,sctitle,totalrange, sizerange, buildingtype, scdate,scrabcnt,scContent,sicheno,
+    		   uuid,upFolder,fileName
+		FROM showcase s
+		JOIN showcase_attach sa ON s.scid=sa.scid
+		WHERE s.scid = #{scid}
+	</select>
+
+	<insert id="insert">
+		<!-- PK 값을 미리 처리해서 scid에 저장 -->
+		<selectKey keyProperty="scid" order="BEFORE"
+			resultType="int">
+			SELECT showcase_seq.NEXTVAL FROM dual
+		</selectKey>
+		<!-- 시퀀스 대신 저장해 둔 scid를 사용 -->
+		INSERT INTO showcase(scid, sicheno,sctitle, sccontent, totalrange,
+		sizerange, buildingtype,scrabCnt)
+		VALUES(#{scid}, #{sicheNo},
+		#{scTitle},
+		#{scContent},#{totalRange},#{sizeRange},#{buildingType},0)
+	</insert>
+
+	<delete id="delete">
+		DELETE showcase WHERE scid = #{scid}
+	</delete>
+	<update id="update">
+		UPDATE showcase
+		SET scTitle = #{scTitle}, scContent =
+		#{scContent}, scDate = SYSDATE
+		WHERE scid =
+		#{scid}
+	</update>
+</mapper>
+
+
+

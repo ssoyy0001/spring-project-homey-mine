@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.homey.mapper.ScrabMapper">
+
+
+	<resultMap type="org.homey.domain.ShowcaseVO"
+		id="showcaseMap">
+		<id property="scid" column="scid" />
+		<result property="sicheNo" column="sicheno" />
+		<result property="scTitle" column="sctitle" />
+		<result property="scContent" column="sccontent" />
+		<result property="totalRange" column="totalrange" />
+		<result property="sizeRange" column="sizerange" />
+		<result property="buildingType" column="buildingtype" />
+		<result property="scDate" column="scdate" />
+		<result property="scrabCnt" column="scrabcnt" />
+		<collection property="attachList" resultMap="attachMap" />
+	</resultMap>
+	<resultMap type="org.homey.domain.ShowcaseAttachVO"
+		id="attachMap">
+		<result property="uuid" column="uuid" />
+		<result property="upFolder" column="upFolder" />
+		<result property="fileName" column="fileName" />
+	</resultMap>
+	<select id="myScrabSelectAll" resultMap="showcaseMap">
+  	<![CDATA[ 
+		SELECT scid, sctitle,uuid,upFolder,fileName
+		FROM   ( SELECT sc.*,rownum rn
+				FROM	(SELECT /*+INDEX_DESC(showcase PK_SHOWCASE) */
+								s.scid,sctitle,uuid,upFolder,fileName
+						FROM   showcase s
+						JOIN   showcase_Attach sa ON s.scid = sa.scid
+						JOIN   scrab sr ON s.scid = sr.scid
+						WHERE  sr.mid = #{mid} and isThumbnail=1
+						ORDER BY s.scid DESC) sc
+				WHERE   rownum <= #{cri.amount} * #{cri.pageNum})
+
+		WHERE  rn > #{cri.amount} * ( #{cri.pageNum} - 1 )    	
+	]]>
+	</select>
+
+	<select id="myScrabCnt" resultType="int">
+  	<![CDATA[ 
+	  	SELECT 	COUNT(*) 
+	  	FROM 	scrab
+	    WHERE	mid=#{mid}]]>
+	</select>
+
+	<select id="isScrab" resultType="int">
+		SELECT COUNT(*)
+		FROM scrab
+		WHERE mid=#{mid} and scid=#{scid}
+	</select>
+
+	<select id="scScrabCnt" resultType="int">
+		SELECT COUNT(*)
+		FROM scrab
+		WHERE scid=#{scid}
+	</select>
+	<insert id="addScrab">
+		INSERT INTO scrab (scrabNum,mid,scid)
+		VALUES
+		(scrab_seq.NEXTVAl,#{mid},#{scid})
+	</insert>
+
+	<delete id="removeScrab">
+		DELETE scrab WHERE scid = #{scid} and mid=#{mid}
+	</delete>
+	
+	<update id="updateScrabCnt">
+	UPDATE showcase SET scrabCnt=#{scrabCnt} WHERE scid=#{scid} 
+	</update>
+
+</mapper>
+
+
+
