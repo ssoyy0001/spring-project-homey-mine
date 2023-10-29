@@ -3,9 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.homey.mapper.ConsultMapper">
-<!-- 이 안에 실제 sql구문 추가 추가 -->	
-<!-- id는 인터페이스의 메서드 명과 동일해야함 -->
-<!-- resultType은 인터페이스의 이걸로, 알아서 담아줌, 여러개 나오면 리스트, 아니면 1개 나옴-->
+
 
   <!-- 쿼리 보관 -->
   <sql id="criteria">
@@ -83,28 +81,87 @@
 	    AND rn > #{amount} * (#{pageNum} - 1)
 	  ]]> 
 	</select>
-  
-    <select id="selectAllPagingMe" 
-  	      resultType="org.homey.domain.ConsultVO">
+	
+	<select id="selectAllMe" resultType="org.homey.domain.ConsultVO">
   	<![CDATA[ 
 	    SELECT * FROM consult
 	    WHERE mid = #{mid} AND consultNo > 0
 	    ORDER BY consultNo DESC
     ]]>
-  </select>
+	</select>
 
-  <select id="select" 
-  	      resultType="org.homey.domain.ConsultVO">
-	 SELECT * FROM consult WHERE consultNo = #{consultNo}
-  </select>
-  
-  <select id="selectItem" resultType="org.homey.domain.ItemVO">
-    <![CDATA[
-    SELECT * 
-    FROM item
-    WHERE consultNo = #{consultNo}
-    ]]>
+<select id="select" resultMap="consultMap">
+    SELECT c.consultNo, c.mid, c.mphone, c.postcode, c.address, c.detailAddress, c.buildingType, c.scheduledDate, c.pyeongsu, c.budget, c.happyCall, c.consultDate, c.status,
+           i.itemNo, i.tiling, i.tilingD, i.flooring, i.flooringD, i.kitchen, i.kitchenD, i.bathroom, i.bathroomD, i.entrance, i.entranceD, i.balcony, i.balconyD, i.lighting, i.lightingD, i.door, i.doorD, i.etc, i.etcD,
+           q.quoNo, q.quoDate, q.constScheduleStart, q.constScheduleEnd, q.constTotal, q.demolTotal, q.total,
+           v.visitNo, v.visitStartDate, v.visitEndDate, v.visitStatus
+    FROM consult c
+    LEFT JOIN item i ON c.consultNo = i.consultNo
+    LEFT JOIN quotation q ON c.consultNo = q.consultNo
+    LEFT JOIN visit v ON c.consultNo = v.consultNo
+    WHERE c.consultNo = #{consultNo}
 </select>
+
+<resultMap type="org.homey.domain.ConsultVO" id="consultMap">
+    <!-- ConsultVO의 속성 매핑 -->
+    <id property="consultNo" column="consultNo"/>
+    <result property="mid" column="mid"/>
+    <result property="mphone" column="mphone"/>
+    <result property="postcode" column="postcode"/>
+    <result property="address" column="address"/>
+    <result property="detailAddress" column="detailAddress"/>
+    <result property="buildingType" column="buildingType"/>
+    <result property="scheduledDate" column="scheduledDate"/>
+    <result property="pyeongsu" column="pyeongsu"/>
+    <result property="budget" column="budget"/>
+    <result property="happyCall" column="happyCall"/>
+    <result property="consultDate" column="consultDate"/>
+    <result property="status" column="status"/>
+
+    <!-- ItemVO의 속성 매핑 -->
+    <association property="item" javaType="org.homey.domain.ItemVO">
+        <id property="itemNo" column="itemNo"/>
+        <result property="tiling" column="tiling"/>
+        <result property="tilingD" column="tilingD"/>
+        <result property="flooring" column="flooring"/>
+        <result property="flooringD" column="flooringD"/>
+        <result property="kitchen" column="kitchen"/>
+        <result property="kitchenD" column="kitchenD"/>
+        <result property="bathroom" column="bathroom"/>
+        <result property="bathroomD" column="bathroomD"/>
+        <result property="entrance" column="entrance"/>
+        <result property="entranceD" column="entranceD"/>
+        <result property="balcony" column="balcony"/>
+        <result property="balconyD" column="balconyD"/>
+        <result property="lighting" column="lighting"/>
+        <result property="lightingD" column="lightingD"/>
+        <result property="door" column="door"/>
+        <result property="doorD" column="doorD"/>
+        <result property="etc" column="etc"/>
+        <result property="etcD" column="etcD"/>
+    </association>
+
+    <!-- QuotationVO의 속성 매핑 -->
+    <collection property="qvoList" ofType="org.homey.domain.QuotationVO">
+        <id property="quoNo" column="quoNo"/>
+        <result property="quoDate" column="quoDate"/>
+        <result property="constScheduleStart" column="constScheduleStart"/>
+        <result property="constScheduleEnd" column="constScheduleEnd"/>
+        <result property="constTotal" column="constTotal"/>
+        <result property="demolTotal" column="demolTotal"/>
+        <result property="total" column="total"/>
+    </collection>
+
+    <!-- VisitVO의 속성 매핑 -->
+    <collection property="vvoList" ofType="org.homey.domain.VisitVO">
+        <id property="visitNo" column="visitNo"/>
+        <result property="visitStatus" column="visitStatus"/>
+        <result property="visitStartDate" column="visitStartDate"/>
+        <result property="visitEndDate" column="visitEndDate"/>
+    </collection>
+</resultMap>
+
+
 
 </mapper>
 
