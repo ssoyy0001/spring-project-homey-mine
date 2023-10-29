@@ -5,11 +5,11 @@ import java.util.List;
 import org.homey.domain.ConsultVO;
 import org.homey.domain.Criteria;
 import org.homey.domain.ItemVO;
-import org.homey.domain.MemberVO;
 import org.homey.mapper.ConsultMapper;
+import org.homey.mapper.QuotationMapper;
+import org.homey.mapper.VisitMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -19,6 +19,10 @@ import lombok.extern.log4j.Log4j;
 public class ConsultServiceImpl implements ConsultService {
 	@Setter(onMethod_ = @Autowired)
 	private ConsultMapper consultMapper;
+	@Setter(onMethod_ = @Autowired)
+	private QuotationMapper quotationMapper;
+	@Setter(onMethod_ = @Autowired)
+	private VisitMapper visitMapper;
 	
 	//견적 상담 등록 및 시공항목 등록
 	@Override
@@ -51,42 +55,17 @@ public class ConsultServiceImpl implements ConsultService {
 	
 	// 나의 견적상담 전체 목록 조회 + 페이징 - 완
 	@Override
-	public List<ConsultVO> list(Criteria cri, String mid) {
+	public List<ConsultVO> myList(String mid) {
 		log.info("나의 견적 상담 list ServiceImpl...");
-		return consultMapper.selectAllPagingMe(cri, mid);
+		return consultMapper.selectAllMe(mid);
 	}
 	
-	// 특정 견적상담의 멤버 정보 가져오기
-	//@Override
-	public MemberVO consultMember(int consultNo) {
-        // 데이터베이스에서 멤버 정보를 가져오는 코드
-        // consultMapper를 사용하여 데이터베이스 쿼리 실행
-
-//		MemberVO mvo = consultMapper.con(consultNo);
-		return null;
-	}
-	
-//	//견적 상담 상세 조회 - 완
-//	@Override
-//	public ConsultVO view(int consultNo) {
-//		log.info("견적 상담 view ServiceImpl...");
-//		return consultMapper.select(consultNo);
-//	}
-//	
 	//견적 상담 상세 조회 - 완
 	@Override
 	public ConsultVO view(int consultNo) {
 		log.info("견적 상담 view ServiceImpl...");
-	    // consultMapper.select(consultNo)를 사용하여 견적상담 정보를 조회
-	    ConsultVO consultVO = consultMapper.select(consultNo);
-	    
-	    // consultMapper.selectItem(consultNo)를 사용하여 시공항목 정보를 조회
-	    ItemVO itemVO = consultMapper.selectItem(consultNo);
-	    
-	    // 조회된 시공항목 정보를 ConsultVO에 설정
-	    consultVO.setItem(itemVO);
-	    
-	    return consultVO;
+	    //ConsultMapper를 사용하여 ConsultVO와 관련된 정보를 조회한 후, 조회된 정보를 ConsultVO 객체에 담고, ItemVO, QuotationVO, VisitVO의 정보를 적절한 필드에 할당
+	    return consultMapper.select(consultNo);
 	}
 	
 	
