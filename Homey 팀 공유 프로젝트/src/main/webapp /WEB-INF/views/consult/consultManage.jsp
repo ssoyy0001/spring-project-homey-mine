@@ -156,40 +156,39 @@
 									<label class="col-sm-2">시공 항목</label>
 									<div class="col-sm-5">
 										<!-- cvo에 담긴 item이 1이면 표시하고 쉼표 `,`로 구분 -->
-<c:if test="${cvo.item.tiling != 0}">도배/벽</c:if>
-
-<c:if test="${cvo.item.flooring != 0}">
-    <c:if test="${cvo.item.tiling != 0}">, </c:if>바닥
-</c:if>
-
-<c:if test="${cvo.item.kitchen != 0}">
-    <c:if test="${cvo.item.tiling != 0 or cvo.item.flooring != 0}">, </c:if>주방
-</c:if>
-
-<c:if test="${cvo.item.bathroom != 0}">
-    <c:if test="${cvo.item.tiling != 0 or cvo.item.flooring != 0 or cvo.item.kitchen != 0}">, </c:if>욕실
-</c:if>
-
-<c:if test="${cvo.item.entrance != 0}">
-    <c:if test="${cvo.item.tiling != 0 or cvo.item.flooring != 0 or cvo.item.kitchen != 0 or cvo.item.bathroom != 0}">, </c:if>현관
-</c:if>
-
-<c:if test="${cvo.item.balcony != 0}">
-    <c:if test="${cvo.item.tiling != 0 or cvo.item.flooring != 0 or cvo.item.kitchen != 0 or cvo.item.bathroom != 0 or cvo.item.entrance != 0}">, </c:if>발코니
-</c:if>
-
-<c:if test="${cvo.item.lighting != 0}">
-    <c:if test="${cvo.item.tiling != 0 or cvo.item.flooring != 0 or cvo.item.kitchen != 0 or cvo.item.bathroom != 0 or cvo.item.entrance != 0 or cvo.item.balcony != 0}">, </c:if>조명
-</c:if>
-
-<c:if test="${cvo.item.door != 0}">
-    <c:if test="${cvo.item.tiling != 0 or cvo.item.flooring != 0 or cvo.item.kitchen != 0 or cvo.item.bathroom != 0 or cvo.item.entrance != 0 or cvo.item.balcony != 0 or cvo.item.lighting != 0}">, </c:if>문
-</c:if>
-
-<c:if test="${cvo.item.etc != 0}">
-    <c:if test="${cvo.item.tiling != 0 or cvo.item.flooring != 0 or cvo.item.kitchen != 0 or cvo.item.bathroom != 0 or cvo.item.entrance != 0 or cvo.item.balcony != 0 or cvo.item.lighting != 0 or cvo.item.door != 0}">, </c:if>그 외
-</c:if>
-										
+								<c:if test="${cvo.item.tiling != 0}">도배/벽</c:if>
+								
+								<c:if test="${cvo.item.flooring != 0}">
+								    <c:if test="${cvo.item.tiling != 0}">, </c:if>바닥
+								</c:if>
+								
+								<c:if test="${cvo.item.kitchen != 0}">
+								    <c:if test="${cvo.item.tiling != 0 or cvo.item.flooring != 0}">, </c:if>주방
+								</c:if>
+								
+								<c:if test="${cvo.item.bathroom != 0}">
+								    <c:if test="${cvo.item.tiling != 0 or cvo.item.flooring != 0 or cvo.item.kitchen != 0}">, </c:if>욕실
+								</c:if>
+								
+								<c:if test="${cvo.item.entrance != 0}">
+								    <c:if test="${cvo.item.tiling != 0 or cvo.item.flooring != 0 or cvo.item.kitchen != 0 or cvo.item.bathroom != 0}">, </c:if>현관
+								</c:if>
+								
+								<c:if test="${cvo.item.balcony != 0}">
+								    <c:if test="${cvo.item.tiling != 0 or cvo.item.flooring != 0 or cvo.item.kitchen != 0 or cvo.item.bathroom != 0 or cvo.item.entrance != 0}">, </c:if>발코니
+								</c:if>
+								
+								<c:if test="${cvo.item.lighting != 0}">
+								    <c:if test="${cvo.item.tiling != 0 or cvo.item.flooring != 0 or cvo.item.kitchen != 0 or cvo.item.bathroom != 0 or cvo.item.entrance != 0 or cvo.item.balcony != 0}">, </c:if>조명
+								</c:if>
+								
+								<c:if test="${cvo.item.door != 0}">
+								    <c:if test="${cvo.item.tiling != 0 or cvo.item.flooring != 0 or cvo.item.kitchen != 0 or cvo.item.bathroom != 0 or cvo.item.entrance != 0 or cvo.item.balcony != 0 or cvo.item.lighting != 0}">, </c:if>문
+								</c:if>
+								
+								<c:if test="${cvo.item.etc != 0}">
+								    <c:if test="${cvo.item.tiling != 0 or cvo.item.flooring != 0 or cvo.item.kitchen != 0 or cvo.item.bathroom != 0 or cvo.item.entrance != 0 or cvo.item.balcony != 0 or cvo.item.lighting != 0 or cvo.item.door != 0}">, </c:if>그 외
+								</c:if>
 									</div>
 								</div>
 								<div class="form-group row" style="margin-bottom: 10px">
@@ -216,10 +215,6 @@
 									<p>✔️ 해피콜 운영시간은 평일 9시 ~ 오후 5시입니다. 10분 단위로만 선택해주세요.</p>
 									✔️ 견적 상담 내용의 수정을 원하신다면 기존 접수 건을 취소 후 신규로 다시 접수해주세요.
 								</div>
-								<!-- 			 	<div class="alert alert-warning"> -->
-								<!-- 			 	견적 상담 신청 내용을 수정하고 싶으신 분들은 기존 접수 건을 취소 후 -->
-								<!-- 			 	<br>신규로 다시 접수해주세요. -->
-								<!-- 				</div> -->
 								<div class="findConsultButton">
 									<input type="hidden" name="consultNo" value="${cvo.consultNo}">
 									<input type="hidden" name="status" value="${cvo.status}">
@@ -540,7 +535,7 @@
 							<i id="plusBtn" class="far fa-plus-square"></i>
 						</div>
 						<div id="plusItembox">
-							<!-- 추가된 시공 항목이 여기에 표시될 것입니다. -->
+							<!-- 추가된 시공 항목이 여기에 표시 -->
 						</div>
 						
 					<!-- 철거 항목 -->
@@ -577,7 +572,7 @@
 							</select> <i id="demoPlusBtn" class="far fa-plus-square"></i>
 						</div>
 						<div id="demoItembox">
-							<!-- 추가된 철거 항목이 여기에 표시될 것입니다. -->
+							<!-- 추가된 철거 항목이 여기에 표시 -->
 						</div>
 					</div>
 					<hr>
@@ -891,8 +886,6 @@
 	});
 	//END Modify 버튼 클릭 이벤트 처리 ------------------------
 
-	//////////////////////////////////////////////////////////////////////////////////////
-
 	//모달창 시공일정 조건 설정 함수 -------------------------
 	function validateDate(input) {
 		// 입력된 날짜와 시간 가져오기
@@ -950,7 +943,7 @@
 								// 시공 비용 업데이트
 								updateTotal();
 								
-								// 각 항목의 이름을 그대로 키로 사용하고, 값은 사용자가 입력한 가격으로 설정합니다.
+								// 각 항목의 이름을 그대로 키로 사용하고, 값은 사용자가 입력한 가격으로 설정
 								 constItemPrices[selectedValue] = itemPrice;
 							}
 						}
@@ -995,7 +988,7 @@
 						}
 						// 시공 비용 업데이트
 						updateTotal();
-			            // 각 항목의 이름을 그대로 키로 사용하고, 값은 사용자가 입력한 가격으로 설정합니다.
+			            // 각 항목의 이름을 그대로 키로 사용하고, 값은 사용자가 입력한 가격으로 설정
 						 demoItemPrices[selectedValueD] = itemPriceD;
 					});
 
