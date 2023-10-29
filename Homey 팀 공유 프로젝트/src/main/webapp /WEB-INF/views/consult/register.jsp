@@ -209,7 +209,8 @@
 						<label class="form-check-label" for="flexCheckDefault" style="font-weight: bold;">
 							HOMEY 약관 & 개인정보 수집 및 이용에 대한 안내 동의 (필수) &nbsp;
 						</label>
-						<button id="showModalBtn" class="btn btn-sm btn-warning">보기</button>
+						<a id="showModalBtn" class="btn btn-sm btn-warning">보기</a>
+					
 					</div>
 					<!-- 약관동의 모달창 -->
 					  <div id="myModal" class="modal">
@@ -345,7 +346,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var doorCheck = document.getElementById('doorCheck');
     var etcCheck = document.getElementById('etcCheck');
 
-    // 체크박스 상태가 변경되면 실행할 함수를 정의합니다
+    // 체크박스 상태가 변경되면 실행할 함수
     function handleCheckboxChange(checkbox, value) {
         if (checkbox.checked) {
             // 체크박스가 선택된 경우 1로 설정
@@ -364,43 +365,43 @@ document.addEventListener('DOMContentLoaded', function() {
     var element_wrap = document.getElementById('wrap');
 
     function foldDaumPostcode() {
-        // iframe을 넣은 element를 안보이게 한다.
+        // iframe을 넣은 element를 안보이게
         element_wrap.style.display = 'none';
     }
 
     function execDaumPostcode() {
-        // 현재 scroll 위치를 저장해놓는다.
+        // 현재 scroll 위치를 저장
         var currentScroll = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
         new daum.Postcode({
             oncomplete: function(data) {
                 // 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
 
-                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
-                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                // 각 주소의 노출 규칙에 따라 주소를 조합
+                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기
                 var addr = ''; // 주소 변수
                 var extraAddr = ''; // 참고항목 변수
 
-                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져옴
                 if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
                     addr = data.roadAddress;
                 } else { // 사용자가 지번 주소를 선택했을 경우(J)
                     addr = data.jibunAddress;
                 }
 
-                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                // 우편번호와 주소 정보를 해당 필드에 넣음
                 document.getElementById('postcode').value = data.zonecode;
                 document.getElementById("address").value = addr;
-                // 커서를 상세주소 필드로 이동한다.
+                // 커서를 상세주소 필드로 이동
                 document.getElementById("detailAddress").focus();
 
-                // iframe을 넣은 element를 안보이게 한다.
-                // (autoClose:false 기능을 이용한다면, 아래 코드를 제거해야 화면에서 사라지지 않는다.)
+                // iframe을 넣은 element를 안보이게 함
+                // (autoClose:false 기능을 이용한다면, 아래 코드를 제거해야 화면에서 사라지지 않음
                 element_wrap.style.display = 'none';
 
-                // 우편번호 찾기 화면이 보이기 이전으로 scroll 위치를 되돌린다.
+                // 우편번호 찾기 화면이 보이기 이전으로 scroll 위치를 되돌림
                 document.body.scrollTop = currentScroll;
             },
-            // 우편번호 찾기 화면 크기가 조정되었을때 실행할 코드를 작성하는 부분. iframe을 넣은 element의 높이값을 조정한다.
+            // 우편번호 찾기 화면 크기가 조정되었을때 실행할 코드를 작성. iframe을 넣은 element의 높이값을 조정
             onresize : function(size) {
                 element_wrap.style.height = size.height+'px';
             },
@@ -408,7 +409,7 @@ document.addEventListener('DOMContentLoaded', function() {
             height : '100%'
         }).embed(element_wrap);
 
-        // iframe을 넣은 element를 보이게 한다.
+        // iframe을 넣은 element를 보이게 함.
         element_wrap.style.display = 'block';
     }
 //END 카카오 주소 API -----------------------------------------
