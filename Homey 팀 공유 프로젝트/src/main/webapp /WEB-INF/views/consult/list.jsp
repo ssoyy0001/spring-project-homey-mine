@@ -59,10 +59,6 @@
 		    <input type="hidden" name="amount"  value="${pageDTO.cri.amount}">
 		</form>   		   
 			<!-- 페이지 번호와 페이지에 표시할 게시물의 수 -->   
-			<form>
-			<input type="hidden" name="pageNum" value="${pageDTO.cri.pageNum}">
-			<input type="hidden" name="amount"  value="${pageDTO.cri.amount}">
-			</form>   
 	 <!-- END 검색 :: 견적 상담번호 -->
 
 		<!-- 반복될 구간 -->
@@ -81,7 +77,7 @@
           </div><!-- End Service Item -->
          </c:forEach> 
 		<!-- 반복될 구간 END -->
-    
+
     <!-- 페이징 -->
    <div>
 		<ul class="pagination custom-pagination"> <!-- bootstrap4부터는 pull이 아니라 float , float-end는 오른쪽 끝-->
@@ -116,6 +112,7 @@
 	<input type="hidden" name="type"  value="${pageDTO.cri.type}">
 	<input type="hidden" name="keyword"  value="${pageDTO.cri.keyword}"> <!-- VIEW페이지에 갔다왔더라도 검색 기능 남아있음 -->
 </form>
+
 				<%@ include file="../includes/sideMenuAdm.jsp"%>
     		</div>
         </div>
