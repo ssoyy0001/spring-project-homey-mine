@@ -204,7 +204,8 @@ ALTER TABLE visit ADD CONSTRAINT FK_consult_TO_visit_1 FOREIGN KEY (
 )
 REFERENCES consult (
     consultNo
-);
+)
+ON DELETE CASCADE;	
 --하영끝
 
 --시공의뢰 시작
