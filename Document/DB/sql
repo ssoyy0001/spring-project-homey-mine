@@ -235,7 +235,7 @@ CREATE TABLE sireqAttach (
 CREATE TABLE siche (
 	sicheNo	NUMBER	NOT NULL,
 	sireqNo	NUMBER	NOT NULL,
-	itemNo	NUMBER	NOT NULL,
+	quoNo	NUMBER	NOT NULL,
 	mid	VARCHAR2(50)	NOT NULL,
 	startDate	DATE	DEFAULT SYSDATE NOT NULL,
 	endDate		DATE NOT NULL,
@@ -316,12 +316,10 @@ ALTER TABLE sirevAttach ADD CONSTRAINT PK_SIREVATTACH PRIMARY KEY (
 --PK제약조건 설정 끝
 
 --FK제약조건 설정(시공의뢰, 시공작업, 시공후기, 문의게시판)
-ALTER TABLE sireq ADD CONSTRAINT FK_quotation_TO_sireq_1 FOREIGN KEY (
-	quoNo
-)
-REFERENCES quotation (
-	quoNo
-) ON DELETE CASCADE;
+ALTER TABLE siche
+ADD CONSTRAINT fk_quoNo
+FOREIGN KEY (quoNo)
+REFERENCES quotation(quoNo)  ON DELETE CASCADE;
 
 ALTER TABLE sireq ADD CONSTRAINT FK_item_TO_sireq_1 FOREIGN KEY (
 	itemNo
