@@ -425,6 +425,8 @@
 									<c:forEach items="${cvo.qvoList}" var="qvo" varStatus="status">
 										<button type="submit" class="btn btn-success" id="modifyQuo"
 											style="margin-top: 5px">견적서 수정</button>
+										<a href="/sirequest/sireqRegister?quoNo=${qvo.quoNo }" class="btn btn-danger"
+											style="margin-top: 5px">시공의뢰 등록</a>
 									</c:forEach>
 								</c:if>
 							</sec:authorize>
