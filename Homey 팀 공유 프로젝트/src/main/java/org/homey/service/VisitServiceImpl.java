@@ -7,6 +7,7 @@ import org.homey.mapper.NoticeMapper;
 import org.homey.mapper.VisitMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -19,10 +20,22 @@ public class VisitServiceImpl implements VisitService {
 	private VisitMapper visitMapper;
 	
 	//스케줄 등록
+//	@Override
+//	@Transactional 
+//	public boolean register(List<VisitVO> visitList) { //등록시 true, 아니면 false
+//		log.info("스케줄 register ServiceImpl...");
+//		return visitMapper.insert(visitList) == 1;
+//	}
 	@Override
-	public boolean register(VisitVO vvo) { //등록시 true, 아니면 false
+	@Transactional 
+	public boolean register(List<VisitVO> visitList) { //등록시 true, 아니면 false
 		log.info("스케줄 register ServiceImpl...");
-		return visitMapper.insert(vvo) == 1;
+        for (VisitVO visit : visitList) {
+            if (visitMapper.insert(visit) != 1) {  // 만약 개별 등록에 실패하면 false 반환
+                return false;
+            }
+        }
+        return true;  // 모든 등록이 성공적으로 이루어지면 true 반환 
 	}
 
 	//스케줄 전체 조회 - 관리자
@@ -48,9 +61,15 @@ public class VisitServiceImpl implements VisitService {
 
 	//스케줄 수정
 	@Override
-	public boolean modify(VisitVO vvo) { //수정시 true, 아니면 false
+	@Transactional
+	public boolean modify(List<VisitVO> visitList) { //수정시 true, 아니면 false
 		log.info("스케줄 modify ServiceImpl...");
-		 return visitMapper.update(vvo) == 1;
+        for (VisitVO visit : visitList) {
+            if (visitMapper.update(visit) != 1) {  // 만약 개별 등록에 실패하면 false 반환
+                return false;
+            }
+        }
+        return true;  // 모든 등록이 성공적으로 이루어지면 true 반환 
 	}
 
 	//스케줄 삭제
