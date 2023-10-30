@@ -14,7 +14,8 @@
 								<li><a href="/freePdtReq/myList?mid=<sec:authentication property="principal.Username"/>">나의 [ 제품 나눔 ] 신청내역</a></li>
 								<li><a href="#">나의 무료시공 이벤트</a></li>
 								<li><a href="#">나의 AS 문의</a></li>
-								<li><a href="#">내가 작성한 이벤트 리뷰</a></li>
+								<li><a href="/odReview/myList?mid=<sec:authentication property="principal.Username"/>">나의 [ 원데이클래스 ] 리뷰</a></li>
+								<li><a href="/fpReview/myList?mid=<sec:authentication property="principal.Username"/>">나의 [ 제품 나눔 ] 리뷰</a></li>
 								<li><a href="#">스크랩</a></li>
 								
 							</ul>
