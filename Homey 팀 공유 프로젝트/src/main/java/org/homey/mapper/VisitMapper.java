@@ -2,8 +2,6 @@ package org.homey.mapper;
 
 import java.util.List;
 
-import org.homey.domain.ConsultVO;
-import org.homey.domain.Criteria;
 import org.homey.domain.VisitVO;
 
 public interface VisitMapper {
