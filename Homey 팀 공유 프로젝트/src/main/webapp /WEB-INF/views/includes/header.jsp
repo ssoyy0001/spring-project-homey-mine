@@ -96,8 +96,8 @@
 					<li class="dropdown"><a href="#"><span>리뷰</span> <i
 							class="bi bi-chevron-down dropdown-indicator"></i></a>
 						<ul>
-							<li><a href="/odReview/list">원데이클래스 리뷰게시판</a></li>
-							<li><a href="/fpReview/list">제품 나눔 리뷰게시판</a></li>
+							<li><a href="/odReview/list">원데이클래스 리뷰</a></li>
+							<li><a href="/fpReview/list">제품 나눔 리뷰</a></li>
 						</ul></li>
 					<li><a href="#">인테리어 매거진</a></li>
 					<li class="dropdown"><a href="#"><span>기타</span> <i
