@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.homey.mapper.VisitMapper">
+<!-- 이 안에 실제 sql구문 추가 추가 -->	
+<!-- id는 인터페이스의 메서드 명과 동일해야함 -->
+<!-- resultType은 인터페이스의 이걸로, 알아서 담아줌, 여러개 나오면 리스트, 아니면 1개 나옴-->
+
+   <!-- 스케줄 등록 -->
+  <insert id="insert">
+    INSERT INTO VISIT (VISITNO, CONSULTNO, visitStartDate, visitEndDate, VISITSTATUS)
+    VALUES (VISIT_SEQ.NEXTVAL, #{consultNo}, #{visitStartDate}, #{visitEndDate}, #{visitStatus})
+  </insert>
+<!-- 	<insert id="insert"> -->
+<!-- 	    INSERT INTO VISIT (VISITNO, CONSULTNO, visitStartDate, visitEndDate, VISITSTATUS) -->
+<!-- 	    VALUES -->
+<!-- 	    <foreach item="visit" collection="visitList" separator=","> -->
+<!-- 	        (VISIT_SEQ.NEXTVAL, #{visit.consultNo}, #{visit.visitStartDate}, #{visit.visitEndDate}, #{visit.visitStatus}) -->
+<!-- 	    </foreach> -->
+<!-- 	</insert> -->
+  
+  <!-- 스케줄 1개 조회 -->
+  <select id="select" 
+  	      resultType="org.homey.domain.VisitVO">
+    SELECT * FROM VISIT WHERE visitNo = #{visitNo}
+  </select>
+  
+  <!-- 스케줄 전체조회 selectAll -->
+  <select id="selectAll" 
+  	      resultType="org.homey.domain.VisitVO">
+  	<![CDATA[ 
+	    SELECT * FROM VISIT
+	    WHERE visitNo > 0
+	    ORDER BY visitNo DESC
+    ]]>
+  </select>
+  
+  <!-- public VisitVO selectByConsultNo(int consultNo);//특정 견적상담 번호를 기반으로 한 스케줄(회원)-->  
+  <select id="selectByConsultNo" parameterType="int" resultType="org.homey.domain.VisitVO">
+    SELECT * FROM VISIT WHERE CONSULTNO = #{consultNo}
+  </select>
+
+  <!--   스케줄 수정 -->
+  <update id="update">
+    UPDATE VISIT
+    SET CONSULTNO = #{consultNo},
+        visitStartDate = #{visitStartDate},
+        visitEndDate = #{visitEndDate},
+        visitStatus = #{visitStatus}
+    WHERE VISITNO = #{visitNo}
+  </update>
+  
+  <!--   스케줄 삭제 -->
+  <delete id="delete">
+	DELETE VISIT WHERE visitNo = #{visitNo}
+  </delete>
+
+  
+</mapper>
+
+
+
