@@ -19,7 +19,34 @@
 #plusBtn {
 	cursor: pointer;
 }
+/* fullcalendar */
+  #loading {
+    display: none;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+    #script-warning {
+    display: none;
+    background: #eee;
+    border-bottom: 1px solid #ddd;
+    padding: 0 10px;
+    line-height: 40px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 12px;
+    color: red;
+  }
 </style>
+
+	<!-- fullCalendar -->
+	<link href="../resources/fullcalendar/main.css" rel="stylesheet"/>
+	<script src="../resources/fullcalendar/main.js"></script>
+	
+<!--         //reply.js -->
+<!--         //보낼때는 data : json , contentType : appli -- -->
+    
+
 </head>
 <body>
 	<!-- ======= header ======= -->
@@ -27,7 +54,6 @@
 
 	<!--======= main ======= -->
 	<main id="main">
-
 		<!-- ======= Breadcrumbs ======= -->
 		<div class="breadcrumbs d-flex align-items-center"
 			style="background-image: url('../resources/assets/img/breadcrumbs-bg.jpg');">
@@ -238,15 +264,23 @@
 						<!-- 방문 실측 스케줄 -->
 						<article class="blog-details" id="visit">
 							<h2>방문 실측 스케줄 📅</h2>
-							<!-- 실험  -->
-							<c:forEach items="${cvo.vvoList}" var="vvo">
-								<div class="alert alert-light">
-									<div class="form-group row" style="margin-bottom: 10px">
-										<label class="col-sm-2">방문 실측 스케줄 번호</label>
-										<div class="col-sm-5">${vvo.visitNo}</div>
-									</div>
-								</div>
+							<div id='loading'>loading...</div>
+							<div id='calendar'></div>
+							<div id='script-warning'>
+							    <code>fail</code>
+							</div>
+							<c:forEach items="${cvo.vvoList}" var="vvo"> 
+							<div id="visitNo" style="display: none;">${vvo.visitNo}</div>
 							</c:forEach>
+							<!-- 실험  -->
+<%-- 							<c:forEach items="${cvo.vvoList}" var="vvo"> --%>
+<!-- 								<div class="alert alert-light"> -->
+<!-- 									<div class="form-group row" style="margin-bottom: 10px"> -->
+<!-- 										<label class="col-sm-2">방문 실측 스케줄 번호</label> -->
+<%-- 										<div class="col-sm-5">${vvo.visitNo}</div> --%>
+<!-- 									</div> -->
+<!-- 								</div> -->
+<%-- 							</c:forEach> --%>
 
 						</article>
 						<!-- END 방문 실측 스케줄 -->
@@ -635,6 +669,145 @@
 	<!-- ======= END Footer ======= -->
 
 	<!-- ======= script ======= -->
+<script>
+var consultNo = "${param.consultNo}";
+var visitNoElement = document.getElementById("visitNo");
+var visitNo = visitNoElement ? visitNoElement.textContent : null;
+document.addEventListener('DOMContentLoaded', function() {
+    $(function () {
+        var request = $.ajax({
+            url: "/visit/", // 변경하기
+            method: "GET",
+            dataType: "json"
+        });
+        request.done(function (data) {
+        console.log(data); // log 로 데이터 찍어주기
+            
+	           var calendarEl = document.getElementById('calendar');
+	           var calendar = new FullCalendar.Calendar(calendarEl, {
+	               headerToolbar: {
+	                   left: 'prev,next today',
+	                   center: "title",
+	                   right: 'dayGridMonth,dayGridWeek'
+	               },
+                
+                initialView: 'dayGridMonth',
+                locale : 'ko',
+                firstDay : 1,
+                weekends : false,
+                selectable:true,
+                selectMirror:true,
+
+                select:function(arg){	//날짜가 선택됐을 때
+                     var title = prompt('일정을 입력해주세요.');
+                     
+                if(title){
+                    calendar.addEvent({
+                        title:title,
+                        start:arg.start,
+                        end:arg.end,
+                        //allDay : arg.allDay
+                    })
+                }
+                
+               var allEvent = calendar.getEvents();
+               
+               var events = new Array(); // Json 데이터를 받기 위한 배열 선언
+               for (var i = 0; i < allEvent.length; i++) {
+                   var obj = new Object();     // Json 을 담기 위해 Object 선언
+                   // alert(allEvent[i]._def.title); // 이벤트 명칭 알람
+                   obj.title = allEvent[i]._def.title; // 이벤트 명칭  ConsoleLog 로 확인 가능.
+                   obj.consultNo = consultNo;
+                   obj.start = allEvent[i]._instance.range.start; // 시작
+                   obj.end = allEvent[i]._instance.range.end; // 끝
+
+                   events.push(obj);
+               }
+               var jsondata = JSON.stringify(events);
+               console.log(jsondata);
+               
+               $(function saveData(jsondata) {
+               $.ajax({
+                   url: "/visit/add", // 변경하기
+                   method: "POST",
+                   dataType: "json",
+                   data: JSON.stringify(events),
+                   contentType: 'application/json',
+               })
+                   .done(function (result) {
+                       // alert(result);
+                   })
+                   .fail(function (request, status, error) {
+                        alert("에러 발생" + error);
+                   });
+               calendar.unselect()
+               });
+                 }, // END select 
+                 
+                 
+                 //일정 삭제하기
+                 eventClick: function (info){
+                	    if(confirm("'"+ info.event.title +"' 번의 일정을 삭제하시겠습니까 ?")){
+                	        // 확인 클릭 시
+                	        info.event.remove();
+                	    }
+                	    console.log(visitNo);
+                	    $(function deleteData(){
+                	        $.ajax({
+                	            url: "/visit/" + visitNo,
+                	            method: "DELETE",
+                	            contentType: 'application/json',
+                	        })
+                	    })
+                	}, // END  eventClick
+
+                 editable:true,
+                 navLinks:true,
+                 loading:function(bool){
+                     document.getElementById('loading').style.display =
+                       bool ? 'block' : 'none';
+                  },
+                  events:data, //일정 전체 조회
+                  eventColor: '#378006',
+                  displayEventTime : false,
+                  
+                  //수정하기
+                  droppable: true, 
+                  eventDrop: function (info){
+                      console.log(info);
+                      if(confirm("'"+ info.event.title +"' 번의 일정을 수정하시겠습니까 ?")){
+                      }
+                      var events = new Array(); // Json 데이터를 받기 위한 배열 선언
+                      var obj = new Object();
+
+                      obj.title = info.event._def.title;
+                      obj.consultNo = consultNo;
+                      obj.visitNo = visitNo;
+                      obj.start = info.event._instance.range.start;
+                      obj.end = info.event._instance.range.end;
+                      events.push(obj);
+
+                      console.log(events);
+                      $(function deleteData() {
+                          $.ajax({
+                              url: "/visit/" + visitNo,
+                              method: "PATCH",
+                              dataType: "json",
+                              data: JSON.stringify(events),
+                              contentType: 'application/json',
+                          })
+                      })
+                  },// END eventDrop
+                  
+             }); // END Calendar
+             calendar.render();
+         }); // END Request Done 
+     }); // END jQuery Function 
+});
+</script>
+	<!-- END fullCalendar -->	
+	
+	
 <script src="/resources/js/quotation.js"></script>
 <script>
 	// -------------------------------- 견적상담 관련 --------------------------------
