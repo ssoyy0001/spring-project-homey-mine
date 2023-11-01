@@ -31,6 +31,7 @@
 		<result property="payStatus" column="payStatus" />
 		<result property="sireqDate" column="sireqDate" />
 		<result property="sireqUpdateDate" column="sireqUpdateDate" />
+		<result property="sigongTotal" column="sigongTotal" />
 		
 		<association property="mvo" javaType="org.homey.domain.MemberVO">
 			<id property="mid" column="mid" />
@@ -233,8 +234,8 @@
 				    FROM sireq s
                     join MEMBER m on s.mid = m.mid
                     join CONSULT c on m.mid = c.mid
-                    join ITEM i on c.consultno = i.consultno
-                    join QUOTATION q on i.itemno = q.itemno )
+                    join ITEM i on c.consultNo = i.consultNo
+                    join QUOTATION q on i.itemNo = q.itemNo )
     	WHERE sireqNo = #{sireqNo}
 
   	</select>
