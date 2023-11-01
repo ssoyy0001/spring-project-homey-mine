@@ -26,17 +26,17 @@ Spring Framework 의 MVC 패턴 기법을 적용하여 제작한 인테리어 �
 - **ORM** : Mybatis
 - **Application server** :  Apache Tomcat® v9.0
 - **형상관리** : Github
-<br>
-<span><img src="https://img.shields.io/badge/javascript-F7DF1E?style=flat&logo=JavaScript&logoColor=white"/>
-<img src="https://img.shields.io/badge/jquery-0769AD?style=flat&logo=jquery&logoColor=white"/>
-<img src="https://img.shields.io/badge/css3-1572B6?style=flat&logo=css3&logoColor=white"/>
+<span>
 <img src="https://img.shields.io/badge/oracle-F80000?style=flat&logo=oracle&logoColor=white"/>
 <img src="https://img.shields.io/badge/spring-6DB33F?style=flat&logo=spring&logoColor=white"/>
-<img src="https://img.shields.io/badge/bootstrap-7952B3?style=flat&logo=bootstrap&logoColor=white"/>
 <img src="https://img.shields.io/badge/apachetomcat-F8DC75?style=flat&logo=apachetomcat&logoColor=white"/>
+<img src="https://img.shields.io/badge/javascript-F7DF1E?style=flat&logo=JavaScript&logoColor=white"/>
+<img src="https://img.shields.io/badge/jquery-0769AD?style=flat&logo=jquery&logoColor=white"/>
+<img src="https://img.shields.io/badge/css3-1572B6?style=flat&logo=css3&logoColor=white"/>
+<img src="https://img.shields.io/badge/bootstrap-7952B3?style=flat&logo=bootstrap&logoColor=white"/>
 <img src="https://img.shields.io/badge/git-F05032?style=flat&logo=git&logoColor=white"/>
 <img src="https://img.shields.io/badge/github-181717?style=flat&logo=github&logoColor=white"/>
-<img src="https://img.shields.io/badge/notion-000000?style=flat&logo=notion&logoColor=white"/></span>
-<br>
+<img src="https://img.shields.io/badge/notion-000000?style=flat&logo=notion&logoColor=white"/>
+</span>
 
 ## 📕 DB구성- ERD
