@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.homey.mapper.SiRequestMapper">
+
+  <!-- 쿼리 보관 -->
+  <sql id="SireqCriteria">
+  	 <trim prefix="(" suffix=") AND " prefixOverrides="OR">
+	 	<foreach item="type" collection="typeArr">
+	 	  <trim prefix="OR">
+	 		<choose>
+	 			<when test="type == 'N'.toString()">
+	 				m.mname LIKE '%'||#{keyword}||'%'
+	 			</when>
+	 			<when test="type == 'Q'.toString()">
+	 				s.quoNo LIKE '%'||#{keyword}||'%'
+	 			</when>
+	 		</choose>
+	 	  </trim>
+	 	</foreach>
+	 </trim>
+  </sql>
+  
+	
+
+	<resultMap type ="org.homey.domain.SiRequestVO" id="sireqMap" >
+		<id property="sireqNo" column="sireqNo" />
+		<result property="sireqDate" column="sireqDate" />
+		<result property="sireqStatus" column="sireqStatus" />
+		<result property="payStatus" column="payStatus" />
+		<result property="sireqDate" column="sireqDate" />
+		<result property="sireqUpdateDate" column="sireqUpdateDate" />
+		
+		<association property="mvo" javaType="org.homey.domain.MemberVO">
+			<id property="mid" column="mid" />
+			<result property="mname" column="mname" />
+		</association>
+		
+		<association property="quotationvo" javaType="org.homey.domain.QuotationVO">
+			<id property="quoNo" column="quoNo" />
+			<result property="constScheduleStart" column="constScheduleStart" />
+			<result property="constScheduleEnd" column="constScheduleEnd" />
+			<result property="demolTotal" column="demolTotal" />
+			<result property="constTotal" column="constTotal" />
+		</association>
+		
+		<association property="consultvo" javaType="org.homey.domain.ConsultVO">
+			<id property="consultNo" column="consultNo" />
+			<result property="buildingType" column="buildingType" />
+			<result property="pyeongsu" column="pyeongsu" />
+		</association>
+		
+		<association property="ivo" javaType="org.homey.domain.ItemVO">
+			<id property="itemNo" column="itemNo" />
+			<result property="tiling" column="tiling" />
+			<result property="tilingD" column="tilingD" />
+			<result property="flooring" column="flooring" />
+			<result property="flooringD" column="flooringD" />
+			<result property="kitchen" column="kitchen" />
+			<result property="kitchenD" column="kitchenD" />
+			<result property="bathroom" column="bathroom" />
+			<result property="bathroomD" column="bathroomD" />
+			<result property="entrance" column="entrance" />
+			<result property="entranceD" column="entranceD" />
+			<result property="balcony" column="balcony" />
+			<result property="balconyD" column="balconyD" />
+			<result property="lighting" column="lighting" />
+			<result property="lightingD" column="lightingD" />
+			<result property="door" column="door" />
+			<result property="doorD" column="doorD" />
+			<result property="etc" column="etc" />
+			<result property="etcD" column="etcD" />
+		</association>
+	
+	</resultMap>
+	 
+	<select id="totalCount" resultType="int">
+  	<![CDATA[ 
+	  	SELECT 	COUNT(*) 
+	  	FROM 	sireq
+	    WHERE	]]>
+	     		<!-- 보관해 둔 쿼리 사용 -->
+	    		<include refid="SireqCriteria"></include>
+	<![CDATA[ 	sireqNo > 0	]]>
+  </select>
+   
+	
+	<select id="mytotalCount" resultType="int">
+  	<![CDATA[ 
+	  	SELECT 	COUNT(*) 
+	  	FROM 	sireq
+	    WHERE	]]>
+	     		<!-- 보관해 둔 쿼리 사용 -->
+	    		<include refid="SireqCriteria"></include>
+	<![CDATA[ 	sireqNo > 0	]]>
+  </select>
+  
+  <!--등록 전에 가져올 값 select  -->
+  <select id="select" resultMap="sireqMap">
+    	SELECT
+				    quoNo, mname, sireqDate, constScheduleStart, constScheduleEnd, buildingType, pyeongsu, 
+				    tiling, tilingD, flooring, flooringD, kitchen, kitchenD, bathroom, bathroomD, entrance, entranceD, balcony, balconyD, lighting, lightingD, door, doorD, etc, etcD, 
+				    demolTotal, constTotal, sigongTotal, sireqStatus, payStatus
+				FROM
+				    (
+				    SELECT 
+				         /*+INDEX_DESC(sireq PK_SIREQ) */
+				        q.quoNo, m.mid, m.mname, s.sireqDate, q.constScheduleStart, q.constScheduleEnd, c.buildingType, c.pyeongsu, 
+				    i.tiling, i.tilingD, i.flooring, i.flooringD, i.kitchen, i.kitchenD, i.bathroom, i.bathroomD, i.entrance, i.entranceD, i.balcony, i.balconyD, i.lighting, i.lightingD, i.door, i.doorD, i.etc, i.etcD, 
+				    q.demolTotal, q.constTotal, s.sigongTotal, s.sireqStatus, s.payStatus
+				    FROM
+					    member m
+					JOIN
+					    consult c ON m.mid = c.mid
+					JOIN
+					    item i ON c.consultno = i.consultno
+					JOIN
+					    quotation q ON i.itemno = q.itemno
+					JOIN
+					    sireq s ON q.quoNo = s.quoNo )
+    	WHERE quoNo = #{quoNo}
+
+  	</select>
+  	
+  	<!-- 아이템 항목 업데이트 quotationMapper.updateItem(ivo) -->
+	  <update id="updateItem" >
+		UPDATE ITEM
+		SET	
+		TILING = #{tiling},
+	    TILINGD = #{tilingD},
+	    FLOORING = #{flooring},
+	    FLOORINGD = #{flooringD},
+	    KITCHEN = #{kitchen},
+	    KITCHEND = #{kitchenD},
+	    BATHROOM = #{bathroom},
+	    BATHROOMD = #{bathroomD},
+	    ENTRANCE = #{entrance},
+	    ENTRANCED = #{entranceD},
+	    BALCONY = #{balcony},
+	    BALCONYD = #{balconyD},
+	    LIGHTING = #{lighting},
+	    LIGHTINGD = #{lightingD},
+	    DOOR = #{door},
+	    DOORD = #{doorD},
+	    ETC = #{etc},
+	    ETCD = #{etcD}
+		WHERE itemNo = #{itemNo}  
+	  </update>
+  
+	  <!-- 견적서 항목 업데이트 -->
+	  <update id="updateQuotationTable">
+		UPDATE quotation
+		SET	
+		demolTotal = #{demolTotal},
+	    constTotal = #{constTotal}
+		WHERE quoNo = #{quoNo}  
+	  </update>
+	  
+	  <!-- insert -->
+	<insert id="insert">
+   		INSERT INTO SIREQ(sireqNo, quoNo, itemNo, consultNo, mid, mname, sireqDate, sigongTotal, sireqStatus, payStatus, sireqUpdateDate)
+   		VALUES(sireq_seq.nextval, #{qvo.quoNo}, #{itemNo}, #{consultNo}, #{mid}, #{mname}, SYSDATE, #{sigongTotal}, DEFAULT, DEFAULT, SYSDATE)
+	
+  	</insert>	
+	  
+  <!-- 시공의뢰 등록 -->
+  <insert id="insertSelectkey">
+		<selectKey keyProperty="sireqNo" order="BEFORE" resultType="int">
+			select sireq_seq.nextval from dual		
+		</selectKey>	
+		INSERT INTO SIREQ (sireqNo, quoNo, itemNo, consultNo, mid, mname, sireqDate, sigongTotal, sireqStatus, payStatus, sireqUpdateDate)
+		VALUES (#{sireqNo}, #{quotationvo.quoNo}, #{ivo.itemNo}, #{consultvo.consultNo}, #{mvo.mid}, #{mvo.mname}, SYSDATE, #{sigongTotal}, DEFAULT, DEFAULT, SYSDATE)
+     
+ </insert>
+  
+  <!-- 시공의뢰 전체조회 (페이징x) -->
+  <select id="getList" resultMap="sireqMap">       
+		<![CDATA[ SELECT
+				    sireqNo, quoNo, mid, mname, sireqDate, sireqStatus, payStatus, sireqUpdateDate
+				FROM
+				    (
+				    SELECT 
+				         /*+INDEX_DESC(sireq PK_SIREQ) */
+				        rownum rn, s.sireqNo, q.quoNo, m.mid, m.mname, s.sireqDate, s.sireqStatus, s.payStatus, s.sireqUpdateDate
+				    FROM sireq s
+				    JOIN member m ON s.mid = m.mid
+					JOIN quotation q ON s.quoNo = q.quoNo 
+					ORDER BY s.sireqDate DESC
+					)
+					
+   	
+    ]]>
+	</select>
+	
+	<!-- 시공의뢰 전체조회 -->
+  <select id="getListWithPaging" resultMap="sireqMap">    
+  			<![CDATA[ SELECT
+				    sireqNo, quoNo, mid, mname, sireqDate, sireqStatus, payStatus, sireqUpdateDate
+				FROM
+				    (
+				    SELECT 
+				         /*+INDEX_DESC(sireq PK_SIREQ) */
+				        rownum rn, s.sireqNo, q.quoNo, m.mid, m.mname, s.sireqDate, s.sireqStatus, s.payStatus, s.sireqUpdateDate
+				    FROM sireq s
+				    JOIN member m ON s.mid = m.mid
+					JOIN quotation q ON s.quoNo = q.quoNo
+					WHERE ]]>
+    			 	    <!-- 보관해 둔 쿼리 사용 -->
+    			 	    <include refid="SireqCriteria"></include>
+    			 	<![CDATA[    rownum <= #{amount} * #{pageNum})										
+					WHERE rn > #{amount} * ( #{pageNum} - 1 )
+   					ORDER BY sireqDate DESC
+    		]]>   
+
+	</select>
+	
+	
+	
+	<!-- 시공의뢰 상세조회 -->
+	<select id="read" resultMap="sireqMap">
+    	SELECT
+				    sireqNo, quoNo, mname, sireqDate, constScheduleStart, constScheduleEnd, buildingType, pyeongsu, 
+				    tiling, tilingD, flooring, flooringD, kitchen, kitchenD, bathroom, bathroomD, entrance, entranceD, balcony, balconyD, lighting, lightingD, door, doorD, etc, etcD, 
+				    demolTotal, constTotal, sigongTotal, sireqStatus, payStatus
+				FROM
+				    (
+				    SELECT 
+				         /*+INDEX_DESC(sireq PK_SIREQ) */
+				        rownum rn, s.sireqNo, q.quoNo, m.mid, m.mname, s.sireqDate, q.constScheduleStart, q.constScheduleEnd, c.buildingType, c.pyeongsu, 
+				    i.tiling, i.tilingD, i.flooring, i.flooringD, i.kitchen, i.kitchenD, i.bathroom, i.bathroomD, i.entrance, i.entranceD, i.balcony, i.balconyD, i.lighting, i.lightingD, i.door, i.doorD, i.etc, i.etcD, 
+				    q.demolTotal, q.constTotal, s.sigongTotal, s.sireqStatus, s.payStatus
+				    FROM sireq s
+                    join MEMBER m on s.mid = m.mid
+                    join CONSULT c on m.mid = c.mid
+                    join ITEM i on c.consultno = i.consultno
+                    join QUOTATION q on i.itemno = q.itemno )
+    	WHERE sireqNo = #{sireqNo}
+
+  	</select>
+  	
+  	<delete id="delete">
+	DELETE from SIREQ WHERE sireqNo = #{sireqNo}
+  	</delete>
+  	
+  	<update id="update">
+	UPDATE 	SIREQ
+	SET		
+			quoNo = #{quotationvo.quoNo}, 
+			itemNo = #{ivo.itemNo}, 
+			sigongTotal = #{sigongTotal},
+			sireqStatus= #{sireqStatus}, 
+			payStatus = #{payStatus},
+			sireqUpdateDate = SYSDATE
+			
+	WHERE	sireqNo = #{sireqNo}  
+  	</update>
+
+</mapper>
+
