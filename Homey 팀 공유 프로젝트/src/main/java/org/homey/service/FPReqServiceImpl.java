@@ -45,10 +45,8 @@ public class FPReqServiceImpl implements FPReqService {
 	}
 
 	@Override
-	@Transactional
+	@Transactional																//제품나눔 신청 후, 신청자 수도 1 증가되도록
 	public boolean fpReqRegister(FPReqVO fprvo) {
-		//트랜잭셔널 애노테이션 추가한 후,
-		//mapper.register 후 mapper.plusNowPeople도 처리되게 하기
 		
 		log.info("register...." + fprvo);
 		result = fpReqMapper.fpReqInsert(fprvo) == 1;
