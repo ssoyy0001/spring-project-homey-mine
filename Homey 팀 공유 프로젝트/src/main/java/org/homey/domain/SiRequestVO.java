@@ -8,15 +8,19 @@ import lombok.Data;
 @Data
 public class SiRequestVO {
 	
-    private int sireqNo;// 의뢰번호(PK)   
+    private int sireqNo;// 의뢰번호(PK)  
     
+    private MemberVO mvo;// 의뢰인 이름, 회원ID
     private ConsultVO consultvo;// 견적상담관련 목록(FK) 시공의뢰 1건에 시공의뢰 견적상담 1건이기에 VO객체로 생성
     private QuotationVO quotationvo;// 견적서관련 목록(FK) 위와 동일
     
-    private Date sireqDate;// 시공의뢰 등록일   
     
+    private Date sireqDate;// 시공의뢰 등록일   
+    private Date sireqUpdateDate;// 시공의뢰 업데이트날짜
     private ItemVO ivo;// consultNo에 해당하는 아이템 목록(철거 항목/시공 항목 및 비용)
     
+//    private int demolTotal; // 철거
+//    private int constTotal; // 시공
     private int sigongTotal;// 총 시공 금액    
     
     private String sireqStatus;// 의뢰 진행 현황
