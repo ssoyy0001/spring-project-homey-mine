@@ -64,23 +64,26 @@
 
 								<div class="form-group mt-3">
 									<label class="caseNm"><strong>작업등록번호</strong></label> <input
-										type="number" name="sicheNo" class="caseItem" required>
+										type="text" name="sicheNo" class="caseItem"
+										value="${siche.sicheNo }" required readonly>
 								</div>
 
 								<div class="form-group mt-3">
 									<label class="caseNm"><strong>시공비용</strong></label> <input
-										type="text" name="totalRange" class="caseItem">
+										type="text" name="totalRange" value="${siche.total }" readonly
+										class="caseItem">
 								</div>
 
 								<div class="form-group mt-3">
 									<label class="caseNm"><strong>평수</strong></label> <input
-										type="text" name="sizeRange" class="caseItem" required>
+										type="text" name="sizeRange" class="caseItem"
+										value="${siche.pyeongsu }" required readonly>
 								</div>
 
 								<div class="form-group mt-3">
 									<label class="caseNm"><strong>주거유형</strong></label> <input
 										type="text" name="buildingType" class="caseItem"
-										required="required">
+										required="required" value="${siche.buildingType }" readonly>
 								</div>
 								<div class="form-group mt-3">
 									<label class="caseNm"><strong>썸네일 이미지</strong></label> <input
@@ -161,6 +164,34 @@
 
 
 	<script>
+	//비용(total),평수 데이터 변형
+		window.onload = function() {
+        var total ='${siche.total}'; // input 값 받아오기
+        total = Math.floor(total / 10000000); // 백만으로 나누고 내림 처리 후 다시 백만을 곱하기
+        if (total === 0) {
+            total = "1000만원이하";
+        } else if (total === 1) {
+            total = "1000만원+";
+        } else if (total === 2) {
+            total = "2000만원+";
+        } else if (total === 3) {
+            total = "3000만원+";
+        } else if (total >= 4) {
+            total = "4000만원+";
+        }
+        $('input[name=totalRange]').val(total);
+        
+        var size='${siche.pyeongsu}'
+        size=Math.floor(size/10)*10;
+        if(size ==0){
+        	size="10평대";
+        }else if(size >= 4){
+        	size="40평대+"
+        }else{
+        	size=size+"평대";        	
+        }
+        $('input[name=sizeRange]').val(size);
+    }
 		//업로드 제한(사이즈, 확장자) 확인-------------------------------------------------
 
 		var regEx = new RegExp("\\.(bmp|gif|jpg|jpeg|png)$"); //정규표현식 : 이미지 파일만 업로드 가능
