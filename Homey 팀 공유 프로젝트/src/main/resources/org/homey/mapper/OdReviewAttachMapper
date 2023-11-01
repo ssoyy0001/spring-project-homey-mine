@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.homey.mapper.OdReviewAttachMapper">
+  
+	<select id="yesterdayFiles" resultType="org.homey.domain.OdReviewAttachVO">
+		SELECT * 
+		FROM odReviewAttach
+		WHERE upFolder = to_char(sysdate-1, 'yyyy\MM\dd')
+	</select>
+
+	<insert id="insert">	
+		INSERT INTO odReviewAttach(orNo, uuid, upFolder, fileName, image)
+		VALUES(#{orNo}, #{uuid}, #{upFolder}, #{fileName}, #{image})
+	</insert>
+	
+  
+	<delete id="delete">	
+		DELETE FROM odReviewAttach WHERE uuid = #{uuid}
+	</delete>
+  
+  
+	<delete id="deleteAll"><!-- orNo받아서 해당 orNo의 첨부파일을 전부 삭제하는 쿼리 -->	
+		DELETE FROM odReviewAttach WHERE orNo = #{orNo}
+	</delete>
+	
+
+	<select id="select" resultType="org.homey.domain.OdReviewAttachVO">
+		SELECT * FROM odReviewAttach WHERE orNo = #{orNo}
+	</select>  
+  
+</mapper>
