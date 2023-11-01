@@ -1,0 +1,270 @@
+---------<테이블 모음>------
+--멤버---
+CREATE TABLE member (
+    mid VARCHAR2(50) NOT NULL,
+    pw VARCHAR2(100) NOT NULL,
+    mname VARCHAR2(50) NOT NULL,
+    maddr VARCHAR2(150) NOT NULL,
+    memail VARCHAR2(100) NOT NULL,
+    mphone VARCHAR2(100) NOT NULL,
+    mdate DATE DEFAULT SYSDATE NULL
+);
+ALTER TABLE member ADD CONSTRAINT PK_MEMBER PRIMARY KEY (
+    mid
+);
+--멤버권한--
+CREATE TABLE memberAuth (
+    mid VARCHAR2(50) NOT NULL,
+    auth VARCHAR2(50) NOT NULL,
+    CONSTRAINT fk_memberAuth
+        FOREIGN KEY (mid)
+        REFERENCES member(mid)
+	ON DELETE CASCADE
+);
+--리멤버미--
+CREATE TABLE PERSISTENT_LOGINS (	
+	SERIES VARCHAR2(64 BYTE), 
+    	USERNAME VARCHAR2(64 BYTE) NOT NULL ENABLE, 
+	TOKEN VARCHAR2(64 BYTE) NOT NULL ENABLE, 
+	LAST_USED TIMESTAMP (6) NOT NULL ENABLE, 
+	PRIMARY KEY (SERIES));
+--견적상담--
+CREATE TABLE consult (
+    consultNo NUMBER NOT NULL,
+    mid VARCHAR2(50) NOT NULL,
+    mphone VARCHAR2(50) NOT NULL,
+    postcode VARCHAR2(50) NOT NULL,
+    address VARCHAR2(100) NOT NULL,
+    detailAddress VARCHAR2(100) NOT NULL,
+    buildingType VARCHAR2(100) NOT NULL,
+    scheduledDate VARCHAR2(50) NOT NULL,
+    budget NUMBER NOT NULL,
+    pyeongsu NUMBER NOT NULL,
+    happyCall VARCHAR2(100) NOT NULL,
+    consultDate DATE DEFAULT SYSDATE NOT NULL,
+    status VARCHAR2(100) NOT NULL
+);
+ALTER TABLE consult ADD CONSTRAINT PK_CONSULT PRIMARY KEY (
+    consultNo
+);
+ALTER TABLE consult ADD CONSTRAINT FK_member_TO_consult_1 FOREIGN KEY (
+    mid
+)
+REFERENCES member (
+    mid
+)
+ON DELETE CASCADE
+;
+--견적서---
+CREATE TABLE quotation (
+    quoNo NUMBER NOT NULL,
+    itemNo NUMBER NOT NULL,
+    consultNo NUMBER NOT NULL,
+    quoDate DATE DEFAULT SYSDATE NOT NULL,
+    constScheduleStart VARCHAR2(100) NOT NULL,
+    constScheduleEnd VARCHAR2(100) NOT NULL,
+    constTotal NUMBER NOT NULL,
+    demolTotal NUMBER NOT NULL,
+    total NUMBER NOT NULL
+);
+ALTER TABLE quotation ADD CONSTRAINT PK_QUOTATION PRIMARY KEY (
+    quoNo
+);
+ALTER TABLE quotation ADD CONSTRAINT FK_consult_TO_quotation_1 FOREIGN KEY (
+    consultNo
+)
+REFERENCES consult (
+    consultNo
+)
+ON DELETE CASCADE
+;
+--공지사항---
+CREATE TABLE notice (
+    notNo NUMBER NOT NULL,
+    mid VARCHAR2(50) NOT NULL,
+    notCategory VARCHAR2(50) NOT NULL,
+    notTitle VARCHAR2(999) NOT NULL,
+    notCont VARCHAR2(999) NOT NULL,
+    notHit NUMBER NOT NULL,
+    notImage VARCHAR2(100) NULL,
+    notDate DATE DEFAULT SYSDATE NOT NULL
+);
+ALTER TABLE notice ADD CONSTRAINT PK_NOTICE PRIMARY KEY (
+    notNo
+);
+ALTER TABLE notice ADD CONSTRAINT FK_member_TO_notice_1 FOREIGN KEY (
+    mid
+)
+REFERENCES member (
+    mid
+);
+--공지사항첨부파일---
+CREATE TABLE noticeAttach (
+    uuid VARCHAR2(100) NOT NULL,
+    notNo NUMBER NOT NULL,
+    upfolder VARCHAR2(200) NOT NULL,
+    filename VARCHAR2(100) NOT NULL,
+    image CHAR(1) NULL
+);
+ALTER TABLE noticeAttach ADD CONSTRAINT PK_NOTICEATTACH PRIMARY KEY (
+    uuid
+);
+ALTER TABLE noticeAttach ADD CONSTRAINT FK_notice_TO_noticeAttach_1 FOREIGN KEY (
+    notNo
+)
+REFERENCES notice (
+    notNo
+);
+
+--시공&철거항목--
+CREATE TABLE item (
+    itemNo NUMBER NOT NULL,
+    consultNo NUMBER NOT NULL,
+    tiling NUMBER NULL,
+    tilingD NUMBER NULL,
+    flooring NUMBER NULL,
+    flooringD NUMBER NULL,
+    kitchen NUMBER NULL,
+    kitchenD NUMBER NULL,
+    bathroom NUMBER NULL,
+    bathroomD NUMBER NULL,
+    entrance NUMBER NULL,
+    entranceD NUMBER NULL,
+    balcony NUMBER NULL,
+    balconyD NUMBER NULL,
+    lighting NUMBER NULL,
+    lightingD NUMBER NULL,
+    door NUMBER NULL,
+    doorD NUMBER NULL,
+    etc NUMBER NULL,
+    etcD NUMBER NULL
+);
+ALTER TABLE item ADD CONSTRAINT PK_ITEM PRIMARY KEY (
+    itemNo
+);
+ALTER TABLE item
+ADD CONSTRAINT FK_consult_TO_item_1
+FOREIGN KEY (consultNo)
+REFERENCES consult(consultNo)
+ON DELETE CASCADE;
+----방문일정------
+CREATE TABLE visit (
+    visitNo NUMBER NOT NULL,
+    consultNo NUMBER NOT NULL,
+    visitStatus VARCHAR2(100) NOT NULL,
+    description VARCHAR2(100) NULL,
+    visitDateStart DATE NULL,
+    visitDateEnd DATE NULL,
+);
+ALTER TABLE visit ADD CONSTRAINT PK_VISIT PRIMARY KEY (
+    visitNo
+);
+ALTER TABLE visit ADD CONSTRAINT FK_consult_TO_visit_1 FOREIGN KEY (
+    consultNo
+)
+REFERENCES consult (
+    consultNo
+)
+ON DELETE CASCADE;	
+
+-----추가 FK 견적서-아이템 -------
+ALTER TABLE quotation ADD CONSTRAINT FK_item_TO_quotation_1 FOREIGN KEY (
+    itemNo
+)
+REFERENCES item (
+    itemNo
+)
+ON DELETE CASCADE
+;
+------시공의뢰-------
+CREATE TABLE sireq (
+    sireqNo NUMBER,
+    quoNo NUMBER,
+    itemNo NUMBER,
+    consultNo NUMBER,
+    mid VARCHAR2(50),
+    mname VARCHAR2(50),
+    sireqDate DATE DEFAULT SYSDATE,
+    sigongTotal NUMBER,
+    sireqStatus VARCHAR2(30) DEFAULT '의뢰접수',
+    payStatus VARCHAR2(30) DEFAULT '계약금미납',
+    sireqUpdateDate DATE DEFAULT SYSDATE
+);
+
+ALTER TABLE sireq ADD CONSTRAINT PK_SIREQ PRIMARY KEY (
+	sireqNo
+);
+ALTER TABLE sireq ADD CONSTRAINT FK_quotation_TO_sireq_1 FOREIGN KEY (
+	quoNo
+)
+REFERENCES sireq (
+	quoNo
+) ON DELETE CASCADE;
+ALTER TABLE sireq ADD CONSTRAINT FK_item_TO_sireq_1 FOREIGN KEY (
+	itemNo
+)
+REFERENCES item (
+	itemNo
+) ON DELETE CASCADE;
+ALTER TABLE sireq ADD CONSTRAINT FK_consult_TO_sireq_1 FOREIGN KEY (
+    consultNo
+)
+REFERENCES consult (
+    consultNo
+)
+ON DELETE CASCADE
+;
+ALTER TABLE sireq ADD CONSTRAINT FK_member_TO_sireq_1 FOREIGN KEY (
+	mid
+)
+REFERENCES member (
+	mid
+) ON DELETE CASCADE;
+-----시공의뢰 첨부파일-------
+CREATE TABLE sireqAttach (
+	uuid	VARCHAR2(100),
+	sireqNo	NUMBER,
+	upFolder	VARCHAR2(200),
+	fileName	VARCHAR2(100),
+	image	CHAR(1 )
+);
+ALTER TABLE sireqAttach ADD CONSTRAINT PK_SIREQATTACH PRIMARY KEY (
+	uuid
+);
+ALTER TABLE sireqAttach ADD CONSTRAINT FK_sireq_TO_sireqAttach_1 FOREIGN KEY (
+	sireqNo
+)
+REFERENCES sireq (
+	sireqNo
+) ON DELETE CASCADE;
+--시공팀스케줄관리-------
+CREATE TABLE siche (
+	sicheNo	NUMBER	NOT NULL,
+	sireqNo	NUMBER	NOT NULL,
+	quoNo	NUMBER	NOT NULL,
+	mid	VARCHAR2(50)	NOT NULL,
+	startDate	DATE	DEFAULT SYSDATE NOT NULL,
+	endDate		DATE NOT NULL,
+	balanceStatus	VARCHAR2(30) DEFAULT '잔금처리대기' NOT NULL,
+	constructionStatus	VARCHAR2(30) DEFAULT '착수전' NOT NULL,
+	workCrew	VARCHAR2(20)	NOT NULL
+);
+ALTER TABLE siche ADD CONSTRAINT PK_SICHE PRIMARY KEY (
+	sicheNo
+);
+ALTER TABLE siche ADD CONSTRAINT FK_sireq_TO_siche_1 FOREIGN KEY (
+	sireqNo
+)
+REFERENCES sireq (
+	sireqNo
+) ON DELETE CASCADE;
+ALTER TABLE siche
+ADD CONSTRAINT fk_quoNo
+FOREIGN KEY (quoNo)
+REFERENCES quotation(quoNo)  ON DELETE CASCADE;
+ALTER TABLE siche ADD CONSTRAINT FK_member_TO_siche_1 FOREIGN KEY (
+	mid
+)
+REFERENCES member (
+	mid
+) ON DELETE CASCADE;
