@@ -35,7 +35,7 @@
 	</resultMap>
 	
 
-	<select id="fpWinSelect" resultMap="fpReqMap">	<!-- id는 인터페이스의 메서드명, resultType은 임포트내용 / 여러 개면 알아서 List로 바꿔줌 -->
+	<select id="fpWinSelect" resultMap="fpReqMap">
 	    	SELECT rownum AS fpWinRn, t.*
 	    	FROM (SELECT fpr.fpWinNo, fpr.fpNo, fpr.mid,
        							m.pw, m.mname, m.maddr, m.memail, m.mphone, m.mdate
@@ -48,7 +48,7 @@
   
   
 <!-- 제품 나눔 당첨자 목록조회 : 모든 제품 나눔의 당첨자 -->
-	<select id="fpWinSelectAll" resultType="org.homey.domain.FPReqVO">	<!-- id는 인터페이스의 메서드명, resultType은 임포트내용 / 여러 개면 알아서 List로 바꿔줌 -->
+	<select id="fpWinSelectAll" resultType="org.homey.domain.FPReqVO">
 	    	SELECT rownum AS fpWinRn, fpWinNo, fpNo, mid 
 	    	FROM fpReq 
 	   		ORDER BY fpWinNo ASC
@@ -56,15 +56,14 @@
 
   
 <!-- 나의 제품 나눔 신청 목록조회 (20개 조회) -->
-
-	<select id="fpSelectMine" resultType="org.homey.domain.FPReqVO">	<!-- id는 인터페이스의 메서드명, resultType은 임포트내용 -->
+	<select id="fpSelectMine" resultType="org.homey.domain.FPReqVO">
 			<![CDATA[
 		    SELECT rownum AS fpWinRn, fpWinNo, fpNo, mid
 		    FROM	(SELECT fpWinNo, fpNo, mid
 		            	FROM fpReq
-		            	WHERE mid = #{mid}
-		            	ORDER BY fpWinNo ASC)
+		            	WHERE mid = #{mid})
 		    WHERE rownum <= 20
+		    ORDER BY fpWinNo DESC
 		    ]]>
 	</select>
 
@@ -78,7 +77,7 @@
 
 <!-- 제품 나눔 신청 중복체크  -->
 
-	<select id="fpReqCheck" resultType="int">	<!-- id는 인터페이스의 메서드명, resultType은 임포트내용 / 여러 개면 알아서 List로 바꿔줌 -->
+	<select id="fpReqCheck" resultType="int">
 			SELECT COUNT(*)
 			FROM fpReq
 			WHERE fpNo=#{fpNo} AND mid=#{mid}
