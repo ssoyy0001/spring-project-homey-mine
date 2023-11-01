@@ -1,0 +1,206 @@
+package org.homey.controller;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+
+import org.homey.domain.SoCriteria;
+import org.homey.domain.FpReviewAttachVO;
+import org.homey.domain.FpReviewVO;
+import org.homey.domain.PageDTO;
+import org.homey.service.FpReviewService;
+import org.homey.service.FreePdtService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import lombok.Setter;
+import lombok.extern.log4j.Log4j;
+
+@Controller
+@Log4j
+@RequestMapping("/fpReview/*")		//대표 맵핑
+public class FpReviewController {
+	
+	@Setter(onMethod_ = @Autowired)
+	private FpReviewService fpReviewService;
+	
+	@Setter(onMethod_ = @Autowired)
+	private FreePdtService freePdtService;
+	
+	
+	@GetMapping("list")
+	public String list(Model model, SoCriteria cri) {	//결과 페이지로 보낼 데이터를 model에 담음
+		
+		log.info("list......" + cri);
+		model.addAttribute("list", fpReviewService.listPaging(cri));
+		model.addAttribute("pageDTO", new PageDTO(cri, fpReviewService.totalCount(cri)));	
+		
+		return "/review/fpReviewList";	
+	}
+	
+	
+	@GetMapping("myList")
+	@PreAuthorize("principal.username == #mid")							//작성자의 경우에만 수정폼으로 이동 가능
+	public String myList(Model model, SoCriteria cri, String mid) {		//결과 페이지로 보낼 데이터를 model에 담음
+		
+		log.info( mid + "의 list......" + cri);
+		model.addAttribute("myReviewList", fpReviewService.listMine(mid, cri));
+		model.addAttribute("pageDTO", new PageDTO(cri, fpReviewService.mineCount(mid, cri)));	
+		
+		return "/review/myFpReviewBrd";	
+	}
+	
+	
+	
+	@GetMapping("view")	
+	@PreAuthorize("isAuthenticated()")		//로그인한 경우에만 가능
+	public String view(int prNo, Model model, @ModelAttribute("cri") SoCriteria cri) {		//@ModelAttribute("cri") : pageNum, amount라는 이름으로 받아오므로 "cri"를 붙여줘야 매칭됨
+		log.info("view......" + prNo );
+		FpReviewVO prvo = fpReviewService.view(prNo);
+		
+		model.addAttribute("prvo", prvo);
+		model.addAttribute("fpvo", freePdtService.fpView(prvo.getFpNo()));
+		
+		return "/review/fpReviewView";
+	}
+	
+	
+	
+	@GetMapping("attachList")				//게시물 상세조회 시, 해당 게시물에 첨부된 첨부파일리스트 조회 -> view.jsp에서 ajax로 메서드 접근
+	public ResponseEntity<List<FpReviewAttachVO>> attachList(int prNo) {		
+		log.info("AttachList......"+prNo);		
+		return new ResponseEntity<List<FpReviewAttachVO>>(fpReviewService.attachList(prNo), HttpStatus.OK);
+	}
+	
+
+	
+	@GetMapping("register")
+	@PreAuthorize("isAuthenticated()")																//현재 로그인 상태인지 체크
+	public String register(@RequestParam("fpNo")int fpNo, Model model) {		//"나의 제품 나눔 신청목록" 화면에서 [후기작성] 버튼으로 접속
+		
+		log.info("register......" + fpNo + "번 게시물에 대한 후기 작성폼");
+		
+		String freePdt = freePdtService.fpView(fpNo).getFreePdt();						//어떤 나눔물품에 대한 후기인지 표시하기 위함
+		model.addAttribute("freePdt", freePdt);
+		model.addAttribute("fpNo", fpNo);
+		
+		return "/review/fpReviewRegi";
+	}
+	
+	
+	
+	
+	@PostMapping("register")
+	@PreAuthorize("isAuthenticated()")
+	public String register(FpReviewVO prvo, RedirectAttributes rttr) {
+		log.info("register......");
+		
+		if(fpReviewService.register(prvo)) {
+			
+			if(prvo.getPrAttachList() != null) {												//게시물 안에 첨부파일이 있다면, 개별파일을 log로 확인
+				prvo.getPrAttachList().forEach(attach -> log.info(attach));
+			}
+			rttr.addFlashAttribute("msg", "리뷰가 등록되었습니다.");
+		}else {
+			rttr.addFlashAttribute("msg", "리뷰 등록에 실패하였습니다.");
+		}
+		return "redirect:/fpReview/list";
+
+	}
+	
+	
+	@GetMapping("modify")
+	@PreAuthorize("principal.username == #mid")									//작성자의 경우에만 수정폼으로 이동 가능
+	public String modify(int prNo, String mid, String freePdt, Model model, @ModelAttribute("cri") SoCriteria cri) {
+		log.info("modify......" + prNo);
+		model.addAttribute("prvo", fpReviewService.view(prNo));
+		model.addAttribute("freePdt", freePdt);
+		
+		return "/review/fpReviewModi";
+	}
+	
+	
+	@PostMapping("modify")
+	public String modify(FpReviewVO prvo, RedirectAttributes rttr, @ModelAttribute("cri") SoCriteria cri) {		
+		log.info("modify......");
+	
+		if(fpReviewService.modify(prvo)) {
+			rttr.addFlashAttribute("msg", "리뷰가 수정되었습니다.");
+		}else {
+			rttr.addFlashAttribute("msg", "리뷰 수정에 실패하였습니다.");
+		}
+		rttr.addAttribute("pageNum", cri.getPageNum());
+		rttr.addAttribute("amount", cri.getAmount());
+		rttr.addAttribute("type", cri.getType());
+		rttr.addAttribute("keyword", cri.getKeyword());
+		
+		return "redirect:/fpReview/view?prNo="+prvo.getPrNo();			//수정 후 상세조회 페이지로 이동
+	}
+	
+	
+	@PostMapping("remove")
+	@PreAuthorize("principal.username == #mid")
+	public String remove(String mid, int prNo, RedirectAttributes rttr, @ModelAttribute("cri") SoCriteria cri) {	
+		log.info("remove......");
+		
+		List<FpReviewAttachVO> attachList = fpReviewService.attachList(prNo);  //해당 게시글의 첨부파일 목록 가져오기
+		
+		if(fpReviewService.remove(prNo)) {					//prNo가 잘 지워졌으면	
+		    deleteFiles(attachList);                                  //해당 게시글의 첨부 파일 삭제 메서드 호출
+			rttr.addFlashAttribute("msg", "리뷰가 삭제되었습니다.");
+		}else {
+			rttr.addFlashAttribute("msg", "리뷰삭제에 실패하였습니다.");
+		}
+		rttr.addAttribute("pageNum", cri.getPageNum());
+		rttr.addAttribute("amount", cri.getAmount());
+		rttr.addAttribute("type", cri.getType());
+		rttr.addAttribute("keyword", cri.getKeyword());
+		
+		return "redirect:/fpReview/list";
+	}
+	
+	
+	//첨부파일 삭제
+	//컨트롤러의 remove 메서드, modify.jsp에서 사용할 것, 새로운 파일 선택 시 기존의 파일은 전부 지울 거라서 List로 받음
+	@PostMapping("deleteFiles")
+	public void deleteFiles(List<FpReviewAttachVO> attachList) {
+		log.info("deleteFiles......");
+		
+		if(attachList == null || attachList.size() == 0) {		//attachList가 비어있으면 함수 탈출 (지울 게 없으니까)
+			return;
+		}
+		attachList.forEach(pravo -> {
+				Path file = Paths.get("c:\\upload\\" +
+												pravo.getUpFolder() + "\\" +
+												pravo.getUuid() + "_" +
+												pravo.getFileName());					
+			try {
+				Files.deleteIfExists(file);			//위의 원본파일 삭제 -> 파일이 존재하는 경우에는 파일을 삭제하고, 파일이 존재하지 않는 경우에는 파일을 삭제하지 않고, false를 리턴
+				
+				if(Files.probeContentType(file).startsWith("image")) {
+					Path thumbnail = Paths.get("c:\\upload\\" +
+															pravo.getUpFolder() + "\\s_" +
+															pravo.getUuid() + "_" +
+															pravo.getFileName());
+					Files.deleteIfExists(thumbnail);			//썸네일 삭제
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}//END try문
+		});
+	}//END deleteFiles();
+	
+	
+}
