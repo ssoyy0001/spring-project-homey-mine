@@ -1,0 +1,29 @@
+package org.homey.service;
+
+import java.util.List;
+
+import org.homey.domain.SoCriteria;
+import org.homey.domain.OdReviewAttachVO;
+import org.homey.domain.OdReviewVO;
+
+
+public interface OdReviewService {
+	
+	// 리뷰게시판 관련 서비스단
+	//DB보다는 고객들과 더 가깝기 때문에 BoardMapper 인터페이스에 비해 명칭이 달라짐
+	//반환형도 boolean으로
+	
+	//페이징
+	public List<OdReviewVO> listPaging(SoCriteria cri);
+	public int totalCount(SoCriteria cri);
+	public List<OdReviewVO> listMine(String mid, SoCriteria cri);
+	public int mineCount(String mid, SoCriteria cri);
+	
+	public OdReviewVO view(int orNo);											//상세 조회
+	public boolean register(OdReviewVO orvo);								//등록
+	public boolean remove(int orNo);												//삭제
+	public boolean modify(OdReviewVO orvo);									//수정
+	
+	public List<OdReviewAttachVO> attachList(int orNo);					//특정 리뷰의 첨부파일리스트 조회
+
+}
