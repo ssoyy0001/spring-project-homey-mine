@@ -10,7 +10,7 @@ import org.homey.domain.SireqCriteria;
 public interface SiRequestMapper {
 	
 	public List<SiRequestVO> getListWithPaging(SireqCriteria cri); //시공의뢰 전체목록 + 페이징
-//	public int totalCount(SireqCriteria cri); //시공의뢰 전체 수
+	public int totalCount(SireqCriteria cri); //시공의뢰 전체 수
 	
 //	public List<SiRequestVO> getList(); //시공의뢰 전체목록
 	
