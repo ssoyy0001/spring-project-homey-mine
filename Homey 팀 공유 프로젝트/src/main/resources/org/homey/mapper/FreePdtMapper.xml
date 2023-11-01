@@ -35,18 +35,18 @@
 	
 <!-- 제품 나눔 게시글 전체조회  -->
 	
-	<select id="fpSelectAllPaging" resultType="org.homey.domain.FreePdtVO">	<!-- id는 인터페이스의 메서드명, resultType은 임포트내용 / 여러 개면 알아서 List로 바꿔줌 -->
+	<select id="fpSelectAllPaging" resultType="org.homey.domain.FreePdtVO">
 			<![CDATA[
 	    	SELECT ((#{pageNum} - 1) * #{amount}) +  rownum as fpRn, fpNo, fpTitle, fpContent, freePdt, fpPeople, fpNowPeople, fpDeadline, fpState, fpGetDate, fpGetPlace, fpWDate, mid, fpImg
-	    	FROM	(	SELECT	/*+INDEX_DESC(product pk_product)		*/
-	    								rownum rn, fpNo, fpTitle, fpContent, freePdt, fpPeople, fpNowPeople, fpDeadline, fpState, fpGetDate, fpGetPlace, fpWDate, mid, fpImg 
-	    					FROM	freePdt
+	    	FROM	(	SELECT	rownum rn, fpNo, fpTitle, fpContent, freePdt, fpPeople, fpNowPeople, fpDeadline, fpState, fpGetDate, fpGetPlace, fpWDate, mid, fpImg 
+	    					FROM	(  SELECT *
+	    									FROM freePdt
+	    									ORDER BY fpNo DESC )
 	    					WHERE	]]>
 	    					<!-- 위에 보관해둔 쿼리 사용 -->
 	    					<include refid="criteria"></include>
 	    					<![CDATA[				
-	    								rownum <= #{amount}	*	#{pageNum}		
-	   						ORDER BY fpNo DESC	
+	    								rownum <= #{amount}	*	#{pageNum}	
 	  					 )
 	    	WHERE		rn		>	#{amount}	*	(	#{pageNum}	 -1	)
 	  		]]>
@@ -54,8 +54,8 @@
   
 <!-- 제품 나눔 게시글 상세조회  -->
 
-	<select id="fpSelect" resultType="org.homey.domain.FreePdtVO">	<!-- id는 인터페이스의 메서드명, resultType은 임포트내용 -->
-	 	SELECT * FROM freePdt WHERE fpNo=#{fpNo}		<!-- 바인딩 대신 el태그를 사용하는데, $ 대신 # , BoardMapper인터페이스의 매개변수가 자동으로 들어옴-->
+	<select id="fpSelect" resultType="org.homey.domain.FreePdtVO">
+	 	SELECT * FROM freePdt WHERE fpNo=#{fpNo}
 	</select>
 
 <!-- 제품 나눔 게시글 등록  -->
@@ -89,7 +89,7 @@
 <!-- 제품 나눔 게시글 삭제  -->
 
 	<delete id="fpDelete">	
-	    DELETE FROM freePdt WHERE fpNo=#{fpNo}		<!-- 매개변수로 vo를 받기 때문에, vo의 변수명과 DB 컬럼명이 일치해야 함 -->
+	    DELETE FROM freePdt WHERE fpNo=#{fpNo}
 	</delete>
 
 
