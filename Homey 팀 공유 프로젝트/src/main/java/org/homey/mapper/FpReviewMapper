@@ -1,0 +1,28 @@
+package org.homey.mapper;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+import org.homey.domain.SoCriteria;
+import org.homey.domain.FpReviewVO;
+
+
+
+public interface FpReviewMapper {
+
+	//제품나눔 리뷰게시판 관련 맵퍼
+	
+	//페이징
+	public int totalCount(SoCriteria cri);
+	public List<FpReviewVO> selectAllPaging(SoCriteria cri);
+	public int mineCount(@Param("mid")String mid, SoCriteria cri);													//내가 작성한 리뷰 개수(페이징)
+	public List<FpReviewVO> selectMine(@Param("mid")String mid, @Param("cri")SoCriteria cri);		//내가 작성한 리뷰 목록 조회(페이징)
+	
+	public FpReviewVO select(int prNo);								//리뷰 상세조회
+	public int insertSelectKey(FpReviewVO prvo);					//리뷰 등록 
+	public int delete(int prNo);											//리뷰 삭제
+	public int update(FpReviewVO prvo);								//리뷰 수정
+	
+	public int updateHit(@Param("prNo")int prNo);				//조회수 업데이트	
+	
+}
