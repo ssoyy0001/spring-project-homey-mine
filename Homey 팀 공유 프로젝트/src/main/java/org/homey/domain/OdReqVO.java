@@ -18,6 +18,6 @@ public class OdReqVO {
     private Date odReqDate;					//신청일자
     private int odReqWin;						//당첨여부 (0:미당첨 / 1:당첨)
 
-    private MemberVO mvo;		//제품 나눔 신청자의 회원정보
+    private MemberVO mvo;					//원데이클래스 신청자의 회원정보
 
 }
