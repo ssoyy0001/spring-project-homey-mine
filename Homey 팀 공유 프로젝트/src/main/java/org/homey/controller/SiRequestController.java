@@ -12,16 +12,13 @@ import org.homey.service.ItemService;
 import org.homey.service.QuotationService;
 import org.homey.service.SiRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -55,8 +52,10 @@ public class SiRequestController {
 	public void list(Model model, SireqCriteria cri) { //시공의뢰 전체목록 + 페이징
 		log.info("list......" + cri);
 		model.addAttribute("list", sireqService.getList(cri)); //리스트 페이징
-//		int totalCount = sireqService.totalCount(cri);
-		model.addAttribute("pageDTO", new SireqPageDTO(cri, 500));//시공의뢰 전체 수
+//		model.addAttribute("pageDTO", new SireqPageDTO(cri, 500));//시공의뢰 전체 수
+		int totalCount = sireqService.totalCount(cri);
+		log.info("totalCount: " + totalCount);
+		model.addAttribute("pageDTO", new SireqPageDTO(cri, totalCount));//시공의뢰 전체 수
 
 	} 
 	
