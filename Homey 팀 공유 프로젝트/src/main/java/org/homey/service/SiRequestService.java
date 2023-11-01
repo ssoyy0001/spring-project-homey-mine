@@ -12,7 +12,7 @@ public interface SiRequestService {
 	
 //	public List<SiRequestAttachVO> sireqAttachList(int sireqNo); //시공의뢰 첨부파일
 	public List<SiRequestVO> getList(SireqCriteria cri); //시공의뢰 전체목록 + 페이징
-//	public int totalCount(SireqCriteria cri); //시공의뢰 전체 수
+	public int totalCount(SireqCriteria cri); //시공의뢰 전체 수
 	
 	public boolean register(SiRequestVO sireq, ItemVO ivo, QuotationVO qvo);//시공의뢰 등록시, 아이템 항목 업데이트와 견적서 항목 업데이트
 	public SiRequestVO get(int sireqNo); //시공의뢰 상세조회
