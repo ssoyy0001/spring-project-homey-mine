@@ -244,13 +244,6 @@ CREATE TABLE siche (
 	workCrew	VARCHAR2(20)	NOT NULL
 );
 
-CREATE TABLE sicheAttach (
-	uuid	VARCHAR2(100)	NOT NULL,
-	sicheNo	NUMBER	NOT NULL,
-	upFolder	VARCHAR2(200)	NOT NULL,
-	fileName	VARCHAR2(100)	NOT NULL,
-	image	CHAR(1 )	NULL
-);
 --시공팀스케줄관리 끝
 
 --시공후기 시작
@@ -306,9 +299,6 @@ ALTER TABLE sireqAttach ADD CONSTRAINT PK_SIREQATTACH PRIMARY KEY (
 	uuid
 );
 
-ALTER TABLE sicheAttach ADD CONSTRAINT PK_SICHEATTACH PRIMARY KEY (
-	uuid
-);
 
 ALTER TABLE sirevAttach ADD CONSTRAINT PK_SIREVATTACH PRIMARY KEY (
 	uuid
@@ -342,11 +332,11 @@ REFERENCES sireq (
 	sireqNo
 ) ON DELETE CASCADE;
 
-ALTER TABLE siche ADD CONSTRAINT FK_item_TO_siche_1 FOREIGN KEY (
-	itemNo
+ALTER TABLE siche ADD CONSTRAINT FK_quo_TO_siche_1 FOREIGN KEY (
+	quoNo
 )
-REFERENCES item (
-	itemNo
+REFERENCES quotation (
+	quoNo
 ) ON DELETE CASCADE;
 
 ALTER TABLE siche ADD CONSTRAINT FK_member_TO_siche_1 FOREIGN KEY (
@@ -384,12 +374,6 @@ REFERENCES sireq (
 	sireqNo
 ) ON DELETE CASCADE;
 
-ALTER TABLE sicheAttach ADD CONSTRAINT FK_siche_TO_sicheAttach_1 FOREIGN KEY (
-	sicheNo
-)
-REFERENCES siche (
-	sicheNo
-) ON DELETE CASCADE;
 
 ALTER TABLE sirevAttach ADD CONSTRAINT FK_sirev_TO_sirevAttach_1 FOREIGN KEY (
 	sirevNo
