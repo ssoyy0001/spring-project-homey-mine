@@ -21,40 +21,40 @@ public class FreePdtServiceImpl implements FreePdtService {
 	   private FreePdtMapper freePdtMapper;			//제품 나눔 게시글 CRUD 맵퍼
 
 	@Override
-	public int fpTotalCount(SoCriteria cri) {				//페이징 시 필요한 게시글 개수 조회
-		log.info("fpTotalCount.......");						//ServiceImpl까지 잘 넘어왔는지 로그에 찍어봄
+	public int fpTotalCount(SoCriteria cri) {			//페이징 시 필요한 게시글 개수 조회
+		log.info("fpTotalCount.......");
 		return freePdtMapper.fpTotalCount(cri);
 	}
 
 	@Override
 	public List<FreePdtVO> fpListPaging(SoCriteria cri) {			//제품 나눔 게시글 전체조회 (페이징O)
-		log.info("OnedayService의 listPaging......." + cri);		
+		log.info("listPaging......." + cri);		
 		return freePdtMapper.fpSelectAllPaging(cri);
 	}
 
 
 	@Override
-	public FreePdtVO fpView(int fpNo) {								//제품 나눔 게시글 상세조회
+	public FreePdtVO fpView(int fpNo) {									//제품 나눔 게시글 상세조회
 		log.info("view......" + fpNo); 			
 		return freePdtMapper.fpSelect(fpNo);
 	}
 
 	@Override
-	public boolean fpRegister(FreePdtVO fpvo) {					//원데이클래스 게시글 등록
+	public boolean fpRegister(FreePdtVO fpvo) {						//제품 나눔 게시글 등록
 		log.info("register...." + fpvo);
 		result = freePdtMapper.fpInsert(fpvo) == 1;
 		return result;
 	}
 
 	@Override
-	public boolean fpRemove(int fpNo) {							//원데이클래스 게시글 삭제
+	public boolean fpRemove(int fpNo) {								//제품 나눔 게시글 삭제
 		log.info("remove........" + fpNo);
 		result = freePdtMapper.fpDelete(fpNo) == 1;		
 		return result;
 	}
 
 	@Override
-	public boolean fpModify(FreePdtVO fpvo) {					//원데이클래스 게시글 수정
+	public boolean fpModify(FreePdtVO fpvo) {						//제품 나눔 게시글 수정
 		log.info("modify....." + fpvo);		
 		result = freePdtMapper.fpUpdate(fpvo) ==1;
 		return result; 
