@@ -1,0 +1,23 @@
+package org.homey.domain;
+
+import java.util.Date;
+import java.util.List;
+
+import lombok.Data;
+
+@Data
+public class FpReviewVO {
+	
+	//제품 나눔 리뷰게시판 관련 VO
+	
+	private int prRn;								//제품 나눔 리뷰글 로우넘 (인덱스번호)
+	private int prNo;								//제품 나눔 리뷰글 번호 (PK)
+    private String mid;							//리뷰 작성자ID (FK)
+    private int fpNo;								//제품나눔 게시글 번호 -> 어떤 게시글에 대한 리뷰인지
+    private String prTitle;						//리뷰 제목
+    private String prContent;					//리뷰 내용
+    private Date prDate;							//작성일
+    private int prHit;								//조회 수
+    private List<FpReviewAttachVO> prAttachList;		//이미지리스트
+
+}
