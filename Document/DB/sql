@@ -213,6 +213,7 @@ CREATE TABLE sireq (
     sireqNo NUMBER,
     quoNo NUMBER,
     itemNo NUMBER,
+    consultNo NUMBER,
     mid VARCHAR2(50),
     mname VARCHAR2(50),
     sireqDate DATE DEFAULT SYSDATE,
@@ -311,12 +312,28 @@ ADD CONSTRAINT fk_quoNo
 FOREIGN KEY (quoNo)
 REFERENCES quotation(quoNo)  ON DELETE CASCADE;
 
+ALTER TABLE sireq ADD CONSTRAINT FK_quotation_TO_sireq_1 FOREIGN KEY (
+	quoNo
+)
+REFERENCES sireq (
+	quoNo
+) ON DELETE CASCADE;
+
 ALTER TABLE sireq ADD CONSTRAINT FK_item_TO_sireq_1 FOREIGN KEY (
 	itemNo
 )
 REFERENCES item (
 	itemNo
 ) ON DELETE CASCADE;
+
+ALTER TABLE sireq ADD CONSTRAINT FK_consult_TO_sireq_1 FOREIGN KEY (
+    consultNo
+)
+REFERENCES consult (
+    consultNo
+)
+ON DELETE CASCADE
+;
 
 ALTER TABLE sireq ADD CONSTRAINT FK_member_TO_sireq_1 FOREIGN KEY (
 	mid
