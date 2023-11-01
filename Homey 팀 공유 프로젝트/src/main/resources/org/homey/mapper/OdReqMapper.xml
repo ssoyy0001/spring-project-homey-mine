@@ -6,16 +6,16 @@
 
 	
 <!-- 원데이클래스 신청목록 전체조회  -->
-	<select id="odReqSelectAll" resultType="org.homey.domain.OdReqVO">	<!-- id는 인터페이스의 메서드명, resultType은 임포트내용 / 여러 개면 알아서 List로 바꿔줌 -->
+	<select id="odReqSelectAll" resultType="org.homey.domain.OdReqVO">
 	    SELECT rownum AS odReqRn, odReqNo, odNo, mid, odReqTitle, odReqContent, odReqDate, odReqWin 
 		FROM (SELECT odReqNo, odNo, mid, odReqTitle, odReqContent, odReqDate, odReqWin 
 				    FROM odReq	
-				    WHERE odNo = #{odNo}
-				    ORDER BY odReqDate)
+				    WHERE odNo = #{odNo})
+		ORDER BY odNo DESC
 	</select>
   
 <!-- 나의 원데이클래스 신청목록 전체조회  (20개 조회) : <원데이클래스 게시글 DB>에서 '모집현황, 글제목, 모집인원' 표시 -->
-	<select id="odReqSelectMine" resultType="org.homey.domain.OdReqVO">	<!-- id는 인터페이스의 메서드명, resultType은 임포트내용 / 여러 개면 알아서 List로 바꿔줌 -->
+	<select id="odReqSelectMine" resultType="org.homey.domain.OdReqVO">
 			<![CDATA[
 		    SELECT rownum AS odReqRn, odReqNo, odNo, mid, odReqTitle, odReqContent, odReqDate, odReqWin
 		    FROM	(SELECT odReqNo, odNo, mid, odReqTitle, odReqContent, odReqDate, odReqWin 
@@ -29,7 +29,7 @@
   
 <!-- 원데이클래스 신청 상세조회 :  <원데이클래스 게시글 DB>에서 '원데이클래스명' 표시해야 함. -->
 
-	<select id="odReqSelect" resultType="org.homey.domain.OdReqVO">	<!-- id는 인터페이스의 메서드명, resultType은 임포트내용 -->
+	<select id="odReqSelect" resultType="org.homey.domain.OdReqVO">
 	 	SELECT *
 		FROM odreq 
 		WHERE odReqNo = #{odReqNo}
@@ -47,7 +47,7 @@
 <!-- 원데이클래스 신청 철회  -->
 
 	<delete id="odReqDelete">	
-	    DELETE FROM odReq WHERE odReqNo=#{odReqNo}		<!-- 매개변수로 vo를 받기 때문에, vo의 변수명과 DB 컬럼명이 일치해야 함 -->
+	    DELETE FROM odReq WHERE odReqNo=#{odReqNo}
 	</delete>
 
 
@@ -73,7 +73,7 @@
 	    <result property="odReqContent" column="odReqContent"/>
 	    <result property="odReqDate" column="odReqDate"/>
 	    <result property="odReqWin" column="odReqWin"/>
-	    <result property="mid" column="mid"/>		<!-- 이 부분을 빼면 테스트했을 때 fpReqVO에 mid가 안담김 -->		
+	    <result property="mid" column="mid"/>	
 	    
 	    <!-- MemberVO 객체 매핑 -->
 	    <association property="mvo" javaType="org.homey.domain.MemberVO">
@@ -97,7 +97,7 @@
         <result property="mdate" column="mdate"/>
 	</resultMap>
 
-	<select id="odWinSelect" resultMap="odReqMap">	<!-- id는 인터페이스의 메서드명, resultType은 임포트내용 / 여러 개면 알아서 List로 바꿔줌 -->
+	<select id="odWinSelect" resultMap="odReqMap">
 	    	SELECT rownum AS odReqRn, t.*
 			FROM (SELECT odr.odReqNo, odr.odNo, odr.mid, odr.odReqTitle, odr.odReqContent, odr.odReqDate, odr.odReqWin,
 			           m.pw, m.mname, m.maddr, m.memail, m.mphone, m.mdate
@@ -111,7 +111,7 @@
 	
 <!-- 원데이클래스 신청 중복체크  -->
 	
-	<select id="doubleCheck" resultType="int">	<!-- id는 인터페이스의 메서드명, resultType은 임포트내용 / 여러 개면 알아서 List로 바꿔줌 -->
+	<select id="doubleCheck" resultType="int">
 			SELECT COUNT(*) 
 			FROM odReq
 			WHERE odNo = #{odNo} AND mid = #{mid}
