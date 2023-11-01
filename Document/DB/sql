@@ -691,7 +691,7 @@ CREATE TABLE showcase (
     CONSTRAINT pk_showcase PRIMARY KEY (scid)
 );
 ALTER TABLE showcase
-ADD CONSTRAINT FK_showcase FOREIGN KEY (sicheNo) REFERENCES siche(sicheNo);
+ADD CONSTRAINT FK_showcase FOREIGN KEY (sicheNo) REFERENCES siche(sicheNo)  ON DELETE CASCADE;
 	
 CREATE TABLE showcase_Attach (
     uuid VARCHAR2(100) NOT NULL,
