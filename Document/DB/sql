@@ -698,26 +698,16 @@ CREATE TABLE Scrab (
 	 ON DELETE CASCADE
 	
 );
+--(리멤버미에 사용되는 테이블)
+CREATE TABLE PERSISTENT_LOGINS 
+   (	SERIES VARCHAR2(64 BYTE), 
+    USERNAME VARCHAR2(64 BYTE) NOT NULL ENABLE, 
+	TOKEN VARCHAR2(64 BYTE) NOT NULL ENABLE, 
+	LAST_USED TIMESTAMP (6) NOT NULL ENABLE, 
+	 PRIMARY KEY (SERIES));
 --(시공사례,스크랩 시퀀스)
 CREATE SEQUENCE showcase_seq INCREMENT BY 1 START WITH 1;
 CREATE SEQUENCE scrab_seq INCREMENT BY 1 START WITH 1;
-
---(시공사례 트리거) <----임시
-CREATE OR REPLACE TRIGGER after_scrab_insert 
-AFTER INSERT ON scrab
-FOR EACH ROW 
-BEGIN
-   UPDATE showcase sc SET scrabcnt = (SELECT COUNT(*) FROM scrab WHERE scid = :NEW.scid)
-   WHERE sc.scid = :NEW.scid;
-END;
-
-CREATE OR REPLACE TRIGGER after_scrab_delete 
-AFTER DELETE ON scrab
-FOR EACH ROW 
-BEGIN
-   UPDATE showcase sc SET scrabcnt = (SELECT COUNT(*) FROM scrab WHERE scid = :OLD.scid)
-   WHERE sc.scid = :OLD.scid;
-END;
 --->추가 트리거
 CREATE OR REPLACE TRIGGER member_insert_trigger
 AFTER INSERT ON member
