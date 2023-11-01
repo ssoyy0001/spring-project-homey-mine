@@ -20,24 +20,26 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 public class EmailController {
 	
+	//원데이클래스, 제품 나눔 당첨자 조회 화면에서 [메일발송] 버튼 클릭하여 접속
+	
 	@Setter(onMethod_ = @Autowired)
 	private EmailService emailService;
 	
 	
-	@GetMapping("/send/emailForm")			//클라이언트가 '/send/email'로 들어왔을 때
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public String sendMail(Model model, @RequestParam("mailAddress")String mailAddress) {					//list.jsp에서 버튼 클릭하면 등록폼으로 이동할 수 있도록
-		log.info("sendMail Form......" + mailAddress + "에게 메일 전송할 것");
+	@GetMapping("/send/emailForm")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")							//'ROLE_ADMIN'권한을 가지고 있는 경우에만 접근가능
+	public String sendMail(Model model, @RequestParam("mailAddress")String mailAddress) {
+		log.info("sendMail Form......" + mailAddress + "에게 전송예정");
 		
 		model.addAttribute("mailAddress", mailAddress);
-		return "/email/sendMail";				//sendMail.jsp로 이동
-	}//END register()
+		return "/email/sendMail";												//sendMail.jsp로 이동
+	}//END sendMail()
 	
 	
 	
-	@GetMapping("/send/sendMail")			//클라이언트가 '/send/email'로 들어왔을 때 등록 처리 로직
+	@GetMapping("/send/sendMail")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public String send(EmailVO evo, RedirectAttributes rttr) throws MessagingException{ 		// 저는 input type 값을 클래스로 생성해서 클래스로 만들게요 ~
+	public String sendMail(EmailVO evo, RedirectAttributes rttr) throws MessagingException{
 		        
         System.out.println("mail send....."+evo.getMailAddress());
         System.out.println("mail send....."+evo.getMailTitle());
@@ -48,9 +50,9 @@ public class EmailController {
         emailService.sendMail(evo.getMailAddress(), evo.getMailTitle(), mailContentFinal);
         rttr.addFlashAttribute("msg", "메일이 발송되었습니다.");
         
-        return "redirect:/send/emailForm?mailAddress="+evo.getMailAddress();			//(아마 수정 필요) sendMail.jsp로 이동하는 것. 위에서 보낸 message 모달에 띄울 수 있게 처리하기
+        return "redirect:/send/emailForm?mailAddress="+evo.getMailAddress();			//메일 전송 후 다시 "전송폼"으로 이동
     
-	}
+	}//END sendMail()
 	
 
 	
