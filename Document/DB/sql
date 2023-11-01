@@ -637,6 +637,25 @@ CREATE SEQUENCE visit_seq INCREMENT BY 1 START WITH 1;
 CREATE SEQUENCE quotation_seq INCREMENT BY 1 START WITH 1;
 CREATE SEQUENCE item_seq INCREMENT BY 1 START WITH 1;
 
+- visit 트리거
+CREATE OR REPLACE TRIGGER visit_insert_trigger
+AFTER INSERT ON visit
+FOR EACH ROW
+BEGIN
+   UPDATE consult
+   SET status = '방문 실측 예정'
+   WHERE consultNo = :new.consultNo;
+END;
+
+- quotation 트리거
+CREATE OR REPLACE TRIGGER quotation_insert_trigger
+AFTER INSERT ON quotation
+FOR EACH ROW
+BEGIN
+   UPDATE consult
+   SET status = '견적서 완료'
+   WHERE consultNo = :new.consultNo;
+END;
 --하영 끝
 
 -- (시공의뢰, 시공작업, 시공후기, 문의게시판 시퀀스)
