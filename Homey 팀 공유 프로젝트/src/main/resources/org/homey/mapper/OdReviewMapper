@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.homey.mapper.OdReviewMapper">
+
+<!-- 쿼리 보관 -->
+  <sql id="criteria">
+  	 <trim prefix="(" suffix=") AND " prefixOverrides="OR">
+	 	<foreach item="type" collection="typeArr">
+	 	  <trim prefix="OR">
+	 		<choose>
+	 			<when test="type == 'T'.toString()">
+	 				orTitle LIKE '%'||#{keyword}||'%'
+	 			</when>
+	 			<when test="type == 'C'.toString()">
+	 				orContent LIKE '%'||#{keyword}||'%'
+	 			</when>
+	 			<when test="type == 'W'.toString()">
+	 				mid LIKE '%'||#{keyword}||'%'
+	 			</when>
+	 		</choose>
+	 	  </trim>
+	 	</foreach>
+	 </trim>
+  </sql>
+
+<!-- 게시물 개수 -->
+	<select id="totalCount" resultType="int">
+		<![CDATA[
+		SELECT COUNT(*) FROM odReview
+		WHERE ]]>
+		<!-- 보관해 둔 쿼리 사용 -->
+        <include refid="criteria"></include>
+		<![CDATA[ orNo > 0 ]]>		<!-- 보관해둔 쿼리에 AND가 들어있는데, 그걸 만족시키려면 조건이 하나 더 필요해서, 의미없는 조건 하나 덧붙인 것 -->
+	</select>
+
+
+<!-- 게시물 전체조회 -->
+	<select id="selectAllPaging" resultType="org.homey.domain.OdReviewVO">
+	  	<![CDATA[
+	    	SELECT ((#{pageNum} - 1) * #{amount}) +  rownum as orRn, orNo, mid, odNo, orTitle, orContent, orDate, orHit
+	    	FROM	(	SELECT	rownum rn, orNo, mid, odNo, orTitle, orContent, orDate, orHit
+	    					FROM	( SELECT * FROM odReview ORDER BY orNo DESC )
+	    					WHERE	]]>
+	    					<!-- 위에 보관해둔 쿼리 사용 -->
+	    					<include refid="criteria"></include>
+	    					<![CDATA[			
+	    								rownum <= #{amount}	*	#{pageNum}		
+	   						ORDER BY orNo DESC	
+	  					 )
+	    	WHERE		rn		>	#{amount}	*	(#{pageNum}	 -1	)
+	  		]]>
+	  </select>
+
+
+<!-- 나의 게시물 전체조회 -->
+	<select id="selectMine" resultType="org.homey.domain.OdReviewVO">	
+	    <![CDATA[ 
+	    	SELECT ((#{cri.pageNum} - 1) * #{cri.amount}) + rownum orRn, orNo, mid, odNo, orTitle, orContent, orDate, orHit
+	    	FROM	(	SELECT	rownum rn, orNo, mid, odNo, orTitle, orContent, orDate, orHit
+	    					FROM	( SELECT * FROM odReview WHERE mid = #{mid} ORDER BY orNo DESC )
+	    					WHERE	]]>
+	   <![CDATA[ 		rownum <= #{cri.amount}	*	#{cri.pageNum}
+	   						ORDER BY orNo DESC		 )
+	    	WHERE		rn		>	#{cri.amount}	*	(	#{cri.pageNum}	 -1	)
+	  	]]>
+	  </select>
+
+
+<!-- 내가 쓴 리뷰 개수 -->
+	<select id="mineCount" resultType="int">
+		SELECT COUNT(*) FROM odReview
+		WHERE mid=#{mid}
+	</select>
+	
+
+<!-- 조회 수 증가 -->
+	<update id="updateHit">	
+    	UPDATE odReview
+    	SET orHit = orHit + 1
+    	WHERE orNo = #{orNo}
+  	</update>
+
+	<update id="update">	
+    	UPDATE odReview
+    	SET orTitle = #{orTitle}, orContent = #{orContent}, orDate = SYSDATE
+    	WHERE orNo = #{orNo}
+  	</update>
+	
+	<delete id="delete">	
+     DELETE FROM odReview WHERE orNo = #{orNo}
+  </delete>
+
+	<insert id="insertSelectKey">	 <!-- id를 insert 에서 insertSelectKey로 변경함 -->
+	<!-- PK값인 orNo를 미리 처리해서 orNo에 저장 -->
+	<selectKey keyProperty="orNo" order="BEFORE" resultType="int">	<!-- order="before" : <insert>의 본 쿼리 실행 이전에 <selectKey> 쿼리 실행 -->
+    	SELECT odreview_seq.NEXTVAL FROM dual
+  	</selectKey>
+	
+	<!-- 시퀀스 대신 저장해둔 bno를 사용 -->
+     INSERT INTO odReview(orNo, mid, odNo, orTitle, orContent, orDate, orHit)
+	 VALUES(#{orNo}, #{mid}, #{odNo}, #{orTitle}, #{orContent}, SYSDATE, 0)
+  </insert>
+
+
+  <select id="select" resultType="org.homey.domain.OdReviewVO">	
+    SELECT * FROM odReview WHERE orNo = #{orNo}
+  </select>
+  
+  
+</mapper>
