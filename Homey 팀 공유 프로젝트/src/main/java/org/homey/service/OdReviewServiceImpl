@@ -1,0 +1,117 @@
+package org.homey.service;
+
+import java.util.List;
+
+import org.homey.domain.SoCriteria;
+import org.homey.domain.OdReviewAttachVO;
+import org.homey.domain.OdReviewVO;
+import org.homey.mapper.OdReviewAttachMapper;
+import org.homey.mapper.OdReviewMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import lombok.Setter;
+import lombok.extern.log4j.Log4j;
+
+@Service
+@Log4j
+public class OdReviewServiceImpl implements OdReviewService {
+	
+	private boolean result;					//result 필요한 메서드에서 공용으로 쓸 수 있도록 클래스변수로 선언
+	
+	@Setter(onMethod_ = @Autowired)
+	   private OdReviewMapper odReviewMapper;
+	
+	@Setter(onMethod_ = @Autowired)
+	   private OdReviewAttachMapper oraMapper;
+
+	@Override
+	public List<OdReviewVO> listPaging(SoCriteria cri) {
+		log.info("listPaging.......");
+		return odReviewMapper.selectAllPaging(cri);
+	}
+
+	@Override
+	public int totalCount(SoCriteria cri) {
+		log.info("totalCount.......");
+		return odReviewMapper.totalCount(cri);
+	}
+
+	@Override
+	public List<OdReviewVO> listMine(String mid, SoCriteria cri) {
+		log.info( mid + "가 작성한 리뷰 list.......");
+		return odReviewMapper.selectMine(mid, cri);
+	}
+	
+	@Override
+	public int mineCount(String mid, SoCriteria cri) {
+		log.info("totalCount.......");
+		return odReviewMapper.mineCount(mid, cri);
+	}
+
+
+	@Override
+	@Transactional											//게시글 조회 후 조회수 +1 처리를 위함
+	public OdReviewVO view(int orNo) {
+		
+		log.info("view......" + orNo);
+		
+		odReviewMapper.updateHit(orNo);
+		
+		return odReviewMapper.select(orNo);
+	}
+
+	@Override
+	@Transactional											//게시글 등록 & 첨부파일 등록 작업이 함께 이뤄져야 함
+	public boolean register(OdReviewVO orvo) {
+		 log.info("서비스의 register...." + orvo);									//vo가 잘 넘어왔는지 확인
+	      result = odReviewMapper.insertSelectKey(orvo) == 1;		//게시물 등록 결과
+		  
+	      if(orvo.getOrAttachList() != null && orvo.getOrAttachList().size() > 0) {		//orvo 안에 첨부파일리스트가 비어있지 않다면
+	    	  
+	    	  orvo.getOrAttachList().forEach( oravo ->{												//oravo에는 OdReviewAttachVO 들어있음
+	    		  										oravo.setOrNo(orvo.getOrNo());					//AttachVO에는 게시물번호가 안들어있으므로, orvo에서 꺼내서 넣어줌		
+	    		  										oraMapper.insert(oravo);							//첨부파일리스트를 순회하면서 oravo로 등록-> oravo의 각 변수명과 DB 컬럼명이 일치하기 때문에 일일이 setter안해도 됨
+										    	  });
+	      };
+	      return result;
+	}
+	
+
+	@Override
+	@Transactional
+	public boolean remove(int orNo) {
+		log.info("remove........");
+		
+		oraMapper.deleteAll(orNo);									//게시물에 있는 첨부파일 삭제
+		return odReviewMapper.delete(orNo) == 1;		//게시물 삭제
+	}
+
+	@Override
+	@Transactional
+	public boolean modify(OdReviewVO orvo) {
+		log.info("modify....." + orvo);
+		
+		oraMapper.deleteAll(orvo.getOrNo());						//기존 첨부파일 모두 삭제
+		result  = odReviewMapper.update(orvo) ==1;			//게시물 수정
+		
+		//첨부파일이 있는 경우 테이블에 추가
+		if(orvo.getOrAttachList() != null && orvo.getOrAttachList().size() > 0) {				//넘겨받은 orvo 안에 첨부파일이 들어있다면
+			orvo.getOrAttachList().forEach( oravo ->{oravo.setOrNo(orvo.getOrNo());			//AttachVO에는 게시물번호가 안들어있으므로, orvo에서 꺼내서 넣어줌		
+																		oraMapper.insert(oravo);					//첨부파일 리스트 안에 들어있는 첨부파일들을 돌면서 oravo로 등록
+													    	  			});
+		}
+		return result;
+	}
+
+	@Override
+	public List<OdReviewAttachVO> attachList(int orNo) {		//orNo번 리뷰글에 첨부돼있는 파일목록 가져오기
+		log.info("attachList.......");
+		return oraMapper.select(orNo);
+	}
+
+
+
+
+}
