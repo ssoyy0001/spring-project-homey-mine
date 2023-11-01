@@ -1,0 +1,17 @@
+package org.homey.domain;
+
+import lombok.Data;
+
+@Data
+public class OdReviewAttachVO {
+
+	//원데이클래스 리뷰글에 첨부된 이미지파일 관련 VO
+	//이미지파일 테이블()과 연결되는 VO
+	
+	private int orNo;							//리뷰 게시글번호(FK)
+	private String uuid;						//첨부파일 식별아이디 UUID(PK)
+	private String upFolder;					//저장경로
+	private String fileName;				//원본파일명
+	private boolean image;				//이미지파일여부
+	
+}
