@@ -1,0 +1,210 @@
+package org.homey.controller;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+
+import org.homey.domain.SoCriteria;
+import org.homey.domain.OdReviewAttachVO;
+import org.homey.domain.OdReviewVO;
+import org.homey.domain.PageDTO;
+import org.homey.service.OdReviewService;
+import org.homey.service.OnedayService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import lombok.Setter;
+import lombok.extern.log4j.Log4j;
+
+@Controller
+@Log4j
+@RequestMapping("/odReview/*")		//대표 맵핑
+public class OdReviewController {
+	
+	@Setter(onMethod_ = @Autowired)
+	private OdReviewService odReviewService;
+	
+	@Setter(onMethod_ = @Autowired)
+	private OnedayService onedayService;
+
+	
+	@GetMapping("list")						
+	public String list(Model model, SoCriteria cri) {
+		
+		log.info("list......" + cri);
+		model.addAttribute("list", odReviewService.listPaging(cri));		
+		model.addAttribute("pageDTO", new PageDTO(cri, odReviewService.totalCount(cri)));	
+		
+		return "/review/odReviewList";	
+	}
+	
+	
+	
+	@GetMapping("myList")
+	@PreAuthorize("principal.username == #mid")							//작성자의 경우에만 수정폼으로 이동 가능
+	public String myList(Model model, SoCriteria cri, String mid) {	
+		
+		log.info( mid + "의 list......" + cri);
+		model.addAttribute("myReviewList", odReviewService.listMine(mid, cri));
+		model.addAttribute("pageDTO", new PageDTO(cri, odReviewService.mineCount(mid, cri)));	
+		
+		return "/review/myOdReviewBrd";	
+	}
+	
+	
+	
+	@GetMapping("view")	
+	@PreAuthorize("isAuthenticated()")
+	public String view(int orNo, Model model, @ModelAttribute("cri") SoCriteria cri) {
+		log.info("view......" + orNo );
+		OdReviewVO orvo = odReviewService.view(orNo);
+		
+		model.addAttribute("orvo", orvo);															//원데이클래스 후기vo
+		model.addAttribute("odvo", onedayService.odView(orvo.getOdNo()));		//원데이클래스 게시글vo
+		
+		return "/review/odReviewView";
+	}
+	
+	
+	
+	@GetMapping("attachList")			//게시물 상세조회 시, 해당 게시물에 첨부된 첨부파일리스트 조회 -> view.jsp에서 ajax로 메서드 접근
+	public ResponseEntity<List<OdReviewAttachVO>> attachList(int orNo) {
+		log.info("AttachList......"+orNo);		
+		return new ResponseEntity<List<OdReviewAttachVO>>(odReviewService.attachList(orNo), HttpStatus.OK);
+	}
+	
+	
+	
+	@GetMapping("register")
+	@PreAuthorize("isAuthenticated()")
+	public String register(@RequestParam("odNo")int odNo, Model model) {		//"나의 원데이클래스 신청목록"에서 [후기작성] 버튼으로 등록폼 이동
+		
+		log.info("register......" + odNo + "번 게시물에 대한 후기 작성폼");
+		
+		String odName = onedayService.odView(odNo).getOdName();					//어떤 원데이클래스에 대한 리뷰인지 odName으로 표시
+		model.addAttribute("odNo", odNo);
+		model.addAttribute("odName", odName);
+		
+		return "/review/odReviewRegi";
+	}
+	
+	
+	@PostMapping("register")
+	@PreAuthorize("isAuthenticated()")
+	public String register(OdReviewVO orvo, RedirectAttributes rttr) {
+		
+		log.info("register......");
+		
+		if(odReviewService.register(orvo)) {
+
+			log.info("리뷰 컨트롤러 - 첨부파일 목록: " + orvo.getOrAttachList());
+			
+			if(orvo.getOrAttachList() != null) {											//게시물 안에 첨부파일이 있다면, 개별파일을 log로 확인
+				orvo.getOrAttachList().forEach(attach -> log.info(attach));
+			}
+			rttr.addFlashAttribute("msg", "리뷰가 등록되었습니다.");
+		}else {
+			rttr.addFlashAttribute("msg", "리뷰 등록에 실패하였습니다.");
+		}
+		return "redirect:/odReview/list";
+	}
+	
+
+	@GetMapping("modify")
+	@PreAuthorize("principal.username == #mid")		//작성자의 경우에만 수정폼으로 이동 가능
+	public String modify(int orNo, String mid, String odName, Model model, @ModelAttribute("cri") SoCriteria cri) {
+																															
+		log.info("modify......" + orNo);
+		model.addAttribute("orvo", odReviewService.view(orNo));	
+		model.addAttribute("odName", odName);	
+		
+		return "/review/odReviewModi";
+	}
+	
+	
+	@PostMapping("modify")
+	public String modify(OdReviewVO orvo, RedirectAttributes rttr, @ModelAttribute("cri") SoCriteria cri) {
+		log.info("modify......");
+	
+		if(odReviewService.modify(orvo)) {						
+			rttr.addFlashAttribute("msg", "리뷰가 수정되었습니다.");
+		}else {
+			rttr.addFlashAttribute("msg", "리뷰 수정에 실패하였습니다.");
+		}
+		rttr.addAttribute("pageNum", cri.getPageNum());
+		rttr.addAttribute("amount", cri.getAmount());
+		rttr.addAttribute("type", cri.getType());
+		rttr.addAttribute("keyword", cri.getKeyword());
+		
+		return "redirect:/odReview/view?orNo="+orvo.getOrNo();		//수정 후 상세조회 페이지로 이동
+
+	}
+	
+	
+	@PostMapping("remove")
+	@PreAuthorize("principal.username == #mid")			//로그인한 id ==작성자id가 같은지 체크
+	public String remove(String mid, int orNo, RedirectAttributes rttr, @ModelAttribute("cri") SoCriteria cri) {
+		log.info("remove......");
+		
+		List<OdReviewAttachVO> attachList = odReviewService.attachList(orNo);  	//해당 게시글의 첨부파일 목록 가져오기
+		
+		if(odReviewService.remove(orNo)) {					//orNo번 리뷰가 잘 지워졌으면	
+		    deleteFiles(attachList);                                  //해당 게시글의 첨부 파일 삭제 메서드 호출
+			rttr.addFlashAttribute("msg", "리뷰가 삭제되었습니다.");
+		}else {
+			rttr.addFlashAttribute("msg", "리뷰삭제에 실패하였습니다.");
+		}
+		
+		rttr.addAttribute("pageNum", cri.getPageNum());
+		rttr.addAttribute("amount", cri.getAmount());
+		rttr.addAttribute("type", cri.getType());
+		rttr.addAttribute("keyword", cri.getKeyword());
+		
+		return "redirect:/odReview/list";
+	}
+	
+	
+	//첨부파일 삭제
+	//컨트롤러의 remove 메서드, modify.jsp에서 사용할 것, 새로운 파일 선택 시 기존의 파일은 전부 지울 거라서 List로 받음
+	@PostMapping("deleteFiles")
+	public void deleteFiles(List<OdReviewAttachVO> attachList) {
+		log.info("deleteFiles......");
+		
+		if(attachList == null || attachList.size() == 0) {		//attachList가 비어있으면 함수 탈출 (지울 게 없으니까)
+			return;
+		}
+		attachList.forEach(oravo -> {
+				Path file = Paths.get("c:\\upload\\" + 
+												oravo.getUpFolder() + "\\" +
+												oravo.getUuid() + "_" +
+												oravo.getFileName());					
+			try {
+				Files.deleteIfExists(file);			//위의 원본파일 삭제 -> 파일이 존재하는 경우에는 파일을 삭제하고, 파일이 존재하지 않는 경우에는 파일을 삭제하지 않고, false를 리턴
+				
+				if(Files.probeContentType(file).startsWith("image")) {
+					Path thumbnail = Paths.get("c:\\upload\\" + 	
+																oravo.getUpFolder() + "\\s_" +
+																oravo.getUuid() + "_" +
+																oravo.getFileName());
+					Files.deleteIfExists(thumbnail);			//썸네일 삭제
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}//END try문
+		});
+	}//END deleteFiles();
+	
+	
+}
