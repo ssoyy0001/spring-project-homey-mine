@@ -21,24 +21,17 @@ public class OnedayServiceImpl implements OnedayService {
 	   private OnedayMapper onedayMapper;			//원데이클래스 게시글 CRUD 맵퍼
 
 	@Override
-	public int odTotalCount(SoCriteria cri) {				//페이징 시 필요한 게시글 개수 조회
-		log.info("odTotalCount.......");						//ServiceImpl까지 잘 넘어왔는지 로그에 찍어봄
+	public int odTotalCount(SoCriteria cri) {			//페이징 시 필요한 게시글 개수 조회
+		log.info("odTotalCount.......");	
 		return onedayMapper.odTotalCount(cri);
 	}
 
 	@Override
-	public List<OnedayVO> odListPaging(SoCriteria cri) {			//원데이클래스 게시글 전체조회 (페이징O)
+	public List<OnedayVO> odListPaging(SoCriteria cri) {		//원데이클래스 게시글 전체조회 (페이징O)
 		log.info("OnedayService의 listPaging......." + cri);		
 		return onedayMapper.odSelectAllPaging(cri);
 	}
 
-
-	@Override
-	public List<OnedayVO> odList(String mid) {					//내가 신청한 원데이클래스 게시글 전체조회 (페이징X)
-		log.info("OnedayService의 list......." );	
-		return onedayMapper.odSelectAll(mid);
-	}
-	
 	@Override
 	public OnedayVO odView(int odNo) {								//원데이클래스 게시글 상세조회
 		log.info("view......" + odNo); 			
