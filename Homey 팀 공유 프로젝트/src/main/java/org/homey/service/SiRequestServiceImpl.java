@@ -61,27 +61,6 @@ public class SiRequestServiceImpl implements SiRequestService {
        return false; // 등록에 실패한 경우 false 반환
        }
 	
-//	@Override
-//	public boolean register(SiRequestVO sireq, ItemVO ivo) { //시공의뢰 등록 + 첨부파일 등록
-//		//sireqVO 등록
-//		int result = sireqMapper.insertSelectkey(sireq);
-//		log.info("시공의뢰 register...." + sireq);	
-//		
-//		if (result > 0) {
-//       	 // sireqVO 등록에 성공한 경우 consultNo를 얻어옴
-//       	 int consultNo = sireq.getConsultvo().getConsultNo();
-//       	 
-//            // 그 후 ItemVO에 consultNo 설정
-//            ivo.setConsultNo(consultNo);
-//            
-//            // item 테이블에 데이터 업데이트
-//            int itemResult = quotationMapper.updateItem(ivo);
-//            if (itemResult == 1) { // 성공하면 true 반환
-//                return true;
-//            }
-//        }
-//        return false; // 등록에 실패한 경우 false 반환
-//       }
 	
 	@Override
 	public List<SiRequestVO> getList(SireqCriteria cri){ //시공의뢰 전체목록 + 페이징
@@ -107,10 +86,10 @@ public class SiRequestServiceImpl implements SiRequestService {
 		return sireqMapper.delete(sireqNo)==1;
 	}
 
-//	@Override
-//	public int totalCount(Criteria cri) { //시공의뢰 전체 수
-//		return sireqMapper.totalCount(cri);
-//	}
+	@Override
+	public int totalCount(SireqCriteria cri) { //시공의뢰 전체 수
+		return sireqMapper.totalCount(cri);
+	}
 //
 //	@Override
 //	public List<SiRequestAttachVO> sireqAttachList(int sireqNo){ //시공의뢰 상세조회시 첨부파일 전체조회
