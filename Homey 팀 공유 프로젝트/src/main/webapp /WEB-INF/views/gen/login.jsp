@@ -239,7 +239,7 @@ h6 span {
 </style>
 <c:if test="${!empty msg }">
 	<script>
-			alert('${msg}');
+		alert('${msg}');
 	</script>
 </c:if>
 <main id="main">
@@ -247,7 +247,7 @@ h6 span {
 	<!-- ======= Breadcrumbs ======= -->
 	<div class="breadcrumbs d-flex align-items-center"
 		style="background-image: url('https://images.pexels.com/photos/2227832/pexels-photo-2227832.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');">
-	<!-- 	../resources/assets/img/breadcrumbs-bg.jpg -->
+		<!-- 	../resources/assets/img/breadcrumbs-bg.jpg -->
 		<div
 			class="container position-relative d-flex flex-column align-items-center"
 			data-aos="fade">
@@ -281,15 +281,22 @@ h6 span {
 														placeholder="Your Password" id="logpass"
 														autocomplete="off">
 												</div>
+													<div class="checkbox">
+												<label> <input name="remember-me" type="checkbox">Remember
+													Me
+												</label>
+											</div>
 												<input type="hidden" name="${_csrf.parameterName }"
 													value="${_csrf.token }"> <input type="submit"
 													value="login" class="btn mt-4">
 											</form>
-											<p class="mb-0 mt-4 text-center"><a href="/gen/findID" class="link">Forgot your Id?</a></p>
 											<p class="mb-0 mt-4 text-center">
-												<a href="/gen/findPW"
-													class="link">Forgot your password?</a>
+												<a href="/gen/findID" class="link">Forgot your Id?</a>
 											</p>
+											<p class="mb-0 mt-4 text-center">
+												<a href="/gen/findPW" class="link">Forgot your password?</a>
+											</p>
+										
 										</div>
 									</div>
 								</div>
