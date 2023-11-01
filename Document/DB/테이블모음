@@ -1,5 +1,6 @@
 ---------<테이블 모음>------
---멤버---
+
+------멤버--------
 CREATE TABLE member (
     mid VARCHAR2(50) NOT NULL,
     pw VARCHAR2(100) NOT NULL,
@@ -12,6 +13,8 @@ CREATE TABLE member (
 ALTER TABLE member ADD CONSTRAINT PK_MEMBER PRIMARY KEY (
     mid
 );
+
+
 --멤버권한--
 CREATE TABLE memberAuth (
     mid VARCHAR2(50) NOT NULL,
@@ -21,14 +24,18 @@ CREATE TABLE memberAuth (
         REFERENCES member(mid)
 	ON DELETE CASCADE
 );
---리멤버미--
+
+
+-----리멤버미----
 CREATE TABLE PERSISTENT_LOGINS (	
 	SERIES VARCHAR2(64 BYTE), 
     	USERNAME VARCHAR2(64 BYTE) NOT NULL ENABLE, 
 	TOKEN VARCHAR2(64 BYTE) NOT NULL ENABLE, 
 	LAST_USED TIMESTAMP (6) NOT NULL ENABLE, 
 	PRIMARY KEY (SERIES));
---견적상담--
+
+
+-----견적상담-----
 CREATE TABLE consult (
     consultNo NUMBER NOT NULL,
     mid VARCHAR2(50) NOT NULL,
@@ -55,7 +62,9 @@ REFERENCES member (
 )
 ON DELETE CASCADE
 ;
---견적서---
+
+
+-------견적서------
 CREATE TABLE quotation (
     quoNo NUMBER NOT NULL,
     itemNo NUMBER NOT NULL,
@@ -78,7 +87,9 @@ REFERENCES consult (
 )
 ON DELETE CASCADE
 ;
---공지사항---
+
+
+-----공지사항------
 CREATE TABLE notice (
     notNo NUMBER NOT NULL,
     mid VARCHAR2(50) NOT NULL,
@@ -116,7 +127,8 @@ REFERENCES notice (
     notNo
 );
 
---시공&철거항목--
+
+--------시공&철거항목---------
 CREATE TABLE item (
     itemNo NUMBER NOT NULL,
     consultNo NUMBER NOT NULL,
@@ -147,7 +159,9 @@ ADD CONSTRAINT FK_consult_TO_item_1
 FOREIGN KEY (consultNo)
 REFERENCES consult(consultNo)
 ON DELETE CASCADE;
-----방문일정------
+
+
+-----------방문일정------------
 CREATE TABLE visit (
     visitNo NUMBER NOT NULL,
     consultNo NUMBER NOT NULL,
@@ -176,7 +190,8 @@ REFERENCES item (
 )
 ON DELETE CASCADE
 ;
-------시공의뢰-------
+
+----------시공의뢰----------
 CREATE TABLE sireq (
     sireqNo NUMBER,
     quoNo NUMBER,
@@ -220,7 +235,7 @@ ALTER TABLE sireq ADD CONSTRAINT FK_member_TO_sireq_1 FOREIGN KEY (
 REFERENCES member (
 	mid
 ) ON DELETE CASCADE;
------시공의뢰 첨부파일-------
+------시공의뢰 첨부파일-------
 CREATE TABLE sireqAttach (
 	uuid	VARCHAR2(100),
 	sireqNo	NUMBER,
@@ -237,7 +252,9 @@ ALTER TABLE sireqAttach ADD CONSTRAINT FK_sireq_TO_sireqAttach_1 FOREIGN KEY (
 REFERENCES sireq (
 	sireqNo
 ) ON DELETE CASCADE;
---시공팀스케줄관리-------
+
+
+-----------시공팀스케줄관리-------
 CREATE TABLE siche (
 	sicheNo	NUMBER	NOT NULL,
 	sireqNo	NUMBER	NOT NULL,
@@ -394,3 +411,6 @@ ALTER TABLE FPReq ADD CONSTRAINT FK_freePdt_TO_FPReq_1 FOREIGN KEY (fpNo) REFERE
 ALTER TABLE FpReview ADD CONSTRAINT FK_member_TO_FpReview_1 FOREIGN KEY (mid) REFERENCES member (mid) ON DELETE CASCADE;
 ALTER TABLE FpReview ADD CONSTRAINT FK_freePdt_TO_FpReview_1 FOREIGN KEY (fpNo) REFERENCES freePdt (fpNo) ON DELETE CASCADE;
 ALTER TABLE FpReviewAttach ADD CONSTRAINT FK_FpR_TO_FpReviewAttach_1 FOREIGN KEY (prNo) REFERENCES FpReview (prNo) ON DELETE CASCADE;
+
+
+
