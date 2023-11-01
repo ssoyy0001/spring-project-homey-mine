@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.homey.mapper.SiScheduleMapper">
+
+	<!-- <resultMap type="calen" id="calMap"> <result property="start" column="startDate"/> 
+		<result property="end" column="endDate"/> </resultMap> -->
+
+	<select id="sicheList"
+		resultType="org.homey.domain.SiScheduleVO">
+		SELECT *
+		FROM SICHE
+	</select>
+	<select id="sicheMyList"
+		resultType="org.homey.domain.SiScheduleVO">
+		SELECT *
+		FROM SICHE
+		WHERE mid=#{mid}
+	</select>
+
+	<select id="sicheView"
+		resultType="org.homey.domain.SiScheduleVO">
+		SELECT
+		s.sicheNo,s.sireqNo,s.quoNo,s.mid,s.balanceStatus,s.constructionStatus,s.workCrew,
+		s.startDate,s.endDate, q.total,c.pyeongsu,c.buildingType
+		FROM SICHE s
+		LEFT JOIN quotation q ON s.quoNo = q.quoNo
+		LEFT JOIN consult c ON
+		q.consultNo = c.consultNo
+		WHERE s.sicheNo=#{sicheNo}
+	</select>
+
+	<!-- <insert id=""> INSERT INTO siche() VALUES(); </insert> -->
+	<update id="sicheUpdate">
+		UPDATE siche
+		SET balanceStatus =#{balanceStatus
+		},constructionStatus=#{constructionStatus},workCrew=#{workCrew},
+		startDate = #{startDate},
+		endDate = #{endDate}
+		WHERE sicheNo=#{sicheNo}
+	</update>
+
+	<select id="checkDate"
+		resultType="org.homey.domain.SiScheduleVO">
+		SELECT startDate,endDate,sicheNo FROM siche WHERE workCrew=#{workCrew}
+	</select>
+	
+	<delete id="sicheDelete">
+		DELETE siche WHERE sicheNo = #{sicheNo }
+	</delete>
+	<insert id="sicheInsert">
+		INSERT INTO 
+	   	siche(sicheNo,sireqNo,mid,startDate,endDate,balanceStatus,constructionStatus,workCrew,quoNo)
+	    VALUES(siche_seq.NEXTVAL,#{sireqNo},#{mid},#{startDate},#{endDate},
+	    	  #{balanceStatus},#{constructionStatus},#{workCrew},#{quoNo})
+	</insert>
+</mapper>
