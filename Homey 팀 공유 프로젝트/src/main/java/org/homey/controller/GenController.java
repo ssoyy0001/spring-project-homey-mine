@@ -46,7 +46,7 @@ public class GenController {
 	public void myPage() {
 	}
 
-	@GetMapping("join") // 회원가입과 로그인
+	@GetMapping("join") // 회원가입
 	public void join() {
 	}
 
@@ -63,7 +63,7 @@ public class GenController {
 		log.info(mvo);
 		return "redirect:/gen/login";
 	}
-	@GetMapping("jusoPopup")
+	@GetMapping("jusoPopup")//csrf문제로 취소
 	public void jusoApi() {}
 
 	@PostMapping("checkId")
@@ -74,7 +74,7 @@ public class GenController {
 						   : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
-	@GetMapping("login") // 회원가입과 로그인
+	@GetMapping("login") //  로그인
 	public String login(String error, String logout, Model model) {
 		log.info("Login()");
 		log.info("error:" + error);
@@ -100,7 +100,7 @@ public class GenController {
 
 	}
 
-	@PostMapping("findID")
+	@PostMapping("findID")//아이디 찾기 ajax
 	@ResponseBody
 	public ResponseEntity<String> findId(@RequestParam("mname") String mname, @RequestParam("mphone") String mphone) {
 		String username = memberService.findId(mname, mphone);
@@ -114,19 +114,18 @@ public class GenController {
 
 	@GetMapping("findPW")
 	public void findPw(String msg,Model model) {
-		model.addAttribute("msg",msg);
 	}
 
-	@PostMapping("findPW")
+	@PostMapping("findPW")//회원아이디 이름 번호에따라 그 회원이 존재하는지 체크
 	public String findPW( String mid, String mname,
 			 String mphone,RedirectAttributes rttr,Model model) {
 		String user = memberService.findPw(mid, mname, mphone);
-		if (user != null) {
+		if (user != null || user == "") {
 			rttr.addFlashAttribute("mid",user);
 			return "redirect:/gen/pwModify";
 		} else {
-			rttr.addFlashAttribute("msg","다시 입력해 주세요");
-			return "redirect:/gen/findPW";
+			model.addAttribute("msg","다시 입력해 주세요");
+			return "/gen/findPW";
 		}
 	}
 
@@ -135,13 +134,13 @@ public class GenController {
 		
 	}
 
-	@PostMapping("pwModify")
+	@PostMapping("pwModify")//비밀번호 수정  및  비밀번호 찾기시  비밀번호변경
 	public String modifyPW(String mid, String newPW, RedirectAttributes rttr) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();//시큐리티에서 권한찾아오기 위함
 		String pw=pwEncoder.encode(newPW);
 		if (memberService.modifyPw(mid, pw)) {
 			rttr.addFlashAttribute("msg", "비밀번호 변경이 완료되었습니다.");
-			if (auth == null || !auth.isAuthenticated()) {//로그인 x
+			if (auth == null || auth.getPrincipal().equals("anonymousUser")) {//로그인 x
 				return "redirect:/gen/login";
 			}else {//로그인 후 회원정보에서 비밀수정으로 들어 왔을 시
 				return "redirect:/gen/memberView?mid="+mid;
@@ -173,7 +172,7 @@ public class GenController {
 		return "redirect:/gen/memberView?mid="+mvo.getMid();
 		
 	}
-	@PostMapping("memberRemove")
+	@PostMapping("memberRemove")//회원탈퇴  return 문제로 회원과 관리자 두개로 나눔
 	@PreAuthorize("hasRole('ROLE_MEMBER')")
 	public String membterRemove(String mid, RedirectAttributes rttr,
 	                            HttpServletRequest request) {
@@ -188,7 +187,7 @@ public class GenController {
 	    }
 	    return "redirect:/gen/main";
 	}
-	@PostMapping("adminRemove")
+	@PostMapping("adminRemove")//회원 삭제
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public String adminRemove(String mid, RedirectAttributes rttr, 
 			@ModelAttribute("cri") ScCriteria cri) {
