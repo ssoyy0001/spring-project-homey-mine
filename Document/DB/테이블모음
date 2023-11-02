@@ -70,8 +70,8 @@ CREATE TABLE quotation (
     itemNo NUMBER NOT NULL,
     consultNo NUMBER NOT NULL,
     quoDate DATE DEFAULT SYSDATE NOT NULL,
-    constScheduleStart VARCHAR2(100) NOT NULL,
-    constScheduleEnd VARCHAR2(100) NOT NULL,
+    constScheduleStart DATE NOT NULL,
+    constScheduleEnd DATE NOT NULL,
     constTotal NUMBER NOT NULL,
     demolTotal NUMBER NOT NULL,
     total NUMBER NOT NULL
