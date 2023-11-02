@@ -83,9 +83,10 @@ h6 span {
 .card-front, .card-back {
 	width: 100%;
 	height: 100%;
-	background-color: gray;
+	background-color: #2a2b38;
 	background-image:
 		url('https://cdn.pixabay.com/photo/2016/12/09/08/56/roma-1893861_640.jpg');
+	/* url ('https: //s3-us-west-2.amazonaws.com/s.cdpn.io/1462889/pat.svg'); */
 	background-position: bottom center;
 	background-repeat: no-repeat;
 	background-size: 300%;
