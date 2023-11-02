@@ -271,7 +271,7 @@
 										type="hidden" name="type" value="${cri.type}"> <input
 										type="hidden" name="keyword" value="${cri.keyword}">
 									<!-- 해피콜 수정 -->
-									<button type="submit" class="btn btn-success">해피콜 수정</button>
+									<button type="submit" class="btn btn-success" id="happycallEdit">해피콜 수정</button>
 									<!-- 견적상담 취소 -->
 									<button type="submit" class="btn btn-danger" id="CancleButton"
 										onclick="cancelConsult()">견적상담 취소</button>
@@ -975,14 +975,18 @@ document.addEventListener('DOMContentLoaded', function() {
 	<script src="/resources/js/quotation.js"></script>
 	<script>
 	// -------------------------------- 견적상담 관련 --------------------------------
+	
 	// 페이지 로드 시 처리현황에 따라 상담 취소 버튼 숨김 처리
 	var statusVal = '${cvo.status}'
 	document.addEventListener("DOMContentLoaded", function() {
 		if (statusVal === "상담 취소") {
 			document.getElementById("CancleButton").style.display = "none";
+			document.getElementById("happycallEdit").style.display = "none";
 		}
 	});
 	// END 페이지 로드 시 처리현황에 따라 상담 취소 버튼 숨김 처리
+	
+	
 	// 견적상담 취소 버튼 클릭 시 status에 상담 취소 값 전달 --------------
 	function cancelConsult() {
 		// status 필드 값을 "상담 취소"로 설정
