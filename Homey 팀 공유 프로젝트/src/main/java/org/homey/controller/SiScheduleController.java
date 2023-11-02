@@ -28,7 +28,7 @@ import lombok.extern.log4j.Log4j;
 @AllArgsConstructor
 public class SiScheduleController {
 	private SiScheduleService sicheService;
-	
+	// private SiRequestService sireqService;
 	@GetMapping("sicheList")
 
 	public void sicheList() {
@@ -87,7 +87,7 @@ public class SiScheduleController {
 		}
 	@GetMapping("sicheRegist")
 	public void sicheRegist(int sireqNo,Model model) {
-		
+		//model.addaddAttribute("sireqVO",sireqService.get(sireqNo));
 	}
 	@PostMapping("sicheRegist")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
