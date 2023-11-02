@@ -24,19 +24,11 @@
 			<div class="container">
 
 				<form action="/gen/join" method="post" class="form-horizontal">
-					<c:set var="idMsg" value="아이디는 필수입력 항목입니다." />
-					<c:set var="pwMsg" value="비밀번호는 필수입력 항목입니다." />
-					<c:set var="nmMsg" value="이름은 필수입력 항목입니다." />
-					<c:set var="mailMsg" value="메일은 필수입력 항목입니다." />
-					<c:set var="addrMsg" value="주소는 필수입력 항목입니다." />
-					<c:set var="phoneMsg" value="번호는 필수입력 항목입니다." />
-
 					<div class="form-group row">
 						<label class="col-sm-2">아이디</label>
 						<div class="col-sm-3">
 							<input type="text" class="form-control" name="mid" id="mid"
-								required="required" oninput="setCustomValidity('')"
-								oninvalid="this.setCustomValidity('${idMsg }')">
+								required="required" >
 						</div>
 						<div class="col-sm-3" id="mid-message"></div>
 					</div>
@@ -45,8 +37,7 @@
 						<label class="col-sm-2">비밀번호</label>
 						<div class="col-sm-3">
 							<input type="password" class="form-control" name="pw" id="pw"
-								required="required" oninput="setCustomValidity('')"
-								oninvalid="this.setCustomValidity('${pwMsg }')">
+								required="required" >
 						</div>
 						<div class="col-sm-3" id="pw-message"></div>
 					</div>
@@ -64,8 +55,7 @@
 						<label class="col-sm-2">이름</label>
 						<div class="col-sm-3">
 							<input type="text" class="form-control" name="mname" id="mname"
-								required="required" oninput="setCustomValidity('')"
-								oninvalid="this.setCustomValidity('${nmMsg }')">
+								required="required" >
 						</div>
 					</div>
 
@@ -96,8 +86,7 @@
 						<label class="col-sm-2">주소</label>
 						<div class="col-sm-3">
 							<input type="text" class="form-control" name="addr" id="addr"
-								required="required" oninput="setCustomValidity('')"
-								oninvalid="this.setCustomValidity('${addrMsg }')">
+								required="required">
 						</div>
 						<div class="col-sm-3">
 							<input type="button" value="검색" class="btn btn-secondary"
@@ -129,21 +118,16 @@
 									<option>019</option>
 								</select> <input type="text" name="phone1" id="phone1" maxlength="3"
 									class="form-control" value="" required="required"
-									oninput="setCustomValidity('')"
-									oninvalid="this.setCustomValidity('${phoneMsg }')">
+									>
 							</div>
 						</div>
 						<div class="col-sm-2">
 							<input type="text" name="phone2" id="phone2" maxlength="4"
-								class="form-control" value="1234" required="required"
-								oninput="setCustomValidity('')"
-								oninvalid="this.setCustomValidity('${phoneMsg }')">
+								class="form-control" value="1234" required="required">
 						</div>
 						<div class="col-sm-2">
 							<input type="text" name="phone3" id="phone3" maxlength="4"
-								class="form-control" value="5678" required="required"
-								oninput="setCustomValidity('')"
-								oninvalid="this.setCustomValidity('${phoneMsg }')">
+								class="form-control" value="5678" required="required">
 						</div>
 						<input type="hidden" id="mphone" name="mphone" value="">
 					</div>
@@ -329,7 +313,11 @@
 							var addr=$('#addr').val();
 							var addrdetail=	$('#addrdetail').val();		
 							var maddrVal=addr+" "+addrdetail;
-							
+			
+							if(email1=="" || email2=="" || phone1=="" || phone2=="" || phone3=="" || addr=="" || addrdetail=="") {
+							    alert("빈칸을 모두 기입해 주세요");
+							    return;
+							}
 							$("#memail").val(memailVal);
 							$("#mphone").val(mphoneVal);
 							$("#maddr").val(maddrVal);
