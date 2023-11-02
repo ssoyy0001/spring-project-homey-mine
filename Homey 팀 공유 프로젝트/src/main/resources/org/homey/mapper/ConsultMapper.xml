@@ -4,59 +4,70 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.homey.mapper.ConsultMapper">
 
+	<!-- 쿼리 보관 -->
+	<sql id="criteria">
+		<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+			<foreach item="type" collection="typeArr">
+				<trim prefix="OR">
+					<choose>
+						<when test="type == 'C'.toString()">
+							consultNo = #{keyword}
+						</when>
+						<when test="type == 'B'.toString()">
+							buildingType LIKE '%'||#{keyword}||'%'
+						</when>
+					</choose>
+				</trim>
+			</foreach>
+		</trim>
+	</sql>
 
-  <!-- 쿼리 보관 -->
-  <sql id="criteria">
-  	 <trim prefix="(" suffix=") AND " prefixOverrides="OR">
-	 	<foreach item="type" collection="typeArr">
-	 	  <trim prefix="OR">
-	 		<choose>
-				<when test="type == 'C'.toString()"> <!-- int라서 문자열 패턴 적용안하고 비교 -->
-				    consultNo = #{keyword}
-				</when>
-	 			<when test="type == 'B'.toString()">
-	 				buildingType LIKE '%'||#{keyword}||'%'
-	 			</when>
-	 		</choose>
-	 	  </trim>
-	 	</foreach>
-	 </trim>
-  </sql>
-  
-  <select id="totalCount" resultType="int">
+	<select id="totalCount" resultType="int">
   	<![CDATA[ 
 	  	SELECT 	COUNT(*) 
 	  	FROM 	consult
 	    WHERE	]]>
-	     		<!-- 보관해 둔 쿼리 사용 -->
-	    		<include refid="criteria"></include>
+		<!-- 보관해 둔 쿼리 사용 -->
+		<include refid="criteria"></include>
 	<![CDATA[ 	consultNo > 0	]]>
-  </select>
-  
-  <update id="update">
-	UPDATE 	consult
-	SET	
-      happyCall = #{happyCall},	
-      status = #{status}
-	WHERE	consultNo = #{consultNo}  
-  </update>
-  
-  <delete id="delete">
-	DELETE consult WHERE consultNo = #{consultNo}
-  </delete>
-	 
-	<insert id="insert" useGeneratedKeys="true" keyProperty="consultNo"  keyColumn="consultNo">
-	  INSERT INTO consult(consultNo, mid, mphone, postcode, address, detailAddress, buildingType, scheduledDate, budget, pyeongsu, happyCall, consultDate, status)
-	  VALUES(consult_seq.NEXTVAL, #{mid}, #{mphone}, #{postcode}, #{address}, #{detailAddress}, #{buildingType}, #{scheduledDate}, #{budget}, #{pyeongsu}, #{happyCall}, SYSDATE, '해피콜 예정')
+	</select>
+
+	<update id="update">
+		UPDATE consult
+		SET
+		happyCall = #{happyCall},
+		status = #{status}
+		WHERE consultNo = #{consultNo}
+	</update>
+
+	<delete id="delete">
+		DELETE consult WHERE consultNo = #{consultNo}
+	</delete>
+
+	<insert id="insert" useGeneratedKeys="true"
+		keyProperty="consultNo" keyColumn="consultNo">
+		INSERT INTO consult(consultNo, mid, mphone, postcode, address,
+		detailAddress, buildingType, scheduledDate, budget, pyeongsu,
+		happyCall, consultDate, status)
+		VALUES(consult_seq.NEXTVAL, #{mid}, #{mphone}, #{postcode}, #{address}, #{detailAddress},
+		#{buildingType}, #{scheduledDate}, #{budget}, #{pyeongsu},
+		#{happyCall}, SYSDATE, '해피콜 예정')
 	</insert>
 
 	<!-- 견적상담 등록과 동시에 시공항목 insert -->
-	<insert id="insertItem" useGeneratedKeys="true" keyProperty="itemNo"  keyColumn="itemNo">
-	  INSERT INTO item (itemNo, consultNo, tiling, tilingD, flooring, flooringD, kitchen, kitchenD, bathroom, bathroomD, entrance, entranceD, balcony, balconyD, lighting, lightingD, door, doorD, etc, etcD)
-	  VALUES(item_seq.NEXTVAL, #{consultNo}, #{tiling}, #{tilingD}, #{flooring}, #{flooringD}, #{kitchen}, #{kitchenD}, #{bathroom}, #{bathroomD}, #{entrance}, #{entranceD}, #{balcony}, #{balconyD}, #{lighting}, #{lightingD}, #{door}, #{doorD}, #{etc}, #{etcD})
+	<insert id="insertItem" useGeneratedKeys="true"
+		keyProperty="itemNo" keyColumn="itemNo">
+		INSERT INTO item (itemNo, consultNo, tiling, tilingD, flooring, flooringD,
+		kitchen, kitchenD, bathroom, bathroomD, entrance, entranceD, balcony,
+		balconyD, lighting, lightingD, door, doorD, etc, etcD)
+		VALUES(item_seq.NEXTVAL, #{consultNo}, #{tiling}, #{tilingD},
+		#{flooring}, #{flooringD}, #{kitchen}, #{kitchenD}, #{bathroom},
+		#{bathroomD}, #{entrance}, #{entranceD}, #{balcony}, #{balconyD},
+		#{lighting}, #{lightingD}, #{door}, #{doorD}, #{etc}, #{etcD})
 	</insert>
 
-	<select id="selectAllPaging" resultType="org.homey.domain.ConsultVO">
+	<select id="selectAllPaging"
+		resultType="org.homey.domain.ConsultVO">
 	  <![CDATA[
 	  SELECT *
 	  FROM (
@@ -64,24 +75,24 @@
 	      c.*,
 	      ROW_NUMBER() OVER (ORDER BY consultNo DESC) AS rn
 	    FROM consult c
-	  ]]> 
-	 <if test="keyword != null and keyword != ''">
-	    <choose>
-	      <when test="type == 'C'.toString()">
-	        WHERE consultNo = #{keyword}
-	      </when>
-	      <when test="type == 'B'.toString()">
-	        WHERE buildingType LIKE '%'||#{keyword}||'%'
-	      </when>
-	    </choose>
-	  </if> 
+	  ]]>
+		<if test="keyword != null and keyword != ''">
+			<choose>
+				<when test="type == 'C'.toString()">
+					WHERE consultNo = #{keyword}
+				</when>
+				<when test="type == 'B'.toString()">
+					WHERE buildingType LIKE '%'||#{keyword}||'%'
+				</when>
+			</choose>
+		</if> 
 	  <![CDATA[
 	  )
 	  WHERE rn <= #{amount} * #{pageNum}
 	    AND rn > #{amount} * (#{pageNum} - 1)
-	  ]]> 
+	  ]]>
 	</select>
-	
+
 	<select id="selectAllMe" resultType="org.homey.domain.ConsultVO">
   	<![CDATA[ 
 	    SELECT * FROM consult
@@ -90,76 +101,85 @@
     ]]>
 	</select>
 
-<select id="select" resultMap="consultMap">
-    SELECT c.consultNo, c.mid, c.mphone, c.postcode, c.address, c.detailAddress, c.buildingType, c.scheduledDate, c.pyeongsu, c.budget, c.happyCall, c.consultDate, c.status,
-           i.itemNo, i.tiling, i.tilingD, i.flooring, i.flooringD, i.kitchen, i.kitchenD, i.bathroom, i.bathroomD, i.entrance, i.entranceD, i.balcony, i.balconyD, i.lighting, i.lightingD, i.door, i.doorD, i.etc, i.etcD,
-           q.quoNo, q.quoDate, q.constScheduleStart, q.constScheduleEnd, q.constTotal, q.demolTotal, q.total,
-           v.visitNo, v.visitStartDate, v.visitEndDate, v.visitStatus
-    FROM consult c
-    LEFT JOIN item i ON c.consultNo = i.consultNo
-    LEFT JOIN quotation q ON c.consultNo = q.consultNo
-    LEFT JOIN visit v ON c.consultNo = v.consultNo
-    WHERE c.consultNo = #{consultNo}
-</select>
+	<select id="select" resultMap="consultMap">
+		SELECT c.consultNo, c.mid, c.mphone, c.postcode, c.address, c.detailAddress,
+		c.buildingType, c.scheduledDate, c.pyeongsu, c.budget, c.happyCall,
+		c.consultDate, c.status,
+		i.itemNo, i.tiling, i.tilingD, i.flooring, i.flooringD, i.kitchen, i.kitchenD,
+		i.bathroom, i.bathroomD, i.entrance, i.entranceD, i.balcony,
+		i.balconyD, i.lighting, i.lightingD, i.door, i.doorD, i.etc, i.etcD,
+		q.quoNo, q.quoDate, q.constScheduleStart, q.constScheduleEnd,
+		q.constTotal, q.demolTotal, q.total,
+		v.visitNo, v.visitStartDate, v.visitEndDate, v.visitStatus
+		FROM consult c
+		LEFT JOIN item i ON c.consultNo = i.consultNo
+		LEFT JOIN quotation q ON c.consultNo = q.consultNo
+		LEFT JOIN visit v ON c.consultNo = v.consultNo
+		WHERE c.consultNo = #{consultNo}
+	</select>
 
-<resultMap type="org.homey.domain.ConsultVO" id="consultMap">
-    <!-- ConsultVO의 속성 매핑 -->
-    <id property="consultNo" column="consultNo"/>
-    <result property="mid" column="mid"/>
-    <result property="mphone" column="mphone"/>
-    <result property="postcode" column="postcode"/>
-    <result property="address" column="address"/>
-    <result property="detailAddress" column="detailAddress"/>
-    <result property="buildingType" column="buildingType"/>
-    <result property="scheduledDate" column="scheduledDate"/>
-    <result property="pyeongsu" column="pyeongsu"/>
-    <result property="budget" column="budget"/>
-    <result property="happyCall" column="happyCall"/>
-    <result property="consultDate" column="consultDate"/>
-    <result property="status" column="status"/>
+	<resultMap type="org.homey.domain.ConsultVO" id="consultMap">
+		<!-- ConsultVO의 속성 매핑 -->
+		<id property="consultNo" column="consultNo" />
+		<result property="mid" column="mid" />
+		<result property="mphone" column="mphone" />
+		<result property="postcode" column="postcode" />
+		<result property="address" column="address" />
+		<result property="detailAddress" column="detailAddress" />
+		<result property="buildingType" column="buildingType" />
+		<result property="scheduledDate" column="scheduledDate" />
+		<result property="pyeongsu" column="pyeongsu" />
+		<result property="budget" column="budget" />
+		<result property="happyCall" column="happyCall" />
+		<result property="consultDate" column="consultDate" />
+		<result property="status" column="status" />
 
-    <!-- ItemVO의 속성 매핑 -->
-    <association property="item" javaType="org.homey.domain.ItemVO">
-        <id property="itemNo" column="itemNo"/>
-        <result property="tiling" column="tiling"/>
-        <result property="tilingD" column="tilingD"/>
-        <result property="flooring" column="flooring"/>
-        <result property="flooringD" column="flooringD"/>
-        <result property="kitchen" column="kitchen"/>
-        <result property="kitchenD" column="kitchenD"/>
-        <result property="bathroom" column="bathroom"/>
-        <result property="bathroomD" column="bathroomD"/>
-        <result property="entrance" column="entrance"/>
-        <result property="entranceD" column="entranceD"/>
-        <result property="balcony" column="balcony"/>
-        <result property="balconyD" column="balconyD"/>
-        <result property="lighting" column="lighting"/>
-        <result property="lightingD" column="lightingD"/>
-        <result property="door" column="door"/>
-        <result property="doorD" column="doorD"/>
-        <result property="etc" column="etc"/>
-        <result property="etcD" column="etcD"/>
-    </association>
+		<!-- ItemVO의 속성 매핑 -->
+		<association property="item"
+			javaType="org.homey.domain.ItemVO">
+			<id property="itemNo" column="itemNo" />
+			<result property="tiling" column="tiling" />
+			<result property="tilingD" column="tilingD" />
+			<result property="flooring" column="flooring" />
+			<result property="flooringD" column="flooringD" />
+			<result property="kitchen" column="kitchen" />
+			<result property="kitchenD" column="kitchenD" />
+			<result property="bathroom" column="bathroom" />
+			<result property="bathroomD" column="bathroomD" />
+			<result property="entrance" column="entrance" />
+			<result property="entranceD" column="entranceD" />
+			<result property="balcony" column="balcony" />
+			<result property="balconyD" column="balconyD" />
+			<result property="lighting" column="lighting" />
+			<result property="lightingD" column="lightingD" />
+			<result property="door" column="door" />
+			<result property="doorD" column="doorD" />
+			<result property="etc" column="etc" />
+			<result property="etcD" column="etcD" />
+		</association>
 
-    <!-- QuotationVO의 속성 매핑 -->
-    <collection property="qvoList" ofType="org.homey.domain.QuotationVO">
-        <id property="quoNo" column="quoNo"/>
-        <result property="quoDate" column="quoDate"/>
-        <result property="constScheduleStart" column="constScheduleStart"/>
-        <result property="constScheduleEnd" column="constScheduleEnd"/>
-        <result property="constTotal" column="constTotal"/>
-        <result property="demolTotal" column="demolTotal"/>
-        <result property="total" column="total"/>
-    </collection>
+		<!-- QuotationVO의 속성 매핑 -->
+		<collection property="qvoList"
+			ofType="org.homey.domain.QuotationVO">
+			<id property="quoNo" column="quoNo" />
+			<result property="quoDate" column="quoDate" />
+			<result property="constScheduleStart"
+				column="constScheduleStart" />
+			<result property="constScheduleEnd" column="constScheduleEnd" />
+			<result property="constTotal" column="constTotal" />
+			<result property="demolTotal" column="demolTotal" />
+			<result property="total" column="total" />
+		</collection>
 
-    <!-- VisitVO의 속성 매핑 -->
-    <collection property="vvoList" ofType="org.homey.domain.VisitVO">
-        <id property="visitNo" column="visitNo"/>
-        <result property="visitStatus" column="visitStatus"/>
-        <result property="visitStartDate" column="visitStartDate"/>
-        <result property="visitEndDate" column="visitEndDate"/>
-    </collection>
-</resultMap>
+		<!-- VisitVO의 속성 매핑 -->
+		<collection property="vvoList"
+			ofType="org.homey.domain.VisitVO">
+			<id property="visitNo" column="visitNo" />
+			<result property="visitStatus" column="visitStatus" />
+			<result property="visitStartDate" column="visitStartDate" />
+			<result property="visitEndDate" column="visitEndDate" />
+		</collection>
+	</resultMap>
 
 
 
