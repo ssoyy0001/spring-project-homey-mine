@@ -113,7 +113,7 @@ public class GenController {
 	}
 
 	@GetMapping("findPW")
-	public void findPw(String msg,Model model) {
+	public void findPw() {
 	}
 
 	@PostMapping("findPW")//회원아이디 이름 번호에따라 그 회원이 존재하는지 체크
