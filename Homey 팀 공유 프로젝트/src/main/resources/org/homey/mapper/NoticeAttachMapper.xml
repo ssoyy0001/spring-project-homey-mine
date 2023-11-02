@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.homey.mapper.NoticeAttachMapper">
+
+
+	<insert id="insert">
+		INSERT INTO noticeAttach (notNo, uuid, upFolder,
+		fileName, image)
+		VALUES (#{notNo}, #{uuid}, #{upFolder}, #{fileName},
+		#{image})
+	</insert>
+
+	<!-- PK인 UUID를 삭제 + notNo 번호로 전체 삭제하게하는 쿼리 -->
+	<delete id="deleteAll">
+		DELETE from noticeAttach WHERE notNo = #{notNo}
+	</delete>
+
+	<!-- PK인 UUID를 삭제 -->
+	<delete id="delete">
+		DELETE from noticeAttach WHERE uuid = #{uuid}
+	</delete>
+
+	<!-- 한 게시물에 달린 첨부파일을 조회하게 할 것 -->
+	<select id="select" resultType="org.homey.domain.NoticeAttachVO">
+		SELECT * FROM noticeAttach WHERE
+		notNo = #{notNo}
+	</select>
+
+</mapper>
