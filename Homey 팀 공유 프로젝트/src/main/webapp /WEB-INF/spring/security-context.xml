@@ -9,10 +9,15 @@
 
 	<bean id="bCryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
 	<bean id="customUserDetailsService" class="org.homey.security.CustomUserDetailsService"/>
+	<!--회원탈퇴시 리멤버 미를 삭제하기 위한 토큰 빈 생성  -->
+	<bean id="tokenRepository" 
+      class="org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl">
+    <property name="dataSource" ref="dataSource" />
+	</bean>
 	<security:http>
 		<security:form-login login-page="/gen/login"/>	
-	    <!-- REMEMBER ME -->
-		 <security:remember-me data-source-ref="dataSource" token-validity-seconds="604800"/>
+	    <!-- REMEMBER ME +위에 추가한 빈을 참조하도록 설정 -data-source-ref="dataSource"-->
+		 <security:remember-me  token-validity-seconds="604800" token-repository-ref="tokenRepository"/>
 		<!-- 로그아웃 -->
 		<security:logout logout-url="/gen/logout" invalidate-session="true" delete-cookies="remember-me,JSESSION_ID"/>
 		<!-- 접근 불가 메세지 설정 -->
