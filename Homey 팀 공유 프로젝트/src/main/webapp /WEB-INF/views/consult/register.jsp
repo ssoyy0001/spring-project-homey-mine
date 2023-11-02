@@ -259,7 +259,7 @@
 											제공할 수 없으며, 이를 위반한 경우에 모든 책임은 “핀테리어”이(가) 집니다. 다만, 다음의 경우에는 예외로
 											합니다.</p>
 										<p>
-											자세한 사항은 <a href="/notice/list">공지사항</a>에서 확인해주세요.
+											자세한 사항은 <a href="/notice/list" target="blank">공지사항</a>에서 확인해주세요.
 										</p>
 									</div>
 								</div>
@@ -286,7 +286,7 @@
 								<div class="position-absolute end-50">
 									<button type="reset" class="btn btn-light">Reset</button>
 									<button type="button" class="btn btn-secondary"
-										onclick="history.back()">Cancel</button>
+									 id="cancelBtn">Cancel</button>
 									<button type="submit" class="btn btn-warning" id="submit">
 										견적상담 신청</button>
 								</div>
@@ -354,6 +354,15 @@
 	<script
 		src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script>
+	// 견적상담 취소 버튼 클릭 시 의사 재확인 ---------------------
+	document.getElementById('cancelBtn').addEventListener('click', function(event) {
+    var confirmation = confirm('정말로 견적상담을 취소하시겠습니까?');
+    if (confirmation) {
+    	location.href = "/gen/main"; // 취소 시 main으로 돌아가기
+    	}
+	});
+	// END 견적상담 취소 버튼 클릭 시 의사 재확인  ---------------------	
+	
 //라디오박스, 체크박스 하나이상 체크 알림 -----------------------------------------
 document.getElementById('submit').onclick = function() {
     var radioBuildingType = document.querySelector('input[type=radio][name=buildingType]:checked');
