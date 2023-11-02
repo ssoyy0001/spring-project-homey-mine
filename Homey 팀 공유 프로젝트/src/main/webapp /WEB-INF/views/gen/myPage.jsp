@@ -40,7 +40,7 @@
               </div>
               <h3>나의 시공 의뢰</h3>
               <br><br>
-              <a href="service-details.html" class="readmore stretched-link">Learn more <i class="bi bi-arrow-right"></i></a>
+              <a href="/sirequest/sireqList?mid=<sec:authentication property="principal.Username"/>" class="readmore stretched-link">Learn more <i class="bi bi-arrow-right"></i></a>
             </div>
           </div><!-- End Service Item -->
 
