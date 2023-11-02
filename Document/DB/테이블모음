@@ -166,7 +166,7 @@ CREATE TABLE visit (
     consultNo NUMBER NOT NULL,
     visitStatus VARCHAR2(100) NULL,
     visitDateStart DATE NULL,
-    visitDateEnd DATE NULL,
+    visitDateEnd DATE NULL
 );
 ALTER TABLE visit ADD CONSTRAINT PK_VISIT PRIMARY KEY (
     visitNo
