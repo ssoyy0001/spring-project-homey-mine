@@ -5,7 +5,7 @@
 var quotationService = ( function(){
 
    // 견적서 등록 --------------------------
-   function register(quotation, callback) {                        		// 여기서 쓰는 quotation는 quotationVO를 받아온다!
+   function register(quotation, callback, error) {              // 여기서 쓰는 quotation는 quotationVO를 받아온다!
       $.ajax({
          type : 'post',                              			// get or post
          url : '/quo/register',                        			// 전송할 곳 action
@@ -16,9 +16,9 @@ var quotationService = ( function(){
                callback(result);                     			// result는 consultManage.jsp로 넘어감
             }                                    				// 콜백 함수는 주도권을 호출한 쪽으로 넘겨줌
          },   
-         error : function(xhr, status, er) {               		// 실패 시 처리
-            if(error){
-               error(er);
+         error : function(xhr, status, er) { // 실패 시 처리
+            if(xhr.status == 400){
+                alert('해당 기간에는 이미 다른 시공일정이 있습니다.');
             }
          }      
       });   // ajax END   
@@ -55,10 +55,10 @@ var quotationService = ( function(){
 	               callback(result);                     			// result는 consultManage.jsp로 넘어감
 	            }                                    				// 콜백 함수는 주도권을 호출한 쪽으로 넘겨줌
 	         },   
-	         error : function(xhr, status, er) {               		// 실패 시 처리
-	            if(error){
-	               error(er);
-	            }
+			 error : function(xhr, status, er) { // 실패 시 처리
+			            if(xhr.status == 400){
+			                alert('해당 기간에는 이미 다른 시공일정이 있습니다.');
+			            }
 	         }      
 	      });   // ajax END   
    		} // 견적서 수정 END   --------------------
