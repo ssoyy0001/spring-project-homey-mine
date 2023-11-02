@@ -88,7 +88,12 @@
 							<button type="button" class="btn btn-danger" id="adminRbtn">회원정보 삭제</button>
 							</sec:authorize>
 							</c:if>
+							<sec:authorize access="hasRole('ROLE_ADMIN')">
 								 <a href="/gen/memberList?pageNum=${param.pageNum}&amount=${param.amount}" class="btn btn-secondary"  >뒤로가기</a>
+								 </sec:authorize>
+								<sec:authorize access="hasRole('ROLE_MEMBER')">
+								<a href="/gen/myPage" class="btn btn-secondary">뒤로가기</a>
+								</sec:authorize> 
 						<input type="hidden" name="mid" value="${mvo.mid}">
 						<input type="hidden" name="${_csrf.parameterName }"
 						value="${_csrf.token }">
