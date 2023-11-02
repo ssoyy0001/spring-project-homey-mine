@@ -76,8 +76,9 @@
 					<div class="form-group row text-center">
 						<div class="col-sm-offset-2 col-sm-10">
 							<form action="/gen/memberRemove" method="post">
-							<a href="/gen/memberModify?mid=${mvo.mid }&pageNum=${param.pageNum}&amount=${param.amount}" type="button" class="btn btn-info" 
-								id="register-button">회원 정보 수정하러 가기</a>
+	
+						<a href="/gen/memberModify?mid=${mvo.mid }&pageNum=${empty param.pageNum ? '1' : param.pageNum}&amount=${empty param.amount ? '12' : param.amount}" type="button" class="btn btn-info" id="register-button">회원 정보 수정하러 가기</a>
+
 							<a href="/gen/pwModify" type="button" class="btn btn-warning" 
 								id="register-button">비밀번호 수정하러 가기</a>
 							<c:if test="${mvo.mid !='admin' }">
