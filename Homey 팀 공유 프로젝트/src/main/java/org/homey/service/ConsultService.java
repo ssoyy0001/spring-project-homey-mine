@@ -17,5 +17,4 @@ public interface ConsultService {
     public boolean modify(ConsultVO cvo); // 견적상담 수정
     public boolean remove(int consultNo); // 견적상담 삭제
     public int totalCount(Criteria cri); // 견적상담 개수 조회
-
 }
