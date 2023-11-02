@@ -30,8 +30,7 @@
               </div>
               <h3>나의 견적 상담</h3>
               <br><br>
-              <a href="service-details.html" class="readmore stretched-link">Learn more <i class="bi bi-arrow-right"></i></a>
-            </div>
+        	<a href="/consult/myList?mid=<sec:authentication property="principal.Username" />" class="readmore stretched-link">Learn more <i class="bi bi-arrow-right"></i></a>
           </div><!-- End Service Item -->
 
           <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
