@@ -4,11 +4,11 @@
 						<div class="sidebar-item categories">
 							<h3 class="sidebar-title">Categories</h3>
 							<ul class="mt-3">
+								<li><a href="/gen/memberList">회원 정보 목록</a></li>
 								<li><a href="list">견적 상담관리</a></li>
 								<li><a href="#">시공의뢰</a></li>
-								<li><a href="#">시공팀 작업 목록</a></li>
-								<li><a href="#">시공 사례</a></li>
-								<li><a href="#">회원 정보 목록</a></li>
+								<li><a href="/sischedule/sicheList">시공팀 작업 목록</a></li>
+								
 							</ul>
 						</div>
 						<!-- End sidebar-item categories-->
