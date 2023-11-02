@@ -60,9 +60,9 @@ h6 span {
 }
 
 .card-3d-wrap { //폼 사이즈 조절가능 position:relative;
-	width: 1200px;
+	width: 640px;
 	max-width: 100%;
-	height: 1000px;
+	height: 600px;
 	-webkit-transform-style: preserve-3d;
 	transform-style: preserve-3d;
 	perspective: 800px;
@@ -124,7 +124,7 @@ h6 span {
 	padding: 13px 20px;
 	padding-left: 55px;
 	height: 48px;
-	width: 50%;
+	width: 100%;
 	font-weight: 500;
 	border-radius: 4px;
 	font-size: 14px;
@@ -200,7 +200,7 @@ h6 span {
 .btn {
 	border-radius: 4px;
 	height: 44px;
-	width: 50%;
+	width: 100%;
 	font-size: 13px;
 	font-weight: 600;
 	text-transform: uppercase;
@@ -239,12 +239,15 @@ h6 span {
 	box-shadow: 0 8px 24px 0 rgba(16, 39, 112, .2);
 }
 </style>
+<body>
+<c:if test="${!empty msg }">
+   <script>
+         alert('${msg}');
+         console.log("${msg}");
+   </script>
+</c:if>
 <main id="main">
-	<c:if test="${!empty msg }">
-			<script>
-				alert('${msg}');
-			</script>
-		</c:if>
+
 	<!-- ======= Breadcrumbs ======= -->
 	<div class="breadcrumbs d-flex align-items-center"
 		style="background-image: url('https://images.pexels.com/photos/2227832/pexels-photo-2227832.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');">
@@ -267,7 +270,7 @@ h6 span {
 											<h4 class="mb-4 pb-3">Find PW</h4>
 											<form role="form" action="/gen/findPW" method="post">
 												<div style="float: left;margin-left: 25%" id="findID-msg">
-												<span style="color:red;font-weight: bold;">${msg}</span></div><br>
+												</div><br>
 												<div class="form-group row">
 													<input type="text" name="mid" class="form-style"
 														placeholder="Your Id" id="mid" autocomplete="off">
@@ -301,6 +304,7 @@ h6 span {
 		</div>
 	</div>
 </main>
+</body>
 <script>
 var csrfHeaderName = '${_csrf.headerName}';//csrf 토큰 관련 변수
 var csrfTokenValue = '${_csrf.token}';
