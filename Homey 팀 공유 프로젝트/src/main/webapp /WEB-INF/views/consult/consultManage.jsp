@@ -20,32 +20,44 @@
 	cursor: pointer;
 }
 /* fullcalendar */
-  #loading {
-    display: none;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-  }
-    #script-warning {
-    display: none;
-    background: #eee;
-    border-bottom: 1px solid #ddd;
-    padding: 0 10px;
-    line-height: 40px;
-    text-align: center;
-    font-weight: bold;
-    font-size: 12px;
-    color: red;
-  }
+#loading {
+	display: none;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+}
+
+#script-warning {
+	display: none;
+	background: #eee;
+	border-bottom: 1px solid #ddd;
+	padding: 0 10px;
+	line-height: 40px;
+	text-align: center;
+	font-weight: bold;
+	font-size: 12px;
+	color: red;
+}
+/* tooltip */
+.tippy-box[data-theme~='yellow'] {
+	background-color: #fffadf;
+	color: black;
+}
+
+.fc-event-title.fc-sticky {
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
 </style>
 
-	<!-- fullCalendar -->
-	<link href="../resources/fullcalendar/main.css" rel="stylesheet"/>
-	<script src="../resources/fullcalendar/main.js"></script>
-	
-<!--         //reply.js -->
-<!--         //보낼때는 data : json , contentType : appli -- -->
-    
+<!-- fullCalendar -->
+<link href="../resources/fullcalendar/main.css" rel="stylesheet" />
+<script src="../resources/fullcalendar/main.js"></script>
+<!-- tooltip -->
+<script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.js"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
+
+
 
 </head>
 <body>
@@ -182,38 +194,45 @@
 									<label class="col-sm-2">시공 항목</label>
 									<div class="col-sm-5">
 										<!-- cvo에 담긴 item이 1이면 표시하고 쉼표 `,`로 구분 -->
-								<c:if test="${cvo.item.tiling != 0}">도배/벽</c:if>
-								
-								<c:if test="${cvo.item.flooring != 0}">
-								    <c:if test="${cvo.item.tiling != 0}">, </c:if>바닥
+										<c:if test="${cvo.item.tiling != 0}">도배/벽</c:if>
+
+										<c:if test="${cvo.item.flooring != 0}">
+											<c:if test="${cvo.item.tiling != 0}">, </c:if>바닥
 								</c:if>
-								
-								<c:if test="${cvo.item.kitchen != 0}">
-								    <c:if test="${cvo.item.tiling != 0 or cvo.item.flooring != 0}">, </c:if>주방
+
+										<c:if test="${cvo.item.kitchen != 0}">
+											<c:if
+												test="${cvo.item.tiling != 0 or cvo.item.flooring != 0}">, </c:if>주방
 								</c:if>
-								
-								<c:if test="${cvo.item.bathroom != 0}">
-								    <c:if test="${cvo.item.tiling != 0 or cvo.item.flooring != 0 or cvo.item.kitchen != 0}">, </c:if>욕실
+
+										<c:if test="${cvo.item.bathroom != 0}">
+											<c:if
+												test="${cvo.item.tiling != 0 or cvo.item.flooring != 0 or cvo.item.kitchen != 0}">, </c:if>욕실
 								</c:if>
-								
-								<c:if test="${cvo.item.entrance != 0}">
-								    <c:if test="${cvo.item.tiling != 0 or cvo.item.flooring != 0 or cvo.item.kitchen != 0 or cvo.item.bathroom != 0}">, </c:if>현관
+
+										<c:if test="${cvo.item.entrance != 0}">
+											<c:if
+												test="${cvo.item.tiling != 0 or cvo.item.flooring != 0 or cvo.item.kitchen != 0 or cvo.item.bathroom != 0}">, </c:if>현관
 								</c:if>
-								
-								<c:if test="${cvo.item.balcony != 0}">
-								    <c:if test="${cvo.item.tiling != 0 or cvo.item.flooring != 0 or cvo.item.kitchen != 0 or cvo.item.bathroom != 0 or cvo.item.entrance != 0}">, </c:if>발코니
+
+										<c:if test="${cvo.item.balcony != 0}">
+											<c:if
+												test="${cvo.item.tiling != 0 or cvo.item.flooring != 0 or cvo.item.kitchen != 0 or cvo.item.bathroom != 0 or cvo.item.entrance != 0}">, </c:if>발코니
 								</c:if>
-								
-								<c:if test="${cvo.item.lighting != 0}">
-								    <c:if test="${cvo.item.tiling != 0 or cvo.item.flooring != 0 or cvo.item.kitchen != 0 or cvo.item.bathroom != 0 or cvo.item.entrance != 0 or cvo.item.balcony != 0}">, </c:if>조명
+
+										<c:if test="${cvo.item.lighting != 0}">
+											<c:if
+												test="${cvo.item.tiling != 0 or cvo.item.flooring != 0 or cvo.item.kitchen != 0 or cvo.item.bathroom != 0 or cvo.item.entrance != 0 or cvo.item.balcony != 0}">, </c:if>조명
 								</c:if>
-								
-								<c:if test="${cvo.item.door != 0}">
-								    <c:if test="${cvo.item.tiling != 0 or cvo.item.flooring != 0 or cvo.item.kitchen != 0 or cvo.item.bathroom != 0 or cvo.item.entrance != 0 or cvo.item.balcony != 0 or cvo.item.lighting != 0}">, </c:if>문
+
+										<c:if test="${cvo.item.door != 0}">
+											<c:if
+												test="${cvo.item.tiling != 0 or cvo.item.flooring != 0 or cvo.item.kitchen != 0 or cvo.item.bathroom != 0 or cvo.item.entrance != 0 or cvo.item.balcony != 0 or cvo.item.lighting != 0}">, </c:if>문
 								</c:if>
-								
-								<c:if test="${cvo.item.etc != 0}">
-								    <c:if test="${cvo.item.tiling != 0 or cvo.item.flooring != 0 or cvo.item.kitchen != 0 or cvo.item.bathroom != 0 or cvo.item.entrance != 0 or cvo.item.balcony != 0 or cvo.item.lighting != 0 or cvo.item.door != 0}">, </c:if>그 외
+
+										<c:if test="${cvo.item.etc != 0}">
+											<c:if
+												test="${cvo.item.tiling != 0 or cvo.item.flooring != 0 or cvo.item.kitchen != 0 or cvo.item.bathroom != 0 or cvo.item.entrance != 0 or cvo.item.balcony != 0 or cvo.item.lighting != 0 or cvo.item.door != 0}">, </c:if>그 외
 								</c:if>
 									</div>
 								</div>
@@ -267,27 +286,27 @@
 							<div id='loading'>loading...</div>
 							<div id='calendar'></div>
 							<div id='script-warning'>
-							    <code>fail</code>
+								<code>fail</code>
 							</div>
-							<c:forEach items="${cvo.vvoList}" var="vvo"> 
-							<div id="visitNo" style="display: none;">${vvo.visitNo}</div>
+							<c:forEach items="${cvo.vvoList}" var="vvo">
+								<div id="visitNo" style="display: none;">${vvo.visitNo}</div>
 							</c:forEach>
 							<!-- 실험  -->
-<%-- 							<c:forEach items="${cvo.vvoList}" var="vvo"> --%>
-<!-- 								<div class="alert alert-light"> -->
-<!-- 									<div class="form-group row" style="margin-bottom: 10px"> -->
-<!-- 										<label class="col-sm-2">방문 실측 스케줄 번호</label> -->
-<%-- 										<div class="col-sm-5">${vvo.visitNo}</div> --%>
-<!-- 									</div> -->
-<!-- 								</div> -->
-<%-- 							</c:forEach> --%>
+							<%-- 							<c:forEach items="${cvo.vvoList}" var="vvo"> --%>
+							<!-- 								<div class="alert alert-light"> -->
+							<!-- 									<div class="form-group row" style="margin-bottom: 10px"> -->
+							<!-- 										<label class="col-sm-2">방문 실측 스케줄 번호</label> -->
+							<%-- 										<div class="col-sm-5">${vvo.visitNo}</div> --%>
+							<!-- 									</div> -->
+							<!-- 								</div> -->
+							<%-- 							</c:forEach> --%>
 
 						</article>
 						<!-- END 방문 실측 스케줄 -->
 						<!-- 견적서 -->
 						<article class="blog-details">
 							<h2>견적서 📝</h2>
-<%-- 							<c:out value="${cvo.qvoList} "></c:out> --%>
+							<%-- 							<c:out value="${cvo.qvoList} "></c:out> --%>
 							<!-- 견적서 정보 표시 -->
 							<br>
 
@@ -336,8 +355,13 @@
 											</div>
 											<div class="form-group row" style="margin-bottom: 10px">
 												<label class="col-sm-2">시공일정</label>
-												<div class="col-sm-5">${qvo.constScheduleStart} ~
-													${qvo.constScheduleEnd}</div>
+												<div class="col-sm-5">
+													<fmt:formatDate value="${qvo.constScheduleStart}"
+														pattern="yyyy-MM-dd" />
+													~
+													<fmt:formatDate value="${qvo.constScheduleEnd}"
+														pattern="yyyy-MM-dd" />
+												</div>
 											</div>
 											<hr>
 											<!-- 구분 -->
@@ -347,75 +371,89 @@
 													<!-- item이 0이 아니면 표시하고 쉼표 `,`로 구분 -->
 													<c:if test="${quotationItem.tiling != 0}">도배/벽</c:if>
 													<c:if test="${quotationItem.flooring != 0}">
-													    <c:if test="${quotationItem.tiling != 0}">, </c:if>바닥
+														<c:if test="${quotationItem.tiling != 0}">, </c:if>바닥
 													</c:if>
-													
+
 													<c:if test="${quotationItem.kitchen != 0}">
-													    <c:if test="${quotationItem.tiling != 0 or quotationItem.flooring != 0}">, </c:if>주방
+														<c:if
+															test="${quotationItem.tiling != 0 or quotationItem.flooring != 0}">, </c:if>주방
 													</c:if>
-													
+
 													<c:if test="${quotationItem.bathroom != 0}">
-													    <c:if test="${quotationItem.tiling != 0 or quotationItem.flooring != 0 or quotationItem.kitchen != 0}">, </c:if>욕실
+														<c:if
+															test="${quotationItem.tiling != 0 or quotationItem.flooring != 0 or quotationItem.kitchen != 0}">, </c:if>욕실
 													</c:if>
-													
+
 													<c:if test="${quotationItem.entrance != 0}">
-													    <c:if test="${quotationItem.tiling != 0 or quotationItem.flooring != 0 or quotationItem.kitchen != 0 or quotationItem.bathroom != 0}">, </c:if>현관
+														<c:if
+															test="${quotationItem.tiling != 0 or quotationItem.flooring != 0 or quotationItem.kitchen != 0 or quotationItem.bathroom != 0}">, </c:if>현관
 													</c:if>
-													
+
 													<c:if test="${quotationItem.balcony != 0}">
-													    <c:if test="${quotationItem.tiling != 0 or quotationItem.flooring != 0 or quotationItem.kitchen != 0 or quotationItem.bathroom != 0 or quotationItem.entrance != 0}">, </c:if>발코니
+														<c:if
+															test="${quotationItem.tiling != 0 or quotationItem.flooring != 0 or quotationItem.kitchen != 0 or quotationItem.bathroom != 0 or quotationItem.entrance != 0}">, </c:if>발코니
 													</c:if>
-													
+
 													<c:if test="${quotationItem.lighting != 0}">
-													    <c:if test="${quotationItem.tiling != 0 or quotationItem.flooring != 0 or quotationItem.kitchen != 0 or quotationItem.bathroom != 0 or quotationItem.entrance != 0 or quotationItem.balcony != 0}">, </c:if>조명
+														<c:if
+															test="${quotationItem.tiling != 0 or quotationItem.flooring != 0 or quotationItem.kitchen != 0 or quotationItem.bathroom != 0 or quotationItem.entrance != 0 or quotationItem.balcony != 0}">, </c:if>조명
 													</c:if>
-													
+
 													<c:if test="${quotationItem.door != 0}">
-													    <c:if test="${quotationItem.tiling != 0 or quotationItem.flooring != 0 or quotationItem.kitchen != 0 or quotationItem.bathroom != 0 or quotationItem.entrance != 0 or quotationItem.balcony != 0 or quotationItem.lighting != 0}">, </c:if>문
+														<c:if
+															test="${quotationItem.tiling != 0 or quotationItem.flooring != 0 or quotationItem.kitchen != 0 or quotationItem.bathroom != 0 or quotationItem.entrance != 0 or quotationItem.balcony != 0 or quotationItem.lighting != 0}">, </c:if>문
 													</c:if>
-													
+
 													<c:if test="${quotationItem.etc != 0}">
-													    <c:if test="${quotationItem.tiling != 0 or quotationItem.flooring != 0 or quotationItem.kitchen != 0 or quotationItem.bathroom != 0 or quotationItem.entrance != 0 or quotationItem.balcony != 0 or quotationItem.lighting != 0 or quotationItem.door != 0}">, </c:if>그 외
+														<c:if
+															test="${quotationItem.tiling != 0 or quotationItem.flooring != 0 or quotationItem.kitchen != 0 or quotationItem.bathroom != 0 or quotationItem.entrance != 0 or quotationItem.balcony != 0 or quotationItem.lighting != 0 or quotationItem.door != 0}">, </c:if>그 외
 													</c:if>
-													
+
 												</div>
 											</div>
 											<div class="form-group row" style="margin-bottom: 10px">
 												<label class="col-sm-2">철거항목</label>
 												<div class="col-sm-5">
-												   <c:if test="${quotationItem.tilingD != 0}">도배/벽</c:if>
+													<c:if test="${quotationItem.tilingD != 0}">도배/벽</c:if>
 													<c:if test="${quotationItem.flooringD != 0}">
-													    <c:if test="${quotationItem.tilingD != 0}">, </c:if>바닥
+														<c:if test="${quotationItem.tilingD != 0}">, </c:if>바닥
 													</c:if>
-													
+
 													<c:if test="${quotationItem.kitchenD != 0}">
-													    <c:if test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0}">, </c:if>주방
+														<c:if
+															test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0}">, </c:if>주방
 													</c:if>
-													
+
 													<c:if test="${quotationItem.bathroomD != 0}">
-													    <c:if test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0 or quotationItem.kitchenD != 0}">, </c:if>욕실
+														<c:if
+															test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0 or quotationItem.kitchenD != 0}">, </c:if>욕실
 													</c:if>
-													
+
 													<c:if test="${quotationItem.entranceD != 0}">
-													    <c:if test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0 or quotationItem.kitchenD != 0 or quotationItem.bathroomD != 0}">, </c:if>현관
+														<c:if
+															test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0 or quotationItem.kitchenD != 0 or quotationItem.bathroomD != 0}">, </c:if>현관
 													</c:if>
-													
+
 													<c:if test="${quotationItem.balconyD != 0}">
-													    <c:if test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0 or quotationItem.kitchenD != 0 or quotationItem.bathroomD != 0 or quotationItem.entranceD != 0}">, </c:if>발코니
+														<c:if
+															test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0 or quotationItem.kitchenD != 0 or quotationItem.bathroomD != 0 or quotationItem.entranceD != 0}">, </c:if>발코니
 													</c:if>
-													
+
 													<c:if test="${quotationItem.lightingD != 0}">
-													    <c:if test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0 or quotationItem.kitchenD != 0 or quotationItem.bathroomD != 0 or quotationItem.entranceD != 0 or quotationItem.balconyD != 0}">, </c:if>조명
+														<c:if
+															test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0 or quotationItem.kitchenD != 0 or quotationItem.bathroomD != 0 or quotationItem.entranceD != 0 or quotationItem.balconyD != 0}">, </c:if>조명
 													</c:if>
-													
+
 													<c:if test="${quotationItem.doorD != 0}">
-													    <c:if test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0 or quotationItem.kitchenD != 0 or quotationItem.bathroomD != 0 or quotationItem.entranceD != 0 or quotationItem.balconyD != 0 or quotationItem.lightingD != 0}">, </c:if>문
+														<c:if
+															test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0 or quotationItem.kitchenD != 0 or quotationItem.bathroomD != 0 or quotationItem.entranceD != 0 or quotationItem.balconyD != 0 or quotationItem.lightingD != 0}">, </c:if>문
 													</c:if>
-													
+
 													<c:if test="${quotationItem.etcD != 0}">
-													    <c:if test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0 or quotationItem.kitchenD != 0 or quotationItem.bathroomD != 0 or quotationItem.entranceD != 0 or quotationItem.balconyD != 0 or quotationItem.lightingD != 0 or quotationItem.doorD != 0}">, </c:if>그 외
+														<c:if
+															test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0 or quotationItem.kitchenD != 0 or quotationItem.bathroomD != 0 or quotationItem.entranceD != 0 or quotationItem.balconyD != 0 or quotationItem.lightingD != 0 or quotationItem.doorD != 0}">, </c:if>그 외
 													</c:if>
-												   
+
 												</div>
 											</div>
 											<div class="form-group row" style="margin-bottom: 10px">
@@ -459,11 +497,11 @@
 									<c:forEach items="${cvo.qvoList}" var="qvo" varStatus="status">
 										<button type="submit" class="btn btn-success" id="modifyQuo"
 											style="margin-top: 5px">견적서 수정</button>
-										<a href="/sirequest/sireqRegister?quoNo=${qvo.quoNo }" class="btn btn-danger"
-											style="margin-top: 5px">시공의뢰 등록</a>
 									</c:forEach>
 								</c:if>
 							</sec:authorize>
+							<a href="/sirequest/sireqRegister?quoNo=${qvo.quoNo }"
+								class="btn btn-danger" style="margin-top: 5px">시공의뢰 등록</a>
 
 						</article>
 						<!-- END 견적서 표시 -->
@@ -532,24 +570,53 @@
 							class="form-control" readonly>
 					</div>
 					<div class="form-group">
-						<label>시공일정</label>
-						<input type="date" name="constScheduleStart" id="constScheduleStart" class="form-control-sm" oninput="validateDate(this)"> 
-						~ <input type="date" name="constScheduleEnd" id="constScheduleEnd" class="form-control-sm" oninput="validateDate(this)">
+						<label>시공일정</label> <input type="date" name="constScheduleStart"
+							id="constScheduleStart" class="form-control-sm"
+							oninput="validateDate(this)"> ~ <input type="date"
+							name="constScheduleEnd" id="constScheduleEnd"
+							class="form-control-sm" oninput="validateDate(this)">
 					</div>
 					<hr>
 					<div class="form-group">
 						<label>선택했던 시공 항목 : </label>
 						<!-- 견적상담에서 선택했던 시공 항목 표시 -->
 						<div style="color: gray">
-						    <c:if test="${cvo.item.tiling != 0}">도배/벽 : <c:out value="${cvo.item.tiling}"></c:out><br></c:if>
-						    <c:if test="${cvo.item.flooring != 0}">바닥 : <c:out value="${cvo.item.flooring}"></c:out><br></c:if>
-						    <c:if test="${cvo.item.kitchen != 0}">주방 : <c:out value="${cvo.item.kitchen}"></c:out><br></c:if>
-						    <c:if test="${cvo.item.bathroom != 0}">욕실 : <c:out value="${cvo.item.bathroom}"></c:out><br></c:if>
-						    <c:if test="${cvo.item.entrance != 0}">현관 : <c:out value="${cvo.item.entrance}"></c:out><br></c:if>
-						    <c:if test="${cvo.item.balcony != 0}">발코니 : <c:out value="${cvo.item.balcony}"></c:out><br></c:if>
-						    <c:if test="${cvo.item.lighting != 0}">조명 : <c:out value="${cvo.item.lighting}"></c:out><br></c:if>
-						    <c:if test="${cvo.item.door != 0}">문 : <c:out value="${cvo.item.door}"></c:out><br></c:if>
-						    <c:if test="${cvo.item.etc != 0}">그 외 : <c:out value="${cvo.item.etc}"></c:out><br></c:if>
+							<c:if test="${cvo.item.tiling != 0}">도배/벽 : <c:out
+									value="${cvo.item.tiling}"></c:out>
+								<br>
+							</c:if>
+							<c:if test="${cvo.item.flooring != 0}">바닥 : <c:out
+									value="${cvo.item.flooring}"></c:out>
+								<br>
+							</c:if>
+							<c:if test="${cvo.item.kitchen != 0}">주방 : <c:out
+									value="${cvo.item.kitchen}"></c:out>
+								<br>
+							</c:if>
+							<c:if test="${cvo.item.bathroom != 0}">욕실 : <c:out
+									value="${cvo.item.bathroom}"></c:out>
+								<br>
+							</c:if>
+							<c:if test="${cvo.item.entrance != 0}">현관 : <c:out
+									value="${cvo.item.entrance}"></c:out>
+								<br>
+							</c:if>
+							<c:if test="${cvo.item.balcony != 0}">발코니 : <c:out
+									value="${cvo.item.balcony}"></c:out>
+								<br>
+							</c:if>
+							<c:if test="${cvo.item.lighting != 0}">조명 : <c:out
+									value="${cvo.item.lighting}"></c:out>
+								<br>
+							</c:if>
+							<c:if test="${cvo.item.door != 0}">문 : <c:out
+									value="${cvo.item.door}"></c:out>
+								<br>
+							</c:if>
+							<c:if test="${cvo.item.etc != 0}">그 외 : <c:out
+									value="${cvo.item.etc}"></c:out>
+								<br>
+							</c:if>
 						</div>
 						<!-- END 견적상담에서 선택했던 시공 항목 표시 -->
 					</div>
@@ -573,75 +640,103 @@
 						<div id="plusItembox">
 							<!-- 추가된 시공 항목이 여기에 표시 -->
 						</div>
-						
-					<!-- 철거 항목 -->
-					<hr>
+
+						<!-- 철거 항목 -->
+						<hr>
 						<div class="form-group">
-						    <label>선택했던 철거 항목 : </label>
-						    <!-- 견적서에서 선택했던 철거 항목 표시 -->
-						    <div style="color: gray">
-						        <c:if test="${cvo.item.tilingD != 0}">도배/벽 : <c:out value="${cvo.item.tilingD}"></c:out><br></c:if>
-						        <c:if test="${cvo.item.flooringD != 0}">바닥 : <c:out value="${cvo.item.flooringD}"></c:out><br></c:if>
-						        <c:if test="${cvo.item.kitchenD != 0}">주방 : <c:out value="${cvo.item.kitchenD}"></c:out><br></c:if>
-						        <c:if test="${cvo.item.bathroomD != 0}">욕실 : <c:out value="${cvo.item.bathroomD}"></c:out><br></c:if>
-						        <c:if test="${cvo.item.entranceD != 0}">현관 : <c:out value="${cvo.item.entranceD}"></c:out><br></c:if>
-						        <c:if test="${cvo.item.balconyD != 0}">발코니 : <c:out value="${cvo.item.balconyD}"></c:out><br></c:if>
-						        <c:if test="${cvo.item.lightingD != 0}">조명 : <c:out value="${cvo.item.lightingD}"></c:out><br></c:if>
-						        <c:if test="${cvo.item.doorD != 0}">문 : <c:out value="${cvo.item.doorD}"></c:out><br></c:if>
-						        <c:if test="${cvo.item.etcD != 0}">그 외 : <c:out value="${cvo.item.etcD}"></c:out><br></c:if>
-						    </div>
-						    <!-- END 견적상담에서 선택했던 철거 항목 표시 -->
+							<label>선택했던 철거 항목 : </label>
+							<!-- 견적서에서 선택했던 철거 항목 표시 -->
+							<div style="color: gray">
+								<c:if test="${cvo.item.tilingD != 0}">도배/벽 : <c:out
+										value="${cvo.item.tilingD}"></c:out>
+									<br>
+								</c:if>
+								<c:if test="${cvo.item.flooringD != 0}">바닥 : <c:out
+										value="${cvo.item.flooringD}"></c:out>
+									<br>
+								</c:if>
+								<c:if test="${cvo.item.kitchenD != 0}">주방 : <c:out
+										value="${cvo.item.kitchenD}"></c:out>
+									<br>
+								</c:if>
+								<c:if test="${cvo.item.bathroomD != 0}">욕실 : <c:out
+										value="${cvo.item.bathroomD}"></c:out>
+									<br>
+								</c:if>
+								<c:if test="${cvo.item.entranceD != 0}">현관 : <c:out
+										value="${cvo.item.entranceD}"></c:out>
+									<br>
+								</c:if>
+								<c:if test="${cvo.item.balconyD != 0}">발코니 : <c:out
+										value="${cvo.item.balconyD}"></c:out>
+									<br>
+								</c:if>
+								<c:if test="${cvo.item.lightingD != 0}">조명 : <c:out
+										value="${cvo.item.lightingD}"></c:out>
+									<br>
+								</c:if>
+								<c:if test="${cvo.item.doorD != 0}">문 : <c:out
+										value="${cvo.item.doorD}"></c:out>
+									<br>
+								</c:if>
+								<c:if test="${cvo.item.etcD != 0}">그 외 : <c:out
+										value="${cvo.item.etcD}"></c:out>
+									<br>
+								</c:if>
+							</div>
+							<!-- END 견적상담에서 선택했던 철거 항목 표시 -->
 						</div>
-					
-					<div class="form-group">
-						<div class="input-group">
-							<label>철거 항목 &nbsp; </label> <select name="itemD" id="itemD">
-								<option value="tilingD">도배/벽</option>
-								<option value="flooringD">바닥</option>
-								<option value="kitchenD">주방</option>
-								<option value="bathroomD">욕실</option>
-								<option value="entranceD">현관</option>
-								<option value="balconyD">발코니</option>
-								<option value="lightingD">조명</option>
-								<option value="doorD">문</option>
-								<option value="etcD">그 외</option>
-							</select> <i id="demoPlusBtn" class="far fa-plus-square"></i>
-						</div>
-						<div id="demoItembox">
-							<!-- 추가된 철거 항목이 여기에 표시 -->
-						</div>
-					</div>
-					<hr>
-					<div class="form-group">
-						<label>시공 비용</label> <input type="text" name="constTotal"
-							id="constTotal" class="form-control" readonly>
-					</div>
-					<div class="form-group">
-						<label>철거 비용</label> <input type="text" name="demolTotal"
-							id="demolTotal" class="form-control" readonly>
-					</div>
-					<hr>
-					<div class="form-group">
-						<label>총 견적 금액</label> <input type="text" name="total" id="total"
-							class="form-control" readonly>
-					</div>
-				</div>
-				<!-- END 견적서 관련 내용 -->
 
-				<div class="modal-footer">
-					<!-- 모달 아래 버튼 -->
-					<button id="remBtn" type="button" class="btn btn-danger">Remove</button>
-					<button id="modBtn" type="button" class="btn btn-warning">Modify</button>
-					<button id="addBtn" type="button" class="btn btn-primary">Add</button>
-					<button id="closeBtn" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				</div>
+						<div class="form-group">
+							<div class="input-group">
+								<label>철거 항목 &nbsp; </label> <select name="itemD" id="itemD">
+									<option value="tilingD">도배/벽</option>
+									<option value="flooringD">바닥</option>
+									<option value="kitchenD">주방</option>
+									<option value="bathroomD">욕실</option>
+									<option value="entranceD">현관</option>
+									<option value="balconyD">발코니</option>
+									<option value="lightingD">조명</option>
+									<option value="doorD">문</option>
+									<option value="etcD">그 외</option>
+								</select> <i id="demoPlusBtn" class="far fa-plus-square"></i>
+							</div>
+							<div id="demoItembox">
+								<!-- 추가된 철거 항목이 여기에 표시 -->
+							</div>
+						</div>
+						<hr>
+						<div class="form-group">
+							<label>시공 비용</label> <input type="text" name="constTotal"
+								id="constTotal" class="form-control" readonly>
+						</div>
+						<div class="form-group">
+							<label>철거 비용</label> <input type="text" name="demolTotal"
+								id="demolTotal" class="form-control" readonly>
+						</div>
+						<hr>
+						<div class="form-group">
+							<label>총 견적 금액</label> <input type="text" name="total" id="total"
+								class="form-control" readonly>
+						</div>
+					</div>
+					<!-- END 견적서 관련 내용 -->
 
+					<div class="modal-footer">
+						<!-- 모달 아래 버튼 -->
+						<button id="remBtn" type="button" class="btn btn-danger">Remove</button>
+						<button id="modBtn" type="button" class="btn btn-warning">Modify</button>
+						<button id="addBtn" type="button" class="btn btn-primary">Add</button>
+						<button id="closeBtn" type="button" class="btn btn-default"
+							data-dismiss="modal">Close</button>
+					</div>
+
+				</div>
+				<!-- /.modal-content -->
 			</div>
-			<!-- /.modal-content -->
+			<!-- /.modal-dialog -->
 		</div>
-		<!-- /.modal-dialog -->
 	</div>
-</div>	
 	<!-- /.modal -->
 	<!-- END Modal창 END--------------------------->
 
@@ -669,7 +764,14 @@
 	<!-- ======= END Footer ======= -->
 
 	<!-- ======= script ======= -->
-<script>
+	<!-- fullCalendar -->
+	<script>
+// -------------------------------- 방문스케줄 관련 --------------------------------
+    var isAdmin = <sec:authorize access="hasRole('ROLE_ADMIN')">true</sec:authorize><sec:authorize access="!hasRole('ROLE_ADMIN')">false</sec:authorize>;
+    // JavaScript에서 isAdmin 변수를 사용하여 관리자인지 아닌지를 판단
+</script>
+	<script>
+//사용자의 권한 정보를 가져옵니다. (예: "ROLE_ADMIN", "ROLE_USER" 등)
 var consultNo = "${param.consultNo}";
 var visitNoElement = document.getElementById("visitNo");
 var visitNo = visitNoElement ? visitNoElement.textContent : null;
@@ -685,44 +787,54 @@ document.addEventListener('DOMContentLoaded', function() {
             
 	           var calendarEl = document.getElementById('calendar');
 	           var calendar = new FullCalendar.Calendar(calendarEl, {
-	               headerToolbar: {
-	                   left: 'prev,next today',
-	                   center: "title",
-	                   right: 'dayGridMonth,dayGridWeek'
-	               },
-                
+              	headerToolbar: {
+                   left: 'prev,next today',
+                   center: "title",
+                   right: 'dayGridMonth,dayGridWeek'
+               	},
+                timeZone: 'UTC',
                 initialView: 'dayGridMonth',
                 locale : 'ko',
                 firstDay : 1,
                 weekends : false,
-                selectable:true,
+                selectable: false, //날짜 1개만 등록할 수 있게 한다. 연일 불가
                 selectMirror:true,
-
-                select:function(arg){	//날짜가 선택됐을 때
-                     var title = prompt('일정을 입력해주세요.');
+                navLinks:true,
+                
+				//일정 등록
+                navLinkDayClick: function(date, jsEvent) {
+                	
+                	// 관리자만 일정을 등록할 수 있도록 수정
+                    if (!isAdmin) {
+                        alert('관리자만 일정을 등록할 수 있습니다.');
+                        return;
+                    }
+                	
+                     var title = prompt('스케줄을 등록할 견적상담 번호를 입력해주세요.');
+                     var description = prompt('일정의 설명을 입력해주세요.'); // 설명 입력 받기
                      
                 if(title){
                     calendar.addEvent({
-                        title:title,
-                        start:arg.start,
-                        end:arg.end,
-                        //allDay : arg.allDay
-                    })
+                     	title: title,
+                        start:date,
+                        end:date,
+                        extendedProps: {
+                            description: description // 일정에 설명 추가
+                        }
+                    });
                 }
                 
-               var allEvent = calendar.getEvents();
-               
-               var events = new Array(); // Json 데이터를 받기 위한 배열 선언
-               for (var i = 0; i < allEvent.length; i++) {
+                if(title){ 
+              	   var events = new Array(); // Json 데이터를 받기 위한 배열 선언
                    var obj = new Object();     // Json 을 담기 위해 Object 선언
-                   // alert(allEvent[i]._def.title); // 이벤트 명칭 알람
-                   obj.title = allEvent[i]._def.title; // 이벤트 명칭  ConsoleLog 로 확인 가능.
-                   obj.consultNo = consultNo;
-                   obj.start = allEvent[i]._instance.range.start; // 시작
-                   obj.end = allEvent[i]._instance.range.end; // 끝
+			        obj.title = title; 
+                    obj.consultNo = title; // consultNo로 title 값을 설정	
 
+                    obj.start = date; // 시작
+			        obj.description = description; // 서버에 보낼 데이터에 설명 추가
                    events.push(obj);
                }
+               
                var jsondata = JSON.stringify(events);
                console.log(jsondata);
                
@@ -742,27 +854,58 @@ document.addEventListener('DOMContentLoaded', function() {
                    });
                calendar.unselect()
                });
-                 }, // END select 
-                 
-                 
-                 //일정 삭제하기
-                 eventClick: function (info){
-                	    if(confirm("'"+ info.event.title +"' 번의 일정을 삭제하시겠습니까 ?")){
-                	        // 확인 클릭 시
-                	        info.event.remove();
-                	    }
-                	    console.log(visitNo);
-                	    $(function deleteData(){
-                	        $.ajax({
-                	            url: "/visit/" + visitNo,
-                	            method: "DELETE",
-                	            contentType: 'application/json',
-                	        })
-                	    })
-                	}, // END  eventClick
+              }, // END navLinkDayClick
+
+                //일정 삭제 및 status 수정
+                eventClick: function (info){
+                	// 관리자만 일정을 삭제하거나 상태를 수정할 수 있도록 수정
+                    if (!isAdmin) {
+                        alert('관리자만 일정을 삭제하거나 상태를 수정할 수 있습니다.');
+                        return;
+                    }
+                	
+              	// 삭제를 할 것인지 물음
+           	    if(confirm("'"+ info.event.title +"' 번의 일정을 삭제하시겠습니까 ?")){
+           	        // 확인 클릭 시
+           	        info.event.remove();
+           	        console.log(visitNo);
+               	    $(function deleteData(){
+               	        $.ajax({
+               	            url: "/visit/" + visitNo,
+               	            method: "DELETE",
+               	            contentType: 'application/json',
+               	        })
+               	    })
+           	    } else { //삭제 안하면 stauts 수정의사 묻기
+           	    	const visitNoElement = document.getElementById("visitNo");
+           	    	const visitNo = visitNoElement ? visitNoElement.textContent : null;	
+           	    	var description = prompt('새로운 일정 설명을 입력해주세요'); // 설명 입력 받기
+           	     if (description) {
+         	        info.event.setExtendedProp('description', description);
+
+         	        var events = new Array();
+         	        var obj = new Object();
+
+         	        obj.title = info.event.title;
+         	        obj.consultNo = consultNo;
+         	        obj.visitNo = visitNo;
+         	        obj.start = info.event.start;
+         	        obj.end = info.event.end;
+         	        obj.description = description; // 변경된 상태를 서버에 반영하기 위해 추가
+         	        events.push(obj);
+
+         	        $.ajax({
+         	            url: "/visit/" + visitNo,
+         	            method: "PATCH",
+         	            dataType: "json",
+         	            data: JSON.stringify(events),
+         	            contentType: 'application/json',
+         	        	});
+         	    	}
+				}
+               	}, // END  eventClick
 
                  editable:true,
-                 navLinks:true,
                  loading:function(bool){
                      document.getElementById('loading').style.display =
                        bool ? 'block' : 'none';
@@ -771,9 +914,15 @@ document.addEventListener('DOMContentLoaded', function() {
                   eventColor: '#378006',
                   displayEventTime : false,
                   
-                  //수정하기
+                  //일정 수정하기
                   droppable: true, 
                   eventDrop: function (info){
+                	// 관리자만 일정을 수정할 수 있도록 수정
+                	    if (!isAdmin) {
+                	        alert('관리자만 일정을 수정할 수 있습니다.');
+                	        return;
+                	    }
+                	
                       console.log(info);
                       if(confirm("'"+ info.event.title +"' 번의 일정을 수정하시겠습니까 ?")){
                       }
@@ -799,17 +948,32 @@ document.addEventListener('DOMContentLoaded', function() {
                       })
                   },// END eventDrop
                   
+                  //상세조회
+                  eventDidMount: function(info) {
+                	    var title = info.event.title;
+                	    var consultNo = "${param.consultNo}";
+                	    var description = info.event.extendedProps.description; // 설명 가져오기
+
+                	    tippy(info.el, {
+                	        content: '견적 상담 번호 '+ consultNo + '번의 방문 스케줄' + (description ? ' : ' + description : ''), // 제목을 'consultNo번의 방문 스케줄'로 수정
+                	        placement: 'bottom', //툴팁 방향
+                	        theme: 'yellow', //css테마 설정된 데이터 값
+                	        arrow: false //툴팁에서 말풍선 모양처럼 화살표 출력여부
+                	    });
+                	},
+                	
              }); // END Calendar
              calendar.render();
          }); // END Request Done 
      }); // END jQuery Function 
 });
+// -------------------------------- END 방문스케줄 관련 --------------------------------
 </script>
-	<!-- END fullCalendar -->	
-	
-	
-<script src="/resources/js/quotation.js"></script>
-<script>
+	<!-- END fullCalendar -->
+
+
+	<script src="/resources/js/quotation.js"></script>
+	<script>
 	// -------------------------------- 견적상담 관련 --------------------------------
 	// 페이지 로드 시 처리현황에 따라 상담 취소 버튼 숨김 처리
 	var statusVal = '${cvo.status}'
@@ -869,18 +1033,16 @@ document.addEventListener('DOMContentLoaded', function() {
 		return selectedDateTime > currentDate;
 	}
 	// 해피콜 입력받을 때 조건 설정 함수 -------------------------
-	// 견적상담 삭제 버튼 클릭 시 의사 재확인
-	// Confirm 대화상자를 띄우고 사용자의 의사를 물어봅니다.
-	function deleteConsult() {
-		if (confirm("정말 견적상담을 삭제하시겠습니까?")) {
-			document.getElementById("deleteForm").submit();
-		}
-	}
-	// END 견적상담 삭제 버튼 클릭 시 의사 재확인
+	
+	// 견적상담 삭제 버튼 클릭 시 의사 재확인 ---------------------
+	document.getElementById('deleteButton').addEventListener('click', function(event) {
+    var confirmation = confirm('정말로 이 견적상담을 삭제하시겠습니까?');
+    if (!confirmation) {
+        event.preventDefault();
+    	}
+	});
+	// END 견적상담 삭제 버튼 클릭 시 의사 재확인  ---------------------
 	// -------------------------------- END 견적상담 관련--------------------------------
-
-	// -------------------------------- 방문스케줄 관련 --------------------------------
-	// -------------------------------- END 방문스케줄 관련 --------------------------------
 
 	// -------------------------------- 견적서 --------------------------------
 	var consultNoVal = '${cvo.consultNo}'; //견적 상담 번호 값
@@ -900,6 +1062,21 @@ document.addEventListener('DOMContentLoaded', function() {
 	var plusBtn = document.getElementById("plusBtn"); // plusBtn을 정확한 HTML 요소로 선택
 	var demoPlusBtn = document.getElementById("demoPlusBtn");
 
+	
+	//모든 항목 입력해야 모달창 등록 가능
+	document.getElementById('addBtn').addEventListener('click', function(event) {
+	    var inputs = document.querySelectorAll('#quotationModal input');
+	    var isValid = Array.from(inputs).every(function(input) {
+	        return input.value.trim() !== '';
+	    });
+	
+	    if (!isValid) {
+	        event.preventDefault(); // 폼 제출을 막음
+	        alert('모든 항목을 입력해주세요'); // 경고 메시지 출력
+	    }
+	});
+	//모든 항목 입력해야 모달창 등록 가능
+	
 	// 모달 창 닫기
 	$('#closeBtn').on('click', function() {
 		modal.modal('hide');
@@ -932,6 +1109,16 @@ document.addEventListener('DOMContentLoaded', function() {
 	// Add 버튼 클릭 이벤트 처리  ----------------------
 	// add 버튼 누르면 견적서 등록
  $('#addBtn').on('click', function() {
+	 const dateStart = new Date(constScheduleStartTxt.val().replace(/. /g, "-"));
+	 const dateEnd = new Date(constScheduleEndTxt.val().replace(/. /g, "-"));
+	 
+	   // 시작일과 종료일 비교
+	    if (dateEnd < dateStart) {
+	        alert('시작일은 종료일보다 이후일 수 없습니다.');
+	        return; // 함수 종료
+	    }
+	 
+	 
 	 var quotation = {
 			item : {
 						itemNo: itemNoVal,
@@ -956,8 +1143,8 @@ document.addEventListener('DOMContentLoaded', function() {
 		  },
 			    consultNo: consultNoVal,
 			    itemNo: itemNoVal,
-			    constScheduleStart: constScheduleStartTxt.val(),
-			    constScheduleEnd: constScheduleEndTxt.val(),
+		        constScheduleStart: dateStart.toISOString().split('T')[0],
+		        constScheduleEnd: dateEnd.toISOString().split('T')[0],
 			    constTotal: constTotalTxt.val(),
 			    demolTotal: demolTotalTxt.val(),
 			    total: totalTxt.val()
@@ -977,14 +1164,16 @@ document.addEventListener('DOMContentLoaded', function() {
 	//Remove 버튼 클릭 이벤트 처리 --------------------------
 	// Remove 버튼 누르면 견적서 삭제
 	remBtn.on('click', function() {
-		quotationService.remove(modal.data('quoNo'), function(result) {
-			alert('견적서가 삭제되었습니다.');
-			modal.modal('hide');
-			// 새로고침
-			location.reload();
-		});
-	});
-
+    var confirmation = confirm('정말로 이 견적서를 삭제하시겠습니까?');
+    if (confirmation) {
+        quotationService.remove(modal.data('quoNo'), function(result) {
+            alert('견적서가 삭제되었습니다.');
+            modal.modal('hide');
+            // 새로고침
+            location.reload();
+        });
+    }
+});
 	//END Remove 버튼 클릭 이벤트 처리 ------------------------
 
 	//견적서 수정 버튼 클릭 이벤트 처리
@@ -995,12 +1184,15 @@ document.addEventListener('DOMContentLoaded', function() {
 	
 	$('#modifyQuo').on('click', function() {
 		quotationService.view(quoNo, function(result) {
+			 console.log('시공일정 시작:', result.constScheduleStart);
 			//견적상담번호
 			consultNoTxt.val(result.consultNo)
 			//시공일정 시작
-			constScheduleStartTxt.val(result.constScheduleStart)
-			//시공일정 끝
-			constScheduleEndTxt.val(result.constScheduleEnd)
+	        const dateStart = new Date(result.constScheduleStart);
+	        constScheduleStartTxt.val(dateStart.toISOString().split('T')[0]);
+	        //시공일정 끝
+	        const dateEnd = new Date(result.constScheduleEnd);
+	        constScheduleEndTxt.val(dateEnd.toISOString().split('T')[0]);
 			//시공비용
 			constTotalTxt.val(result.constTotal)
 			//철거비용
@@ -1022,6 +1214,15 @@ document.addEventListener('DOMContentLoaded', function() {
 	//Modify 버튼 클릭 이벤트 처리 --------------------------
 	// Modify 버튼 누르면 댓글 수정
 	modBtn.on('click', function() {
+		   // 시작일과 종료일 비교
+	 const dateStart = new Date(constScheduleStartTxt.val().replace(/. /g, "-"));
+	 const dateEnd = new Date(constScheduleEndTxt.val().replace(/. /g, "-"));   
+		   
+	    if (dateEnd < dateStart) {
+	        alert('시작일은 종료일보다 이후일 수 없습니다.');
+	        return; // 함수 종료
+	    }
+	    
 		 var quotation = {
 				 item : {
 						itemNo: itemNoVal,
@@ -1202,14 +1403,6 @@ document.addEventListener('DOMContentLoaded', function() {
 	// END 시공 및 철거 비용 총합을 계산하고 표시하는 함수
 	// -------------------------------- END 견적서 --------------------------------
 
-	/*
-	 quotationService.view(
-	 38,
-	 function(result){	
-	 console.log(result);	
-	 }
-	 );
-	 */
 </script>
 	<!-- ======= END script ======= -->
 
