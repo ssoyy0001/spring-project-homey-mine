@@ -76,7 +76,7 @@
 					<div class="form-group row text-center">
 						<div class="col-sm-offset-2 col-sm-10">
 							<form action="/gen/memberRemove" method="post">
-							<a href="/gen/memberModify?mid=${mvo.mid }" type="button" class="btn btn-info" 
+							<a href="/gen/memberModify?mid=${mvo.mid }&pageNum=${param.pageNum}&amount=${param.amount}" type="button" class="btn btn-info" 
 								id="register-button">회원 정보 수정하러 가기</a>
 							<a href="/gen/pwModify" type="button" class="btn btn-warning" 
 								id="register-button">비밀번호 수정하러 가기</a>
@@ -88,7 +88,7 @@
 							<button type="button" class="btn btn-danger" id="adminRbtn">회원정보 삭제</button>
 							</sec:authorize>
 							</c:if>
-								 <input type="button"class="btn btn-secondary" onclick="history.back()" value="취소">
+								 <a href="/gen/memberList?pageNum=${param.pageNum}&amount=${param.amount}" class="btn btn-secondary"  >뒤로가기</a>
 						<input type="hidden" name="mid" value="${mvo.mid}">
 						<input type="hidden" name="${_csrf.parameterName }"
 						value="${_csrf.token }">
