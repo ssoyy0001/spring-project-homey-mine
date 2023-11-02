@@ -38,8 +38,8 @@
   	<![CDATA[ 
     	SELECT scid, sctitle,scrabcnt,uuid,upFolder,fileName
     	FROM   ( SELECT sc.*,rownum rn
-    			 FROM	(SELECT scid, sctitle, scrabcnt, uuid, upFolder, fileName
-						 FROM (SELECT s.scid, sctitle, scrabcnt, uuid, upFolder, fileName,
+    			 FROM	(SELECT scid, sctitle, scrabcnt, uuid, upFolder, fileName,sizeRange,totalRange,buildingType
+						 FROM (SELECT s.scid, sctitle, scrabcnt, uuid, upFolder, fileName,sizeRange,totalRange,buildingType,
     									ROW_NUMBER() OVER (ORDER BY scrabcnt DESC) AS rank
   								FROM showcase s
   								JOIN showcase_Attach sa ON s.scid = sa.scid
