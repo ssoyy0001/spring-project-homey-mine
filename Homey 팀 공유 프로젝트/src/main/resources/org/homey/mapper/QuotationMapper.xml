@@ -4,117 +4,139 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.homey.mapper.QuotationMapper">
 
-  <!-- 견적서 등록과 동시에 시공항목 update -->
-  <insert id="insert" useGeneratedKeys="true" keyProperty="quoNo"  keyColumn="quoNo">
-    INSERT INTO QUOTATION (QUONO, ITEMNO, CONSULTNO, QUODATE, CONSTSCHEDULESTART, CONSTSCHEDULEEND, CONSTTOTAL, DEMOLTOTAL, TOTAL)
-    VALUES (quotation_seq.NEXTVAL, #{itemNo}, #{consultNo}, SYSDATE, #{constScheduleStart}, #{constScheduleEnd}, #{constTotal}, #{demolTotal}, #{total})
-  </insert>
-  <update id="updateItem">
-	UPDATE ITEM
-	SET	
-	TILING = #{tiling},
-    TILINGD = #{tilingD},
-    FLOORING = #{flooring},
-    FLOORINGD = #{flooringD},
-    KITCHEN = #{kitchen},
-    KITCHEND = #{kitchenD},
-    BATHROOM = #{bathroom},
-    BATHROOMD = #{bathroomD},
-    ENTRANCE = #{entrance},
-    ENTRANCED = #{entranceD},
-    BALCONY = #{balcony},
-    BALCONYD = #{balconyD},
-    LIGHTING = #{lighting},
-    LIGHTINGD = #{lightingD},
-    DOOR = #{door},
-    DOORD = #{doorD},
-    ETC = #{etc},
-    ETCD = #{etcD}
-	WHERE itemNo = #{itemNo}  
-  </update>
-  
-    <resultMap type="org.homey.domain.QuotationVO" id="quotationResultMap">
-    	<!-- QuotationVO의 속성 매핑 -->
-       <id property="quoNo" column="quoNo"/>
-       <result property="consultNo" column="consultNo"/>
-       <result property="quoDate" column="quo_date"/>
-       <result property="constScheduleStart" column="constScheduleStart"/>
-       <result property="constScheduleEnd" column="constScheduleEnd"/>
-       <result property="constTotal" column="constTotal"/>
-       <result property="demolTotal" column="demolTotal"/>
-       <result property="total" column="total"/>
-        <!-- ItemVO의 속성 매핑 -->
-       <association property="item" javaType="org.homey.domain.ItemVO"  select="org.homey.mapper.QuotationMapper.selectItem" column="consultNo">
-       <id property="itemNo" column="itemNo"/>
-       <result property="tiling" column="tiling"/>
-       <result property="tilingD" column="tilingD"/>
-       <result property="flooring" column="flooring"/>
-       <result property="flooringD" column="flooringD"/>
-       <result property="kitchen" column="kitchen"/>
-       <result property="kitchenD" column="kitchenD"/>
-       <result property="bathroom" column="bathroom"/>
-       <result property="bathroomD" column="bathroomD"/>
-       <result property="entrance" column="entrance"/>
-       <result property="entranceD" column="entranceD"/>
-       <result property="balcony" column="balcony"/>
-       <result property="balconyD" column="balconyD"/>
-       <result property="lighting" column="lighting"/>
-       <result property="lightingD" column="lightingD"/>
-       <result property="door" column="door"/>
-       <result property="doorD" column="doorD"/>
-       <result property="etc" column="etc"/>
-       <result property="etcD" column="etcD"/>
-       </association>
-       <!-- QuotationVO의 속성 매핑 -->
-	    <collection property="cvoList" ofType="org.homey.domain.ConsultVO">
-			<id property="consultNo" column="consultNo"/>
-		    <result property="mid" column="mid"/>
-		    <result property="mphone" column="mphone"/>
-		    <result property="postcode" column="postcode"/>
-		    <result property="address" column="address"/>
-		    <result property="detailAddress" column="detailAddress"/>
-		    <result property="buildingType" column="buildingType"/>
-		    <result property="scheduledDate" column="scheduledDate"/>
-		    <result property="pyeongsu" column="pyeongsu"/>
-		    <result property="budget" column="budget"/>
-		    <result property="happyCall" column="happyCall"/>
-		    <result property="consultDate" column="consultDate"/>
-		    <result property="status" column="status"/>
-	    </collection>
-   </resultMap>
+	<!-- 견적서 등록과 동시에 시공항목 update -->
+	<insert id="insert" useGeneratedKeys="true" keyProperty="quoNo"
+		keyColumn="quoNo">
+		INSERT INTO QUOTATION (QUONO, ITEMNO, CONSULTNO, QUODATE,
+		CONSTSCHEDULESTART, CONSTSCHEDULEEND, CONSTTOTAL, DEMOLTOTAL, TOTAL)
+		VALUES (quotation_seq.NEXTVAL, #{itemNo}, #{consultNo}, SYSDATE,
+		#{constScheduleStart}, #{constScheduleEnd}, #{constTotal},
+		#{demolTotal}, #{total})
+	</insert>
+	<update id="updateItem">
+		UPDATE ITEM
+		SET
+		TILING = #{tiling},
+		TILINGD = #{tilingD},
+		FLOORING = #{flooring},
+		FLOORINGD = #{flooringD},
+		KITCHEN = #{kitchen},
+		KITCHEND = #{kitchenD},
+		BATHROOM = #{bathroom},
+		BATHROOMD = #{bathroomD},
+		ENTRANCE = #{entrance},
+		ENTRANCED = #{entranceD},
+		BALCONY = #{balcony},
+		BALCONYD = #{balconyD},
+		LIGHTING = #{lighting},
+		LIGHTINGD = #{lightingD},
+		DOOR = #{door},
+		DOORD = #{doorD},
+		ETC = #{etc},
+		ETCD = #{etcD}
+		WHERE itemNo = #{itemNo}
+	</update>
 
-      <select id="select" parameterType="int" resultMap="quotationResultMap">
-        SELECT *
-        FROM quotation
-        WHERE quoNo = #{quoNo}
-    </select>
-  
-  <update id="update">
-  UPDATE QUOTATION
-  SET
-    ITEMNO = #{itemNo},
-    CONSULTNO = #{consultNo},
-    CONSTSCHEDULESTART = #{constScheduleStart},
-    CONSTSCHEDULEEND = #{constScheduleEnd},
-    CONSTTOTAL = #{constTotal},
-    DEMOLTOTAL = #{demolTotal},
-    TOTAL = #{total}
-  WHERE QUONO = #{quoNo}
-  </update>
-  
-  <delete id="delete">
-	DELETE QUOTATION WHERE quoNo = #{quoNo}
-  </delete>
-  
-   <select id="selectItem" parameterType="int" resultType="org.homey.domain.ItemVO">
-    SELECT i.itemNo, i.tiling, i.tilingD, i.flooring, i.flooringD, 
-           i.kitchen, i.kitchenD, i.bathroom, i.bathroomD, i.entrance, 
-           i.entranceD, i.balcony, i.balconyD, i.lighting, i.lightingD, 
-           i.door, i.doorD, i.etc, i.etcD
-    FROM item i
-    WHERE i.consultNo = #{consultNo}
-    </select>
-  
+	<resultMap type="org.homey.domain.QuotationVO"
+		id="quotationResultMap">
+		<!-- QuotationVO의 속성 매핑 -->
+		<id property="quoNo" column="quoNo" />
+		<result property="consultNo" column="consultNo" />
+		<result property="quoDate" column="quo_date" />
+		<result property="constScheduleStart"
+			column="constScheduleStart" />
+		<result property="constScheduleEnd" column="constScheduleEnd" />
+		<result property="constTotal" column="constTotal" />
+		<result property="demolTotal" column="demolTotal" />
+		<result property="total" column="total" />
+		<!-- ItemVO의 속성 매핑 -->
+		<association property="item"
+			javaType="org.homey.domain.ItemVO"
+			select="org.homey.mapper.QuotationMapper.selectItem"
+			column="consultNo">
+			<id property="itemNo" column="itemNo" />
+			<result property="tiling" column="tiling" />
+			<result property="tilingD" column="tilingD" />
+			<result property="flooring" column="flooring" />
+			<result property="flooringD" column="flooringD" />
+			<result property="kitchen" column="kitchen" />
+			<result property="kitchenD" column="kitchenD" />
+			<result property="bathroom" column="bathroom" />
+			<result property="bathroomD" column="bathroomD" />
+			<result property="entrance" column="entrance" />
+			<result property="entranceD" column="entranceD" />
+			<result property="balcony" column="balcony" />
+			<result property="balconyD" column="balconyD" />
+			<result property="lighting" column="lighting" />
+			<result property="lightingD" column="lightingD" />
+			<result property="door" column="door" />
+			<result property="doorD" column="doorD" />
+			<result property="etc" column="etc" />
+			<result property="etcD" column="etcD" />
+		</association>
+		<!-- QuotationVO의 속성 매핑 -->
+		<collection property="cvoList"
+			ofType="org.homey.domain.ConsultVO">
+			<id property="consultNo" column="consultNo" />
+			<result property="mid" column="mid" />
+			<result property="mphone" column="mphone" />
+			<result property="postcode" column="postcode" />
+			<result property="address" column="address" />
+			<result property="detailAddress" column="detailAddress" />
+			<result property="buildingType" column="buildingType" />
+			<result property="scheduledDate" column="scheduledDate" />
+			<result property="pyeongsu" column="pyeongsu" />
+			<result property="budget" column="budget" />
+			<result property="happyCall" column="happyCall" />
+			<result property="consultDate" column="consultDate" />
+			<result property="status" column="status" />
+		</collection>
+	</resultMap>
+
+	<select id="select" parameterType="int"
+		resultMap="quotationResultMap">
+		SELECT *
+		FROM quotation
+		WHERE quoNo = #{quoNo}
+	</select>
+
+	<update id="update">
+		UPDATE QUOTATION
+		SET
+		ITEMNO = #{itemNo},
+		CONSULTNO = #{consultNo},
+		CONSTSCHEDULESTART = #{constScheduleStart},
+		CONSTSCHEDULEEND = #{constScheduleEnd},
+		CONSTTOTAL = #{constTotal},
+		DEMOLTOTAL = #{demolTotal},
+		TOTAL = #{total}
+		WHERE QUONO = #{quoNo}
+	</update>
+
+	<delete id="delete">
+		DELETE QUOTATION WHERE quoNo = #{quoNo}
+	</delete>
+
+	<select id="selectItem" parameterType="int"
+		resultType="org.homey.domain.ItemVO">
+		SELECT i.itemNo, i.tiling, i.tilingD, i.flooring, i.flooringD,
+		i.kitchen, i.kitchenD, i.bathroom, i.bathroomD, i.entrance,
+		i.entranceD, i.balcony, i.balconyD, i.lighting, i.lightingD,
+		i.door, i.doorD, i.etc, i.etcD
+		FROM item i
+		WHERE i.consultNo = #{consultNo}
+	</select>
+
+	<select id="checkDate" parameterType="map" resultType="int">
+	<![CDATA[
+	    SELECT COUNT(*)
+	    FROM QUOTATION 
+	    WHERE ((#{sqlStartDate} BETWEEN constScheduleStart AND constScheduleEnd)
+	        OR (#{sqlEndDate} BETWEEN constScheduleStart AND constScheduleEnd))
+	        AND quoNo <> #{quoNo}
+	]]>
+	</select>
+
 </mapper>
 
 
