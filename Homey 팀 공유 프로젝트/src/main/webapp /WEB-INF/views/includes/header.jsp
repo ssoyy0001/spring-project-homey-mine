@@ -83,7 +83,7 @@
 			<!-- 헤더 메뉴 시작 -->
 			<nav id="navbar" class="navbar">
 				<ul>
-					<li><a href="#">시공사례</a></li>
+					<li><a href="/showcase/caseList">시공사례</a></li>
 					<li><a href="/consult/register">견적상담</a></li>
 					<li><a href="#">시공후기</a></li>
 					<li class="dropdown"><a href="#"><span>이벤트</span> 
