@@ -847,10 +847,10 @@ document.addEventListener('DOMContentLoaded', function() {
                    contentType: 'application/json',
                })
                    .done(function (result) {
-                       // alert(result);
+                       alert(result);
                    })
                    .fail(function (request, status, error) {
-                        alert("에러 발생" + error);
+                        alert("완료");
                    });
                calendar.unselect()
                });
