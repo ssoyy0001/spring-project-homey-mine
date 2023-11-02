@@ -71,13 +71,16 @@
 						</div>
 						<div class="form-group row text-center">
 							<div class="col-sm-offset-2 col-sm-10">
-								<input type="submit" class="btn btn-info" value="회원 정보 수정"
+							<hr>
+								<input type="submit" class="btn btn-warning" value="회원 정보 수정"
 									id="register-button"> <input type="button" class="btn btn-secondary"
 									onclick="history.back()" value="취소">
 							</div>
 						</div>
 						<input type="hidden" name="${_csrf.parameterName }"
 							value="${_csrf.token }">
+					<input type="hidden" name="pageNum" value="${param.pageNum}">
+					<input type="hidden" name="amount"  value="${param.amount}">
 					</form>
 				</div>
 				<%@ include file="../includes/sideMenuAdm.jsp"%>
