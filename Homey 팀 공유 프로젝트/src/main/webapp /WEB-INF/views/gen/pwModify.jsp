@@ -291,10 +291,14 @@ h6 span {
 												</sec:authorize>
 												
 											</form>
+											<sec:authorize access="isAnonymous()">
 											<p class="mb-0 mt-4 text-center"><a href="/gen/login" class="link">Go to login?</a></p>
+											</sec:authorize>
+											<sec:authorize access="isAuthenticated()">
 											<p class="mb-0 mt-4 text-center">
-										
+												<a href="javascript:history.back()" class="link">뒤로가기</a>
 											</p>
+											</sec:authorize>
 										</div>
 									</div>
 								</div>
