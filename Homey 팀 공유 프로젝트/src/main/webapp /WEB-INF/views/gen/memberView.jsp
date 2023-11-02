@@ -90,7 +90,7 @@
 							</sec:authorize>
 							</c:if>
 							<sec:authorize access="hasRole('ROLE_ADMIN')">
-								 <a href="/gen/memberList?pageNum=${param.pageNum}&amount=${param.amount}" class="btn btn-secondary"  >뒤로가기</a>
+								 <a href="/gen/memberList?pageNum=${empty param.pageNum ? '1' : param.pageNum}&amount=${empty param.amount ? '12' : param.amount}" class="btn btn-secondary"  >뒤로가기</a>
 								 </sec:authorize>
 								<sec:authorize access="hasRole('ROLE_MEMBER')">
 								<a href="/gen/myPage" class="btn btn-secondary">뒤로가기</a>
