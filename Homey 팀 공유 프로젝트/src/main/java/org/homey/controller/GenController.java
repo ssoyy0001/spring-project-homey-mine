@@ -174,6 +174,8 @@ public class GenController {
 			rttr.addFlashAttribute("msg","수정 실패!");	
 			log.info("실패");
 		}
+		rttr.addAttribute("pageNum", cri.getPageNum());
+		rttr.addAttribute("amount", cri.getAmount());
 		return "redirect:/gen/memberView?mid="+mvo.getMid();
 		
 	}
@@ -204,6 +206,7 @@ public class GenController {
 		}else {
 			rttr.addFlashAttribute("msg","삭제 실패!");
 		}
+
 		return "redirect:/gen/memberList";
 	}
 	
