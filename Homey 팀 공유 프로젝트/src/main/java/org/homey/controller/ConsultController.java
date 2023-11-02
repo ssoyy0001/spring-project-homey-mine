@@ -6,6 +6,7 @@ import org.homey.domain.ItemVO;
 import org.homey.domain.PageDTO;
 import org.homey.service.ConsultService;
 import org.homey.service.QuotationService;
+import org.homey.service.VisitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -31,8 +32,10 @@ public class ConsultController {
 	private ConsultService consultService;
 	@Setter(onMethod_ = @Autowired)
 	QuotationService quotationService;
+	@Setter(onMethod_ = @Autowired)
+	VisitService visitService;
 
-	// 견적상담 등록 페이지로 이동하는 GET 요청
+	// 견적상담 등록 페이지로 이동하는 GET
 	@GetMapping("register")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MEMBER')") // 관리자 또는 멤버일 경우에만 접근
 	public void register(Model model) {
@@ -43,14 +46,14 @@ public class ConsultController {
 			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 			mid = userDetails.getUsername();
 		}
-		// 모델에 로그안한 사람이 id추가
+		// 모델에 로그인한 사람의 id추가
 		model.addAttribute("mid", mid);
 
 	}
 
-	// 견적상담을 등록하는 POST 요청
+	// 견적상담 등록하는 POST
 	@PostMapping("register")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MEMBER')") // 관리자 또는 멤버일 경우
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MEMBER')")
 	public String register(ConsultVO cvo, ItemVO ivo, RedirectAttributes rttr) {
 		log.info("Consult의 register. . .");
 
@@ -92,20 +95,21 @@ public class ConsultController {
 		model.addAttribute("consultList", consultService.myList(mid));
 	}
 
-	// 견적상담 상세 정보를 조회하는 GET 요청
+	// 견적상담 상세 정보 조회
 	@GetMapping({ "consultManage", "modify" })
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MEMBER')")
 	public String view(@RequestParam("consultNo") int consultNo, Model model, @ModelAttribute("cri") Criteria cri) {
 		log.info("Consult의 View 또는 Modify . .");
-		
+
 		model.addAttribute("cvo", consultService.view(consultNo));
-		
-		ItemVO quotationItem = quotationService.selectItem(consultNo); //견적서에 시공 및 철거항목 표시
+
+		ItemVO quotationItem = quotationService.selectItem(consultNo); // 견적서에 시공 및 철거항목 표시
 		model.addAttribute("quotationItem", quotationItem);
 		return "consult/consultManage"; // consultManage.jsp로 포워딩
 	}
 
-	// 견적상담을 수정하는 POST 요청
+	
+	// 견적상담을 수정 POST
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MEMBER')") // 관리자 또는 멤버일 경우
 	@PostMapping("modify")
 	public String modify(ConsultVO cvo, RedirectAttributes rttr, @ModelAttribute("cri") Criteria cri) {
@@ -132,21 +136,22 @@ public class ConsultController {
 		}
 	}
 
-	// 견적상담 삭제 POST 요청
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN')") //관리자만 삭제 가능
+	// 견적상담 삭제
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')") // 관리자만 삭제 가능
 	@PostMapping("remove")
 	public String remove(int consultNo, RedirectAttributes rttr, @ModelAttribute("cri") Criteria cri) {
 		log.info("Consult의 remove . . 삭제된 견적상담 번호" + consultNo);
-
-		if (consultService.remove(consultNo)) {
-			log.info("remove ok");
-			rttr.addFlashAttribute("resultD", consultNo); // list에 보낼 result에 견적상담번호 담아보냄
+			if (consultService.remove(consultNo)) {
+				log.info("remove ok");
+				rttr.addFlashAttribute("resultD", consultNo); // list에 보낼 result에 견적상담번호 담아보냄
+			}
+			
+			// 페이징 정보 추가
+			rttr.addAttribute("type", cri.getType());
+			rttr.addAttribute("keyword", cri.getKeyword());
+			rttr.addAttribute("pageNum", cri.getPageNum());
+			rttr.addAttribute("amount", cri.getAmount());
+			return "redirect:/consult/list";
 		}
-	// 페이징 정보 추가
-	rttr.addAttribute("type", cri.getType());
-	rttr.addAttribute("keyword", cri.getKeyword());
-	rttr.addAttribute("pageNum", cri.getPageNum());
-	rttr.addAttribute("amount", cri.getAmount());
-	return "redirect:/consult/list";
-	}
+	
 } // ConsultController end
