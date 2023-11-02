@@ -6,6 +6,12 @@
 	margin: 10px;
 }
 </style>
+<c:if test="${!empty msg }">
+   <script>
+         alert('${msg}');
+         console.log("${msg}");
+   </script>
+</c:if>
 <div class="breadcrumbs d-flex align-items-center"
 	style="background-image: url('../resources/assets/img/breadcrumbs-bg.jpg');">
 	<div
@@ -66,19 +72,22 @@
 							</div>
 						</div>
 					</div>
-					<div class="form-group row">
+					<hr>
+					<div class="form-group row text-center">
 						<div class="col-sm-offset-2 col-sm-10">
 							<form action="/gen/memberRemove" method="post">
 							<a href="/gen/memberModify?mid=${mvo.mid }" type="button" class="btn btn-info" 
 								id="register-button">회원 정보 수정하러 가기</a>
-							<a href="/gen/pwModify" type="button" class="btn btn-info" 
+							<a href="/gen/pwModify" type="button" class="btn btn-warning" 
 								id="register-button">비밀번호 수정하러 가기</a>
+							<c:if test="${mvo.mid !='admin' }">
 							<sec:authorize access="hasRole('ROLE_MEMBER')">
-							<button type="button" class="btn btn-info" id="memberRbtn">회원 탈퇴하기</button>
+							<button type="button" class="btn btn-danger" id="memberRbtn">회원 탈퇴하기</button>
 							</sec:authorize>
 							<sec:authorize access="hasRole('ROLE_ADMIN')">
-							<button type="button" class="btn btn-info" id="adminRbtn">회원정보 삭제</button>
+							<button type="button" class="btn btn-danger" id="adminRbtn">회원정보 삭제</button>
 							</sec:authorize>
+							</c:if>
 								 <input type="button"class="btn btn-secondary" onclick="history.back()" value="취소">
 						<input type="hidden" name="mid" value="${mvo.mid}">
 						<input type="hidden" name="${_csrf.parameterName }"
