@@ -4,14 +4,18 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.homey.mapper.VisitMapper">
 
-
-	<!-- 스케줄 등록 -->
-	<insert id="insert">
-		INSERT INTO VISIT (VISITNO, CONSULTNO, visitStartDate, visitEndDate,
-		VISITSTATUS)
-		VALUES (VISIT_SEQ.NEXTVAL, #{consultNo}, #{visitStartDate}, #{visitEndDate},
-		#{visitStatus})
-	</insert>
+<!-- 스케줄 등록 -->
+<insert id="insert">
+    INSERT INTO VISIT (VISITNO, CONSULTNO, visitStartDate, visitEndDate, VISITSTATUS)
+    VALUES (VISIT_SEQ.NEXTVAL, #{consultNo}, #{visitStartDate}, 
+    <if test="visitEndDate != null">
+        #{visitEndDate}
+    </if>
+    <if test="visitEndDate == null">
+        NULL
+    </if>
+    , #{visitStatus})
+</insert>
 
 	<!-- 스케줄 1개 조회 -->
 	<select id="select" resultType="org.homey.domain.VisitVO">
@@ -34,15 +38,24 @@
 		SELECT * FROM VISIT WHERE CONSULTNO = #{consultNo}
 	</select>
 
-	<!-- 스케줄 수정 -->
-	<update id="update">
-		UPDATE VISIT
-		SET CONSULTNO = #{consultNo},
-		visitStartDate = #{visitStartDate},
-		visitEndDate = #{visitEndDate},
-		visitStatus = #{visitStatus}
-		WHERE VISITNO = #{visitNo}
-	</update>
+<!-- 스케줄 수정 -->
+<update id="update">
+    UPDATE VISIT
+    SET CONSULTNO = #{consultNo},
+    visitStartDate = #{visitStartDate},
+    visitEndDate = 
+    <if test="visitEndDate != null">
+        #{visitEndDate}
+    </if>
+    <if test="visitEndDate == null">
+        NULL
+    </if>,
+    visitStatus = #{visitStatus, jdbcType=VARCHAR}
+    WHERE VISITNO = #{visitNo}
+</update>
+
+
+
 
 	<!-- 스케줄 삭제 -->
 	<delete id="delete">
@@ -51,6 +64,5 @@
 
 
 </mapper>
-
 
 
