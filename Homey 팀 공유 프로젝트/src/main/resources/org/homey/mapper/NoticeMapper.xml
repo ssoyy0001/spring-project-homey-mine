@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.homey.mapper.NoticeMapper">
+
+	<!-- 쿼리 보관 -->
+	<sql id="criteria">
+		<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+			<foreach item="type" collection="typeArr">
+				<trim prefix="OR">
+					<choose>
+						<when test="type == 'T'.toString()">
+							NOTTITLE LIKE '%'||#{keyword}||'%'
+						</when>
+						<when test="type == 'C'.toString()">
+							NOTCONT LIKE '%'||#{keyword}||'%'
+						</when>
+						<when test="type == 'W'.toString()">
+							MID LIKE '%'||#{keyword}||'%'
+						</when>
+						<when test="type == 'G'.toString()">
+							NOTCATEGORY LIKE '%'||#{keyword}||'%'
+						</when>
+					</choose>
+				</trim>
+			</foreach>
+		</trim>
+	</sql>
+
+	<select id="selectAllPaging"
+		resultType="org.homey.domain.NoticeVO">
+     <![CDATA[ 
+       SELECT NOTNO, MID, NOTCATEGORY, NOTTITLE, NOTCONT, NOTHIT, NOTDATE
+       FROM   ( SELECT /*+INDEX_DESC(notice pk_notice) */
+                   rownum rn, NOTNO, MID, NOTCATEGORY, NOTTITLE, 
+                   NOTCONT,  NOTHIT, NOTDATE
+              FROM   notice
+              WHERE  ]]>
+		<!-- 보관해 둔 쿼리 사용 -->
+		<include refid="criteria"></include>
+    <![CDATA[           rownum <= #{amount} * #{pageNum} )
+       WHERE  rn > #{amount} * ( #{pageNum} - 1 )       
+    ]]>
+	</select>
+
+	<select id="totalCount" resultType="int">
+  	<![CDATA[ 
+	  	SELECT 	COUNT(*) 
+	  	FROM 	notice
+	    WHERE	]]>
+		<!-- 보관해 둔 쿼리 사용 -->
+		<include refid="criteria"></include>
+	<![CDATA[ 	NOTNO > 0	]]>
+	</select>
+
+	<update id="update">
+		UPDATE notice
+		SET
+		notCategory = #{notCategory},
+		notTitle = #{notTitle},
+		notCont = #{notCont}
+		WHERE notNo = #{notNo}
+	</update>
+
+	<update id="noticeHit">
+		UPDATE notice
+		SET notHit = notHit + 1
+		WHERE NOTNO =
+		#{notNo}
+	</update>
+
+	<delete id="delete">
+		DELETE notice WHERE NOTNO = #{notNo}
+	</delete>
+
+	<insert id="insertSelectKey">
+		<!-- PK 값을 미리 처리해서 notNo에 저장 -->
+		<selectKey keyProperty="notNo" order="BEFORE"
+			resultType="int">
+			SELECT notice_seq.NEXTVAL FROM dual
+		</selectKey>
+		<!-- 시퀀스 대신 저장해 둔 #{notNo}를 사용 -->
+		INSERT INTO notice(NOTNO, NOTCATEGORY, NOTTITLE, NOTCONT, MID,
+		NOTDATE, NOTHIT)
+		VALUES(#{notNo}, #{notCategory}, #{notTitle},
+		#{notCont}, #{mid}, SYSDATE, #{notHit})
+	</insert>
+
+	<select id="select" resultType="org.homey.domain.NoticeVO">
+		SELECT * FROM notice WHERE NOTNO
+		= #{NOTNO}
+	</select>
+
+</mapper>
+
+
+
