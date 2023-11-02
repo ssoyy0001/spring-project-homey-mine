@@ -204,17 +204,18 @@
 								</div>
 								<div class="modal-body">처리가 완료되었습니다.</div>
 								<div class="modal-footer">
-									<button type="button" class="btn btn-primary"
+									<button type="button" class="btn btn-primary close"
 										data-dismiss="modal">Close</button>
-									<!--                            <button type="button" class="btn btn-primary">Save changes</button> -->
+<!-- 									                           <button type="button" class="btn btn-primary">Save changes</button> -->
 								</div>
 							</div>
-							<!-- /.modal-content -->
+<!-- 							/.modal-content -->
 						</div>
-						<!-- /.modal-dialog -->
+<!-- 						/.modal-dialog -->
 					</div>
-					<!-- /.modal -->
+<!-- 					/.modal -->
 
+					
 				</div>
 			</div>
 		</section>
@@ -222,6 +223,14 @@
 
 	<!-- ======= script ======= -->
 	<script>
+	$(function() {
+	    // 모달 창 닫기
+	    $('.close').on('click', function() {
+	        $('#myModal').modal('hide');
+	    });
+	});
+	
+	
 		/* 카테고리별 조회 */
 		function selectCategory(category) {
 			document.querySelector('select[name="type"]').value = 'G'; // 카테고리 선택
@@ -334,4 +343,3 @@
 	<!-- ======= END Footer ======= -->
 </body>
 </html>
-
