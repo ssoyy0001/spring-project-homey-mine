@@ -105,7 +105,7 @@
 						<ul>
 							<li><a href="#">문의게시판</a></li>
 							<li><a href="#">AS 게시판</a></li>
-							<li><a href="#">공지게시판</a></li>
+							<li><a href="/notice/list">공지게시판</a></li>
 						</ul></li>
 				</ul>
 			</nav>
