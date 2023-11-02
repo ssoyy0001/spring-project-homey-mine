@@ -1,5 +1,8 @@
 # FinalProject_Homey
 
+<img src="https://github.com/haazzero/FinalProject_Homey/blob/main/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20%ED%95%A9%EC%B9%9C%20zip/3.png"  width="150" height="150"/>
+
+
 ## 🖥️ 프로젝트 소개
 Spring Framework 의 MVC 패턴 기법을 적용하여 제작한 인테리어 시공 업체 사이트
 <br>
