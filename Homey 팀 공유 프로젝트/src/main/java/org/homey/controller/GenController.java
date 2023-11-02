@@ -6,6 +6,7 @@ import org.homey.domain.MemberVO;
 import org.homey.domain.ScCriteria;
 import org.homey.domain.ScPageDTO;
 import org.homey.service.MemberService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +35,8 @@ import lombok.extern.log4j.Log4j;
 public class GenController {
 	private MemberService memberService;
 	private PasswordEncoder pwEncoder;
+	@Autowired
+	PersistentTokenRepository persistentTokenRepository;
 	
 	@GetMapping("main")
 	public void mainPage() {
@@ -113,7 +117,7 @@ public class GenController {
 	}
 
 	@GetMapping("findPW")
-	public void findPw() {
+	public void findPw(String msg,Model model) {
 	}
 
 	@PostMapping("findPW")//회원아이디 이름 번호에따라 그 회원이 존재하는지 체크
@@ -143,6 +147,7 @@ public class GenController {
 			if (auth == null || auth.getPrincipal().equals("anonymousUser")) {//로그인 x
 				return "redirect:/gen/login";
 			}else {//로그인 후 회원정보에서 비밀수정으로 들어 왔을 시
+				rttr.addFlashAttribute("msg", "비밀번호 변경이 완료되었습니다.");
 				return "redirect:/gen/memberView?mid="+mid;
 			}
 			
@@ -179,6 +184,7 @@ public class GenController {
 	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 	    if (auth != null) {
 	        new SecurityContextLogoutHandler().logout(request, null, auth);
+	        persistentTokenRepository.removeUserTokens(auth.getName());
 	    }
 	    if(memberService.remove(mid)) {
 	    	rttr.addFlashAttribute("msg","탈퇴가 완료 되었습니다.");
