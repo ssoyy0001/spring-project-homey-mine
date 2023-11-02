@@ -1,6 +1,8 @@
 package org.homey.mapper;
 
 
+import java.util.Map;
+
 import org.homey.domain.ItemVO;
 import org.homey.domain.QuotationVO;
 
@@ -12,4 +14,6 @@ public interface QuotationMapper {
     public int update(QuotationVO qvo); // 견적서 수정
     public int delete(int quoNo); // 견적서 삭제
     public ItemVO selectItem(int consultNo); //등록된 시공항목 및 철거항목 조회
+    
+    public int checkDate(Map<String, Object> params); //시공일정 중복체크
 }
