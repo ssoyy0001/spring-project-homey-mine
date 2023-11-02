@@ -60,9 +60,9 @@ h6 span {
 }
 
 .card-3d-wrap { //폼 사이즈 조절가능 position:relative;
-	width: 1200px;
+	width: 640px;
 	max-width: 100%;
-	height: 1000px;
+	height: 600px;
 	-webkit-transform-style: preserve-3d;
 	transform-style: preserve-3d;
 	perspective: 800px;
@@ -124,7 +124,7 @@ h6 span {
 	padding: 13px 20px;
 	padding-left: 55px;
 	height: 48px;
-	width: 50%;
+	width: 100%;
 	font-weight: 500;
 	border-radius: 4px;
 	font-size: 14px;
@@ -200,7 +200,7 @@ h6 span {
 .btn {
 	border-radius: 4px;
 	height: 44px;
-	width: 50%;
+	width: 100%;
 	font-size: 13px;
 	font-weight: 600;
 	text-transform: uppercase;
@@ -240,7 +240,11 @@ h6 span {
 }
 </style>
 <main id="main">
-
+	<c:if test="${!empty msg }">
+			<script>
+				alert('${msg}');
+			</script>
+		</c:if>
 	<!-- ======= Breadcrumbs ======= -->
 	<div class="breadcrumbs d-flex align-items-center"
 		style="background-image: url('https://images.pexels.com/photos/2227832/pexels-photo-2227832.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');">
