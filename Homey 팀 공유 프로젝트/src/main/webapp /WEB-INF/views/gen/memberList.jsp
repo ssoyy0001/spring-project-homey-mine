@@ -107,12 +107,12 @@ table td.title {    text-align: left;	}
                     <c:forEach items="${list }" var="member">
                   		<tr>
                   		
-                  			<td><a href="/gen/memberView?mid=${member.mid }">${member.mid }</a></td>
-                  			<td><a href="/gen/memberView?mid=${member.mid }">${member.mname }</a></td>
-                  			<td class="title"><a href="/gen/memberView?mid=${member.mid }">${member.mphone }</a>	</td><!-- href의 나머지 내용은 스크립트에서 처리-->
-                  			<td><a href="/gen/memberView?mid=${member.mid }">${member.memail }</a></td>
-                  			<td><a href="/gen/memberView?mid=${member.mid }">${member.maddr}</a></td>
-                  			<td><a href="/gen/memberView?mid=${member.mid }"><fmt:formatDate value="${member.mdate }" pattern="yyyy-MM-dd"/></a></td>
+                  			<td><a href="/gen/memberView?mid=${member.mid }&pageNum=${pageDTO.cri.pageNum}&amount=${pageDTO.cri.amount}">${member.mid }</a></td>
+                  			<td><a href="/gen/memberView?mid=${member.mid }&pageNum=${pageDTO.cri.pageNum}&amount=${pageDTO.cri.amount}">${member.mname }</a></td>
+                  			<td class="title"><a href="/gen/memberView?mid=${member.mid }&pageNum=${pageDTO.cri.pageNum}&amount=${pageDTO.cri.amount}">${member.mphone }</a>	</td><!-- href의 나머지 내용은 스크립트에서 처리-->
+                  			<td><a href="/gen/memberView?mid=${member.mid }&pageNum=${pageDTO.cri.pageNum}&amount=${pageDTO.cri.amount}">${member.memail }</a></td>
+                  			<td><a href="/gen/memberView?mid=${member.mid }&pageNum=${pageDTO.cri.pageNum}&amount=${pageDTO.cri.amount}">${member.maddr}</a></td>
+                  			<td><a href="/gen/memberView?mid=${member.mid }&pageNum=${pageDTO.cri.pageNum}&amount=${pageDTO.cri.amount}"><fmt:formatDate value="${member.mdate }" pattern="yyyy-MM-dd"/></a></td>
                   		</tr>
                     </c:forEach>
                     <!------------- END Model 데이터 출력 ----------->
