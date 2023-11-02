@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 
-@RestController //JSON
+@RestController // JSON
 @Log4j
 @RequestMapping("/quo/")
 public class QuotationController {
@@ -35,8 +35,12 @@ public class QuotationController {
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	public ResponseEntity<String> register(@RequestBody QuotationVO qvo) { // @RequestBody는 단일객체만 받을 수 있음
 		ItemVO ivo = qvo.getItem();
-		return quotationService.register(qvo, ivo) ? new ResponseEntity<>("Success", HttpStatus.OK)
-				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		try {
+			return quotationService.register(qvo, ivo) ? new ResponseEntity<>("Success", HttpStatus.OK)
+					: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
 	}
 
 	// Modal 창 내에서 견적서 1개 조회 (test : http://localhost:8081/quo/38)
@@ -54,8 +58,12 @@ public class QuotationController {
 	public ResponseEntity<String> modify(@RequestBody QuotationVO qvo, @PathVariable("quoNo") int quoNo) {
 		log.info("modify.............");
 		ItemVO ivo = qvo.getItem();
-		return quotationService.modify(qvo, ivo) ? new ResponseEntity<>("Success", HttpStatus.OK)
-				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		try {
+			return quotationService.modify(qvo, ivo) ? new ResponseEntity<>("Success", HttpStatus.OK)
+					: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
 	}
 
 	// 견적서 삭제
