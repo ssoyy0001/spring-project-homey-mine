@@ -165,7 +165,6 @@ CREATE TABLE visit (
     visitNo NUMBER NOT NULL,
     consultNo NUMBER NOT NULL,
     visitStatus VARCHAR2(100) NOT NULL,
-    description VARCHAR2(100) NULL,
     visitDateStart DATE NULL,
     visitDateEnd DATE NULL,
 );
