@@ -240,7 +240,11 @@ h6 span {
 }
 </style>
 <main id="main">
-
+	<c:if test="${!empty msg }">
+			<script>
+				alert('${msg}');
+			</script>
+		</c:if>
 	<!-- ======= Breadcrumbs ======= -->
 	<div class="breadcrumbs d-flex align-items-center"
 		style="background-image: url('https://images.pexels.com/photos/2227832/pexels-photo-2227832.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');">
