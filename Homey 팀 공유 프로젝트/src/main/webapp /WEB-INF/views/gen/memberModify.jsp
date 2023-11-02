@@ -69,12 +69,10 @@
 								</div>
 							</div>
 						</div>
-						<div class="form-group row">
+						<div class="form-group row text-center">
 							<div class="col-sm-offset-2 col-sm-10">
 								<input type="submit" class="btn btn-info" value="회원 정보 수정"
-									id="register-button"> <a href="/gen/pwModify"
-									type="button" class="btn btn-info" id="register-button">비밀번호
-									수정</a> <input type="button" class="btn btn-secondary"
+									id="register-button"> <input type="button" class="btn btn-secondary"
 									onclick="history.back()" value="취소">
 							</div>
 						</div>
