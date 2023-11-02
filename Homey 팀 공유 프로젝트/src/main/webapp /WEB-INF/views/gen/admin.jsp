@@ -52,7 +52,7 @@
               </div>
               <h3>시공팀 작업 목록</h3>
                <br><br>
-              <a href="service-details.html" class="readmore stretched-link">Learn more <i class="bi bi-arrow-right"></i></a>
+              <a href="/sischedule/sicheList" class="readmore stretched-link">Learn more <i class="bi bi-arrow-right"></i></a>
             </div>
           </div><!-- End Service Item -->
      
