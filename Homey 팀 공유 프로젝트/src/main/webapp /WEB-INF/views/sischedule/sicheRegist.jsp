@@ -112,64 +112,55 @@ select {
 								<br>
 								<form action="/sischedule/sicheRegist" method="POST" role="form"
 									id="actionFrm">
-		
+
 									<!--------------------- 후기 상세조회 -------------------->
 									<div class="form-group" id="odItem">
-										<label class="regiItemNm">시공의뢰번호</label>
-										<input type="number" name="sireqNo"> 
+										<label class="regiItemNm">시공의뢰번호</label> <input type="number"
+											name="sireqNo" value="${sireqVO.sireqNo }" readonly>
 									</div>
 									<div class="form-group" id="odItem">
-										<label class="regiItemNm">견적서번호</label>
-										<input type="number" name="quoNo"> 
+										<label class="regiItemNm">견적서번호</label> <input type="number"
+											name="quoNo" value="${sireqVO.quoNo }" readonly>
 									</div>
 									<div class="form-group" id="odItem">
-										<label class="regiItemNm">의뢰인</label>
-										<input type="text" name="mid"> 
+										<label class="regiItemNm">의뢰인</label> <input type="text"
+											name="mid" value="${sireqVO.mid }" readonly>
 									</div>
 									<div class="form-group" id="odItem">
 										<label class="regiItemNm">잔금처리현황</label> <select
 											name="balanceStatus">
-											<option value="잔금처리대기"
-												${sicheVO.balanceStatus == '잔금처리대기' ? 'selected' : ''}>잔금처리대기</option>
-											<option value="잔금처리완료"
-												${sicheVO.balanceStatus == '잔금처리완료' ? 'selected' : ''}>잔금처리완료</option>
+											<option value="잔금처리대기">잔금처리대기</option>
+											<option value="잔금처리완료">잔금처리완료</option>
 										</select>
 
 									</div>
 									<div class="form-group" id="odItem">
 										<label class="regiItemNm">시공진행현황</label> <select
 											name="constructionStatus">
-											<option value="착수전"
-												${sicheVO.constructionStatus == '착수전' ? 'selected' : ''}>착수전</option>
-											<option value="진행중"
-												${sicheVO.constructionStatus == '진행중' ? 'selected' : ''}>진행중</option>
-											<option value="중도취소"
-												${sicheVO.constructionStatus == '중도취소' ? 'selected' : ''}>중도취소</option>
-											<option value="시공완료"
-												${sicheVO.constructionStatus == '시공완료' ? 'selected' : ''}>시공완료</option>
+											<option value="착수전">착수전</option>
+											<option value="진행중">진행중</option>
+											<option value="중도취소">중도취소</option>
+											<option value="시공완료">시공완료</option>
 										</select>
 									</div>
 									<div class="form-group" id="odItem">
 										<label class="regiItemNm">작업할 시공팀</label> <select
 											name="workCrew" id="workCrew">
-											<option value="A팀"
-												${sicheVO.workCrew == 'A팀' ? 'selected' : ''}>A팀</option>
-											<option value="B팀"
-												${sicheVO.workCrew == 'B팀' ? 'selected' : ''}>B팀</option>
-											<option value="C팀"
-												${sicheVO.workCrew == 'C팀' ? 'selected' : ''}>C팀</option>
+											<option value="A팀">A팀</option>
+											<option value="B팀">B팀</option>
+											<option value="C팀">C팀</option>
 										</select>
 									</div>
 									<div class="form-group" id="odItem">
 										<label class="regiItemNm">시공 일정</label> <input type="date"
-											value="<fmt:formatDate value="${sicheVO.startDate}" pattern="yyyy-MM-dd" />"
+											value="<fmt:formatDate value="${sireqVO.constScheduleStart}" pattern="yyyy-MM-dd" />"
 											name="startDateStr">~ <input type="date"
-											value="<fmt:formatDate value="${sicheVO.endDate}" pattern="yyyy-MM-dd" />"
+											value="<fmt:formatDate value="${sireqVO.constScheduleEnd}" pattern="yyyy-MM-dd" />"
 											name="endDateStr">
 									</div>
 									<div class="form-group" id="odItem">
-										<label class="regiItemNm">주택유형</label>
-										<input type="text" name="buildingType"> 
+										<label class="regiItemNm">주택유형</label> <input type="text"
+											name="buildingType" value="${sireqVO.buildingType }" readonly>
 									</div>
 									<br>
 									<hr>
@@ -185,25 +176,26 @@ select {
 			</div>
 		</section>
 		<!-- End Blog Details Section -->
-			<!-- 시큐리티 -->
-			<div class="text-center" id="btn-group">
-				<button type="button" class="btn btn-secondary"
-					onclick="history.back()">뒤로가기</button>
-				<input type="button" class="btn btn-warning" id="modiBtn" value="수정" />
-		
-			</div>
-			<br> <br> <br>
+		<!-- 시큐리티 -->
+		<div class="text-center" id="btn-group">
+			<button type="button" class="btn btn-secondary"
+				onclick="history.back()">뒤로가기</button>
+			<input type="button" class="btn btn-warning" id="modiBtn" value="수정" />
+
+		</div>
+		<br> <br> <br>
 
 	</main>
 	<!-- End #main -->
-<script>
+	<script>
 var csrfHeaderName = '${_csrf.headerName}';//csrf 토큰 관련 변수
 var csrfTokenValue = '${_csrf.token}';
 
-window.onload = function() {//등록시 스케줄을 보게하기 위함
-    window.open("/sischedule/sicheList", "width=800,height=600");
-};
+function openSchedule() {//등록시 스케줄을 보게하기 위함
+	 window.open("/sischedule/sicheList", "schedule", "width=800,height=600");
 
+};
+openSchedule();
 
 $("#modiBtn").on("click",function(e){
 	e.preventDefault();
