@@ -438,6 +438,7 @@ CREATE TABLE showcase_Attach (
         REFERENCES showcase (scid)
         ON DELETE CASCADE
 );
+ALTER TABLE showcase_attach ADD isThumbnail number(1,0) default 0;
 ------스크랩 테이블----------
 CREATE TABLE Scrab (
 	scrabNum	NUMBER		NOT NULL,
