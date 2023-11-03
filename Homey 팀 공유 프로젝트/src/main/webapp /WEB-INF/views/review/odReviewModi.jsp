@@ -73,10 +73,10 @@
 	            <input type="hidden" name="${_csrf.parameterName }"	value="${_csrf.token }">
                 
                 <!---- 수정 이후에 Criteria 내용을 유지하기 위함 ------------------------>
-	            <input type="hidden" name="pageNum" value="${cri.pageNum}">
-		        <input type="hidden" name="amount"  value="${cri.amount}">
-	            <input type="hidden" name="type" value="${cri.type}">
-		        <input type="hidden" name="keyword"  value="${cri.keyword}">
+	            <input type="hidden" name="pageNum" value="${socri.pageNum}">
+		        <input type="hidden" name="amount"  value="${socri.amount}">
+	            <input type="hidden" name="type" value="${socri.type}">
+		        <input type="hidden" name="keyword"  value="${socri.keyword}">
 		        
 	            <br>
 	            <br>
