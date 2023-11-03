@@ -27,18 +27,18 @@
 	<!-- ======= Blog Details Section ======= -->
 	<section id="blog" class="blog">
 		<div class="container " data-aos="fade-up" data-aos-delay="100">
-			<div class="row g-5 ">
-				<div class="col-lg-8">
+					<div class="row justify-content-between gy-4 mt-4">
+					<div class="col-lg-8 mx-auto">
+				
 					<div class="form-group row">
-					
-						<label class="col-sm-3">아이디</label>
+						<label class="col-sm-2">아이디</label>
 						<div class="col-sm-3">
 							<input type="text" class="form-control" name="mid" id="mid" value="${mvo.mid }" readonly>
 						</div>
 					</div>
 
 					<div class="form-group row">
-						<label class="col-sm-3">이름</label>
+						<label class="col-sm-2">이름</label>
 						<div class="col-sm-3">
 							<input type="text" class="form-control" name="mname" id="mname"
 							value="${mvo.mname }"readonly>
@@ -46,7 +46,7 @@
 					</div>
 
 					<div class="form-group row">
-						<label class="col-sm-3">이메일</label>
+						<label class="col-sm-2">이메일</label>
 						<div class="col-sm-6">
 							<div class="input-group">
 								<input type="text" id="email1" class="form-control" value="${mvo.memail }"readonly>
@@ -55,8 +55,8 @@
 					</div>
 
 					<div class="form-group row">
-						<label class="col-sm-3">주소</label>
-						<div class="col-sm-8">
+						<label class="col-sm-2">주소</label>
+						<div class="col-sm-6">
 							<input type="text" class="form-control" name="addr" id="addr"
 						value="${mvo.maddr }"readonly>
 						</div>
@@ -64,14 +64,15 @@
 
 
 					<div class="form-group row">
-						<label class="col-sm-3">연락처</label>
-						<div class="col-sm-5 ">
+						<label class="col-sm-2">연락처</label>
+						<div class="col-sm-3">
 							<div class="input-group">
 								<input type="text" name="phone1" id="phone1" 
 									class="form-control" value="${mvo.mphone }"readonly>
 							</div>
 						</div>
 					</div>
+					<br>
 					<hr>
 					<div class="form-group row text-center">
 						<div class="col-sm-offset-2 col-sm-10">
@@ -101,9 +102,8 @@
 						</form>
 						</div>
 					</div>
-					
-				</div>
-				 <sec:authorize access="hasRole('ROLE_ADMIN')">
+				 </div>
+				 	 <sec:authorize access="hasRole('ROLE_ADMIN')">
 				<%@ include file="../includes/sideMenuAdm.jsp"%>
 				</sec:authorize>
 				 <sec:authorize access="hasRole('ROLE_MEMBER')">
