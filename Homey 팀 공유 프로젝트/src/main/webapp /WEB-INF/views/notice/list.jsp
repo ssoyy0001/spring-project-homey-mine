@@ -29,12 +29,131 @@
 	border-color: #ffc107;
 	background-color: #ffc107;
 }
-/* 카테고리 버튼 */
-#categoryBtn {
-	float: left;
-	border-color: #ffc107;
-	background-color: #ffc107;
+
+/* 검색 버튼 */
+.search-form {
+  width: 80%;
+  margin: 0 auto;
 }
+
+.search-form input {
+  height: 100%;
+  background: transparent;
+  border: 0;
+  display: block;
+  width: 100%;
+  padding: 1rem;
+  height: 100%;
+  font-size: 1rem;
+}
+
+.search-form select {
+  background: transparent;
+  border: 0;
+  padding: 1rem;
+  height: 100%;
+  font-size: 1rem;
+}
+
+.search-form select:focus {
+  border: 0;
+}
+
+.search-form button {
+  height: 100%;
+  width: 100%;
+  font-size: 1rem;
+}
+
+.search-form button svg {
+  width: 24px;
+  height: 24px;
+}
+
+.search-body {
+  margin-bottom: 1.5rem;
+}
+
+.search-body .search-filters .filter-list {
+  margin-bottom: 1.3rem;
+}
+
+.search-body .search-filters .filter-list .title {
+  color: #3c4142;
+  margin-bottom: 1rem;
+}
+
+.search-body .search-filters .filter-list .filter-text {
+  color: #727686;
+}
+
+.search-body .search-result .result-header {
+  margin-bottom: 2rem;
+}
+
+.search-body .search-result .result-header .records {
+  color: #3c4142;
+}
+
+.search-body .search-result .result-header .result-actions {
+  text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.search-body .search-result .result-header .result-actions .result-sorting {
+  display: flex;
+  align-items: center;
+}
+
+.search-body .search-result .result-header .result-actions .result-sorting span {
+  flex-shrink: 0;
+  font-size: 0.8125rem;
+}
+
+.search-body .search-result .result-header .result-actions .result-sorting select {
+  color: #68CBD7;
+}
+
+.search-body .search-result .result-header .result-actions .result-sorting select option {
+  color: #3c4142;
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .search-body .search-filters {
+    display: flex;
+  }
+  .search-body .search-filters .filter-list {
+    margin-right: 1rem;
+  }
+}
+
+/* 카테고리 뱃지 스타일 */
+.badge-categoryNomal {
+    background-color: 	#ffc107;
+    color: white;
+    border-radius: 5px;
+    padding: 5px 10px;
+}
+.badge-categoryService {
+    background-color: red;
+    color: white;
+    border-radius: 5px;
+    padding: 5px 10px;
+}
+
+/* 카데고리 호버 */
+.category-link {
+	font-size: x-large;
+    color: white;
+    text-decoration: none;
+}
+
+.category-link:hover {
+    color: #ffc107;
+}
+
 </style>
 </head>
 <body>
@@ -51,31 +170,33 @@
 				class="container position-relative d-flex flex-column align-items-center"
 				data-aos="fade">
 				<h2>
+					<!-- 클릭시 초기 리스트로 -->
 					<a href="/notice/list">공지사항</a>
 				</h2>
-				<!-- 클릭시 초기 리스트로 -->
-				<h4 style="color: white;">일반 / 서비스 안내</h4>
+					<!-- 카테고리 선택 -->
+					<div>
+						<a onclick="selectCategory('일반')" class="category-link">일반</a>
+						<span style="color: white;">/</span>
+						<a onclick="selectCategory('서비스안내')" class="category-link">서비스안내</a>
+					</div>
 			</div>
 		</div>
 		<!-- End Breadcrumbs -->
 
-		<section id="services" class="services section-bg blog">
+		<section id="services" class="services">
 			<!-- blog를 추가해야 사이드바 스타일 활성화  -->
 			<div class="container" data-aos="fade-up">
-				<div class="row g-3">
-
-					<!-- 검색 -->
-					<form action="/notice/list" id="searchFrm">
-						<!-- 카테고리 선택 -->
-						<div id="categoryBtn">
-							<button class="btn btn-sm searchBtn"
-								onclick="selectCategory('일반')">일반</button>
-							<button class="btn btn-sm searchBtn"
-								onclick="selectCategory('서비스안내')">서비스안내</button>
-						</div>
-						<div class="d-grid gap-2 d-md-flex justify-content-md-end">
-							<select name="type">
-								<option value="T"
+<!-- 검색 -->
+<form action="/notice/list" id="searchFrm">
+<!-- 검색DIV -->
+        <div class="card search-form">
+            <div class="card-body p-0">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="row no-gutters">
+                                <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                                    <select class="form-control" id="exampleFormControlSelect1" name="type">
+                                      <option value="T"
 									<c:if test="${pageDTO.cri.type == 'T'}">selected</c:if>>제목</option>
 								<!--  검색 타입 남겨놓기-->
 								<option value="C"
@@ -93,21 +214,29 @@
 									or 내용 or 작성자</option>
 								<option value="G"
 									<c:if test="${pageDTO.cri.type == 'G'}">selected</c:if>>카테고리</option>
-							</select> <input type="text" name="keyword"
-								value="${pageDTO.cri.keyword }">
-							<!-- 검색 키워드 남겨놓기 -->
-							<button class="btn btn-sm searchBtn" id="searchBtn">검색</button>
-							<input type="hidden" name="pageNum"
+                                    </select>
+                                </div>
+                                <div class="col-lg-8 col-md-6 col-sm-12 p-0">
+                                							<input type="text" name="keyword"
+								value="${pageDTO.cri.keyword }" placeholder="검색어를 입력해주세요...">
+                                </div>
+                                <div class="col-lg-1 col-md-3 col-sm-12 p-0">
+                                    <button type="submit" class="btn btn-base searchBtn">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                    </button>
+                                    <input type="hidden" name="pageNum"
 								value="${pageDTO.cri.pageNum}"> <input type="hidden"
 								name="amount" value="${pageDTO.cri.amount}">
-							<!-- 공지사항 등록(관리자만) -->
-							<sec:authorize access="hasRole('ROLE_ADMIN')">
-								<button id="regBtn" type="button" class="btn btn-warning btn-sm">
-									등록</button>
-							</sec:authorize>
-						</div>
-					</form>
-					<!-- END 검색 -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    <br>
+<!-- END 검색DIV -->	
+</form>
+<!-- END 검색 -->
 
 					<!-- 게시물이 없는 경우 -->
 					<c:if test="${empty noticeList }">
@@ -139,7 +268,16 @@
 								<c:forEach items="${noticeList}" var="nvo">
 									<tr>
 										<td class="text-center">${nvo.notNo}</td>
-										<td class="text-center">${nvo.notCategory}</td>
+										<td class="text-center">
+											<c:choose>
+											    <c:when test="${nvo.notCategory == '일반'}">
+											        <span class="badge badge-categoryNomal">일반</span>
+											    </c:when>
+											    <c:when test="${nvo.notCategory == '서비스안내'}">
+											        <span class="badge badge-categoryService">서비스 안내</span>
+											    </c:when>
+											</c:choose>
+										</td>
 										<td class="text-center"><a class="move"
 											href="${nvo.notNo}"> ${nvo.notTitle} </a></td>
 										<td class="text-center">${nvo.mid}</td>
@@ -158,6 +296,14 @@
 						<input type="hidden" name="amount" value="${pageDTO.cri.amount}">
 					</form>
 					<!-- END -----------검색 타입 및 검색 키워드 -->
+					
+					<!-- 공지사항 등록(관리자만) -->
+					<sec:authorize access="hasRole('ROLE_ADMIN')">
+					<div class="float-end">
+					<button id="regBtn" type="button" class="btn btn-warning btn-sm">
+						등록</button>
+					</div>
+					</sec:authorize>
 
 					<!-- paging -------------------------------->
 					<ul class="pagination custom-pagination">
@@ -206,7 +352,6 @@
 								<div class="modal-footer">
 									<button type="button" class="btn btn-primary close"
 										data-dismiss="modal">Close</button>
-<!-- 									                           <button type="button" class="btn btn-primary">Save changes</button> -->
 								</div>
 							</div>
 <!-- 							/.modal-content -->
@@ -217,7 +362,6 @@
 
 					
 				</div>
-			</div>
 		</section>
 	</main>
 
