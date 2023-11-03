@@ -120,11 +120,11 @@ select {
 									</div>
 									<div class="form-group" id="odItem">
 										<label class="regiItemNm">견적서번호</label> <input type="number"
-											name="quoNo" value="${sireqVO.quoNo }" readonly>
+											name="quoNo" value="${sireqVO.quotationvo.quoNo}" readonly>
 									</div>
 									<div class="form-group" id="odItem">
 										<label class="regiItemNm">의뢰인</label> <input type="text"
-											name="mid" value="${sireqVO.mid }" readonly>
+											name="mid" value="${sireqVO.mvo.mid}" readonly>
 									</div>
 									<div class="form-group" id="odItem">
 										<label class="regiItemNm">잔금처리현황</label> <select
@@ -153,14 +153,14 @@ select {
 									</div>
 									<div class="form-group" id="odItem">
 										<label class="regiItemNm">시공 일정</label> <input type="date"
-											value="<fmt:formatDate value="${sireqVO.constScheduleStart}" pattern="yyyy-MM-dd" />"
+											value="<fmt:formatDate value="${sireqVO.quotationvo.constScheduleStart}" pattern="yyyy-MM-dd" />"
 											name="startDateStr">~ <input type="date"
-											value="<fmt:formatDate value="${sireqVO.constScheduleEnd}" pattern="yyyy-MM-dd" />"
+											value="<fmt:formatDate value="${sireqVO.quotationvo.constScheduleEnd}" pattern="yyyy-MM-dd" />"
 											name="endDateStr">
 									</div>
 									<div class="form-group" id="odItem">
 										<label class="regiItemNm">주택유형</label> <input type="text"
-											name="buildingType" value="${sireqVO.buildingType }" readonly>
+											name="buildingType" value="${sireqVO.consultvo.buildingType}" readonly>
 									</div>
 									<br>
 									<hr>
@@ -180,7 +180,7 @@ select {
 		<div class="text-center" id="btn-group">
 			<button type="button" class="btn btn-secondary"
 				onclick="history.back()">뒤로가기</button>
-			<input type="button" class="btn btn-warning" id="modiBtn" value="수정" />
+			<input type="button" class="btn btn-warning" id="regiBtn" value="등록" />
 
 		</div>
 		<br> <br> <br>
@@ -197,7 +197,7 @@ function openSchedule() {//등록시 스케줄을 보게하기 위함
 };
 openSchedule();
 
-$("#modiBtn").on("click",function(e){
+$("#regiBtn").on("click",function(e){
 	e.preventDefault();
 	var workcrew=$('#workCrew').val();
     var inputStartDate = new Date($("input[name=startDateStr]").val());
@@ -226,7 +226,7 @@ $("#modiBtn").on("click",function(e){
             }
 
         }
-        if(confirm('수정하시겠습니까?')){
+        if(confirm('등록하시겠습니까?')){
             $("#actionFrm").submit();
         }
         },
