@@ -27,27 +27,27 @@ public class OdReviewServiceImpl implements OdReviewService {
 	   private OdReviewAttachMapper oraMapper;
 
 	@Override
-	public List<OdReviewVO> listPaging(SoCriteria cri) {
+	public List<OdReviewVO> listPaging(SoCriteria socri) {
 		log.info("listPaging.......");
-		return odReviewMapper.selectAllPaging(cri);
+		return odReviewMapper.selectAllPaging(socri);
 	}
 
 	@Override
-	public int totalCount(SoCriteria cri) {
+	public int totalCount(SoCriteria socri) {
 		log.info("totalCount.......");
-		return odReviewMapper.totalCount(cri);
+		return odReviewMapper.totalCount(socri);
 	}
 
 	@Override
-	public List<OdReviewVO> listMine(String mid, SoCriteria cri) {
+	public List<OdReviewVO> listMine(String mid, SoCriteria socri) {
 		log.info( mid + "가 작성한 리뷰 list.......");
-		return odReviewMapper.selectMine(mid, cri);
+		return odReviewMapper.selectMine(mid, socri);
 	}
 	
 	@Override
-	public int mineCount(String mid, SoCriteria cri) {
+	public int mineCount(String mid, SoCriteria socri) {
 		log.info("totalCount.......");
-		return odReviewMapper.mineCount(mid, cri);
+		return odReviewMapper.mineCount(mid, socri);
 	}
 
 
