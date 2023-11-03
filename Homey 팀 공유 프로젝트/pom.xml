@@ -17,6 +17,23 @@
 	</properties>
 	<dependencies>
 	
+	
+			<!-- 메일 API 설정 -->
+			<!-- https://mvnrepository.com/artifact/com.sun.mail/javax.mail -->
+			<dependency>
+			    <groupId>com.sun.mail</groupId>
+			    <artifactId>javax.mail</artifactId>
+			    <version>1.6.2</version>
+			</dependency>
+			
+			<!-- https://mvnrepository.com/artifact/org.springframework/spring-context-support -->
+			<dependency>
+			    <groupId>org.springframework</groupId>
+			    <artifactId>spring-context-support</artifactId>
+			    <version>5.2.1.RELEASE</version>
+			</dependency>
+	
+	
 		<!-- quartz -->
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
