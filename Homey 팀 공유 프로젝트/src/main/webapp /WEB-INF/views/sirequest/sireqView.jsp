@@ -637,7 +637,7 @@ rgba
 											<button type="submit" data-oper="remove"
 												class="btn btn-danger"
 												onclick="location.href='/sirequest/sireqRemove?sireqNo=<c:out value="${sireq.sireqNo }"/>'">삭제</button>
-											<a href="/sischedule/sicheRegi?sicheNo=${siche.sicheNo}">시공팀
+											<a href="/sischedule/sicheRegist?sireqNo=${sireq.sicheNo}">시공팀
 												작업 등록</a>
 
 											<!-- 페이지 번호와 페이지에 표시할 게시물의 수, 검색 타입, 키워드 -->
