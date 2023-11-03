@@ -12,11 +12,9 @@
 						font-weight: bold;		}
 .regiItem {		width: 200px;	
 						border: none;
-        				outline: none; /* 포커스 표시 없음 */
-        				background-color: 	#FFFAF0;	}
+        				outline: none; /* 포커스 표시 없음 */	}
 .odReqTitle{		border: none; 
-        				outline: none; /* 포커스 표시 없음 */
-        				background-color: 	#f8f8bd;	/*신청서 제목-연두색*/	}	
+        				outline: none; /* 포커스 표시 없음 */	}	
 #odReqItem {	margin-bottom: 20px; 	}
 
 /* 상단의 [원데이클래스 신청서] 글자 : 초록색*/
