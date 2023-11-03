@@ -48,7 +48,7 @@
 	            
 	            <div class="form-group mt-3">
 	                <label class="regiItemNm"><strong>* 수령일</strong></label>
-	                <input type="text" name="fpGetDate" class="regiItem" placeholder="ex) 2023/01/01 18:00">
+	                <input type="date" name="fpGetDate" value="" min="2020-01-01" max="2030-12-31">
 	            </div>
 	            
 	            <div class="form-group mt-3">
