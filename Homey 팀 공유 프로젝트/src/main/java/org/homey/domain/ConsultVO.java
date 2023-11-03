@@ -11,7 +11,7 @@ public class ConsultVO {
 	
 	private int consultNo; // 견적상담번호(PK)
 	private String mid; //회원 id
-	//	private MemberVO member; //회원 정보가 담긴 VO : 아이디, 이름을 가져올 예정
+	private MemberVO member; //회원 정보가 담긴 VO : 아이디, 이름을 가져올 예정
     private String mphone; // 연락처
     private String postcode; // 우편 번호
     private String address; // 도로명 주소
