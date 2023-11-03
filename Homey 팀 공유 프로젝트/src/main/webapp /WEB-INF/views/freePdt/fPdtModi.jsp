@@ -7,13 +7,19 @@
 <title>제품 나눔 수정</title>
 
 <style>
-	#notice {  color: red;		}
-	.regiItemNm {	width: 150px;	}
-	.regiItem {		width: 200px;	}
-	.imgNotice {	font-size: 10px; color: lightcoral;   }
-	.fpWriter{		.regiItem {		width: 200px;	
-						border: none; /* 테두리 없음 */
-        				outline: none; /* 포커스 표시 없음 */	}
+
+/* 공지사항 색 지정 */
+#notice {  color: red;		}
+
+/* 항목이름 길이지정 */
+.regiItemNm {	width: 150px;	}
+
+/* 항목입력폼 길이지정 */
+.regiItem {		width: 200px;	}
+
+/* 이미지 관련 공지 */
+.imgNotice {	font-size: 10px; color: lightcoral;   }
+
 </style>
 
 </head>
