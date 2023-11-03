@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.homey.mapper.ASBoardAttachMapper">
+  <delete id="delete">
+	DELETE ASBOARDATTACH WHERE uuid = #{uuid}
+  </delete>
+  
+  <delete id="deleteAll">
+	DELETE ASBOARDATTACH WHERE bno = #{bno}
+  </delete>
+  
+  <insert id="insert">
+	INSERT INTO ASBOARDATTACH(bno,uuid,upFolder,fileName,image)
+	VALUES(#{bno}, #{uuid}, #{upFolder}, #{fileName}, #{image})  
+  </insert>
+ 
+  
+  <select id="select" 
+  	      resultType="org.homey.domain.ASBoardAttachVO">
+    SELECT * FROM ASBOARDATTACH WHERE bno = #{bno}
+  </select>
+  
+
+</mapper>
+
+
+
