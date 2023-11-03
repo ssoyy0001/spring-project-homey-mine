@@ -3,8 +3,6 @@ package org.homey.controller;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,13 +11,9 @@ import java.util.List;
 import java.util.UUID;
 
 import org.homey.domain.AttachFileDTO;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -48,50 +42,8 @@ public class ScUploadController {
 		return false;
 	}//END isImage()
 	
-	//썸네일 이미지 파일 전송
-	@GetMapping("/display")
-	public ResponseEntity<byte[]> display(String fileName){
-		File file = new File("c:\\upload\\" + fileName);
-		ResponseEntity<byte[]> result = null;
-		
-		try {
-			HttpHeaders header = new HttpHeaders();
-			header.add("Content-Type", 
-					   Files.probeContentType(file.toPath()));
-			
-			result = new ResponseEntity<>(
-							FileCopyUtils.copyToByteArray(file),
-							header,
-							HttpStatus.OK);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		return result;
-	}//END display()
 
-	//파일 삭제
-	@PostMapping("/deleteFile")
-	
-	public ResponseEntity<String> deleteFile(String fileName, String type){
-		log.info("delete file : " + fileName);
-		try {
-			File file = new File("c:\\upload\\" + 
-								 URLDecoder.decode(fileName, "UTF-8"));
-			
-			file.delete();		//파일 삭제
-			
-			if(type.equals("image")) {
-				String originFile = file.getAbsolutePath().replace("s_", "");
-				file = new File(originFile);
-				file.delete();	//썸네일 원본 이미지 파일 삭제
-			}
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-		
-		return new ResponseEntity<String>("deleted", HttpStatus.OK);
-	}
+
 	
 	//업로드 결과 목록 반환
 	@PostMapping("/scupload/ajaxAction")
@@ -155,7 +107,6 @@ public class ScUploadController {
 	
 
 }
-
 
 
 
