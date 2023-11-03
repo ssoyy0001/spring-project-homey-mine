@@ -259,7 +259,7 @@
 											제공할 수 없으며, 이를 위반한 경우에 모든 책임은 “핀테리어”이(가) 집니다. 다만, 다음의 경우에는 예외로
 											합니다.</p>
 										<p>
-											자세한 사항은 <a href="/notice/list" target="blank">공지사항</a>에서 확인해주세요.
+											자세한 사항은 <a href="/notice/list">공지사항</a>에서 확인해주세요.
 										</p>
 									</div>
 								</div>
@@ -274,11 +274,11 @@
 								<div id="callout">
 									해피콜 운영시간은 평일 9시 ~ 오후 5시입니다. <br>10분 단위로만 선택해주세요.
 								</div>
-								<br> <label for="datetime">날짜와 시간을 선택하세요 <br>
-									<input type="datetime-local" id="happyCall" name="happyCall"
-									value="2023-10-18T12:30" oninput="validateDateTime(this)">
-									<!-- 함수 사용 -->
-
+								<br> 
+									<label for="datetime">날짜와 시간을 선택하세요 <br>
+									    <input type="datetime-local" id="happyCall" name="happyCall"
+									    value="" oninput="validateDateTime(this)">
+									    <!-- 함수 사용 -->
 								</label> <br>
 								<!-- HAPPYCALL END -->
 
@@ -286,7 +286,7 @@
 								<div class="position-absolute end-50">
 									<button type="reset" class="btn btn-light">Reset</button>
 									<button type="button" class="btn btn-secondary"
-									 id="cancelBtn">Cancel</button>
+										onclick="history.back()">Cancel</button>
 									<button type="submit" class="btn btn-warning" id="submit">
 										견적상담 신청</button>
 								</div>
@@ -354,15 +354,6 @@
 	<script
 		src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script>
-	// 견적상담 취소 버튼 클릭 시 의사 재확인 ---------------------
-	document.getElementById('cancelBtn').addEventListener('click', function(event) {
-    var confirmation = confirm('정말로 견적상담을 취소하시겠습니까?');
-    if (confirmation) {
-    	location.href = "/gen/main"; // 취소 시 main으로 돌아가기
-    	}
-	});
-	// END 견적상담 취소 버튼 클릭 시 의사 재확인  ---------------------	
-	
 //라디오박스, 체크박스 하나이상 체크 알림 -----------------------------------------
 document.getElementById('submit').onclick = function() {
     var radioBuildingType = document.querySelector('input[type=radio][name=buildingType]:checked');
@@ -491,6 +482,9 @@ function validateDateTime(input) {
     // 현재 날짜 가져오기
     var currentDate = new Date();
     
+    // 현재 날짜에 하루를 더하기
+    currentDate.setDate(currentDate.getDate() + 1);
+    
 // 	<!-- 날짜와 시간에 대한 유효성 검사 -->
     if (isValidWeekday(selectedDateTime) && 
     	isValidTime(selectedDateTime) && 
@@ -499,7 +493,8 @@ function validateDateTime(input) {
         // 유효한 경우, 아무 작업 없이 통과
     } else {
 // 	<!-- 유효하지 않은 경우, 초기 값을 복구 (이전 유효한 값으로) -->
-        input.value = "2023-10-18T12:30";
+         // 유효하지 않은 경우, 현재 날짜에 하루를 더한 값을 초기값으로 설정
+        input.value = currentDate.toISOString().split('T')[0] + "T12:30";
         alert("평일 9시~17시만 10분단위로 선택 가능하며, 미래 날짜만 선택 가능합니다.");
     }
 }
