@@ -3,8 +3,10 @@ package org.homey.controller;
 import org.homey.domain.ConsultVO;
 import org.homey.domain.Criteria;
 import org.homey.domain.ItemVO;
+import org.homey.domain.MemberVO;
 import org.homey.domain.PageDTO;
 import org.homey.service.ConsultService;
+import org.homey.service.MemberService;
 import org.homey.service.QuotationService;
 import org.homey.service.VisitService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +36,13 @@ public class ConsultController {
 	QuotationService quotationService;
 	@Setter(onMethod_ = @Autowired)
 	VisitService visitService;
+    @Setter(onMethod_ = @Autowired)
+    private MemberService memberService;
 
 	// 견적상담 등록 페이지로 이동하는 GET
 	@GetMapping("register")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MEMBER')") // 관리자 또는 멤버일 경우에만 접근
-	public void register(Model model) {
+	public void register(ConsultVO cvo, Model model) {
 		log.info("Consult의 register.jsp . . .");
 		String mid = null;
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -48,7 +52,9 @@ public class ConsultController {
 		}
 		// 모델에 로그인한 사람의 id추가
 		model.addAttribute("mid", mid);
-
+	    MemberVO member = memberService.view(mid);  // 회원 정보를 가져옵니다.
+	    cvo.setMember(member);  // ConsultVO에 MemberVO를 세팅합니다.
+	    model.addAttribute("cvo", cvo);  // 모델에 ConsultVO를 추가합니다.
 	}
 
 	// 견적상담 등록하는 POST
