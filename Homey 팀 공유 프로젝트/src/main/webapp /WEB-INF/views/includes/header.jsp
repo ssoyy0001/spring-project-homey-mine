@@ -91,7 +91,6 @@
 					<ul>
 						<li><a href="/oneday/list">원데이클래스</a></li>
 						<li><a href="/freePdt/list">제품 나눔</a></li>
-						<li><a href="#">무료 시공 이벤트</a></li>
 					</ul></li>
 					<li class="dropdown"><a href="#"><span>리뷰</span> <i
 							class="bi bi-chevron-down dropdown-indicator"></i></a>
