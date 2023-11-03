@@ -51,6 +51,7 @@
 			<!-- blog를 추가해야 사이드바 스타일 활성화  -->
 			<div class="container" data-aos="fade-up">
 				<div class="row g-3">
+					<div class="col-lg-9 mx-auto">
 
 					<!-- 등록된 게시물이 없을 시 -->
 					<c:if test="${empty consultList}">
@@ -60,10 +61,12 @@
 					</c:if>
 
 					<!-- 반복될 구간 -->
+				<div class="row gy-4 portfolio-container" data-aos="fade-up"
+                     data-aos-delay="200">
 					<c:forEach items="${consultList}" var="cvo">
 						<!-- 컨트롤러 model에 담은 이름 그대로 -->
 						<div class="col-lg-4 col-md-6 move" data-aos="fade-up"
-							data-aos-delay="100">
+							data-aos-delay="200">
 							<div class="service-item  position-relative">
 								<div class="icon">
 									<i class="fa-solid fa-mountain-city"></i>
@@ -85,11 +88,10 @@
 						<!-- End Service Item -->
 					</c:forEach>
 					<!-- 반복될 구간 END -->
-
-
-					<!-- 현재 페이지 번호 및 출력 게시물 수 전송 폼 -->
-					<form action="/consult/myList" id="actionFrm"></form>
-
+</div>
+						<!-- 현재 페이지 번호 및 출력 게시물 수 전송 폼 -->
+						<form action="/consult/myList" id="actionFrm"></form>
+						</div>
 					<%@ include file="../includes/sideMenuMem.jsp"%>
 				</div>
 			</div>
