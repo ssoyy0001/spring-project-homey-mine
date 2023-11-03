@@ -21,15 +21,15 @@ public class FreePdtServiceImpl implements FreePdtService {
 	   private FreePdtMapper freePdtMapper;			//제품 나눔 게시글 CRUD 맵퍼
 
 	@Override
-	public int fpTotalCount(SoCriteria cri) {			//페이징 시 필요한 게시글 개수 조회
+	public int fpTotalCount(SoCriteria socri) {			//페이징 시 필요한 게시글 개수 조회
 		log.info("fpTotalCount.......");
-		return freePdtMapper.fpTotalCount(cri);
+		return freePdtMapper.fpTotalCount(socri);
 	}
 
 	@Override
-	public List<FreePdtVO> fpListPaging(SoCriteria cri) {			//제품 나눔 게시글 전체조회 (페이징O)
-		log.info("listPaging......." + cri);		
-		return freePdtMapper.fpSelectAllPaging(cri);
+	public List<FreePdtVO> fpListPaging(SoCriteria socri) {			//제품 나눔 게시글 전체조회 (페이징O)
+		log.info("listPaging......." + socri);		
+		return freePdtMapper.fpSelectAllPaging(socri);
 	}
 
 
