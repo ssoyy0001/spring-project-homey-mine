@@ -20,22 +20,22 @@ tbody a:hover { color : black; }
 /* 테이블의 텍스트 가운데 정렬, 제목만 왼쪽 정렬 */
 table {  text-align: center; }
 table td.title {    	text-align: left;
-							padding-left: 40px;	/*테이블에서 게시글제목 부분이 너무 번호랑 붙어이어서 조금 뗌 */}
+							padding-left: 40px;	/*테이블에서 게시글제목 부분이 너무 번호랑 붙어있어서 조금 뗌 */}
 
 /* 당첨 뱃지 스타일 */
 .badge-lucky {
-    background-color: 	#FF8C00; /* 배경색을 빨간색으로 설정 */
-    color: white; /* 텍스트 색상을 흰색으로 설정 */
-    border-radius: 5px; /* 라운드 처리 */
-    padding: 5px 10px; /* 내부 여백 설정 */
+    background-color: 	#FF8C00; /* 배경-빨간색 */
+    color: white; /* 글자-흰색 */
+    border-radius: 5px;
+    padding: 5px 10px;
 }
 
 /* 미당첨 뱃지 스타일 */
 .badge-unlucky {
-    background-color: 	#696969	; /* 배경색을 진회색으로 설정 */
-    color: white; /* 텍스트 색상을 흰색으로 설정 */
-    border-radius: 5px; /* 라운드 처리 */
-    padding: 5px 10px; /* 내부 여백 설정 */
+    background-color: 	#696969	; /* 배경-진회색 */
+    color: white; /* 글자-흰색 */
+    border-radius: 5px;
+    padding: 5px 10px;
 }
   
   
