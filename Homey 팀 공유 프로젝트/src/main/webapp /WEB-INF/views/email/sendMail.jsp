@@ -7,9 +7,14 @@
 <title>메일 발송</title>
 
 <style>
-	#notice {  color: red;		}
-	.regiItemNm {	width: 150px;	}
-	.mailItem {		width: 700px;	}
+/* 공지사항 글자 색상 */
+#notice {  color: red;		}
+
+/* 제목 부분 길이 지정 */
+.regiItemNm {	width: 150px;	}
+
+/* 메일 내용 길이 지정 */
+.mailItem {		width: 700px;	}
 </style>
 
 </head>
