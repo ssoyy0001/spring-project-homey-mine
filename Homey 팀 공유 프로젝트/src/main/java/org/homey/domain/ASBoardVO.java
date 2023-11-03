@@ -19,7 +19,7 @@ public class ASBoardVO {
     private Date replyRegDate;     // 답변 작성일
     private Date replyUpdateDate;  // 답변 수정일
     private String replyMid;       // 답변 작성자 (관리자)
-   
+    private MemberVO mvo;
 
 }
     
