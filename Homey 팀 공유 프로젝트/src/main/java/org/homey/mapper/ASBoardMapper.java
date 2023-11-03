@@ -13,19 +13,8 @@ public interface ASBoardMapper {
     public int delete(int bno);
     public int insert(ASBoardVO asBoardVO);
     public int insertSelectKey(ASBoardVO asBoardVO);
-
+    public String selectemail(int bno);
     public List<ASBoardVO> selectAll();
     public ASBoardVO select(int bno);
     
-
-    // AS 게시물 답변 추가
-    public void addReply(ASBoardVO asBoardVO);
-
-    // AS 게시물 답변 수정
-    public int updateReply(ASBoardVO asBoardVO);
-    
-    public List<ASBoardVO> selectReplyList(int bno);
-
-    // AS 게시물 답변 삭제
-    public int deleteReply(int bno);
 }
