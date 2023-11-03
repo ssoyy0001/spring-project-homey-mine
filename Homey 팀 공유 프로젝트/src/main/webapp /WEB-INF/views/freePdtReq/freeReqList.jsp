@@ -14,7 +14,6 @@ tbody a { color : 	#333333; }
 /* 게시글 제목(링크)에 마우스 올리면 진회색으로 표시 */
 tbody a:hover { color : black; }			
 
-
 /* 테이블의 텍스트 가운데 정렬, 제목만 왼쪽 정렬 */
 table {  text-align: center; }
 table td.title {    text-align: left;	}
@@ -25,13 +24,11 @@ table a:hover { color : orange; }
 
 /* 클래스명 표시할 때 */
 .custom-rectangle {
-    background-color: #FFFACD; /* 연한 회색 배경색 */
+    background-color: #FFFACD; /* 연한 회색 */
     padding: 10px;
- 
-    border-radius: 5px; /* 라운드 처리 */
-
+    border-radius: 5px;
     font-weight: bold;
-    color: #333333; /* 글자 색상 */
+    color: #333333;
 }
 
 .custom-rectangle .class-name {
@@ -41,10 +38,10 @@ table a:hover { color : orange; }
 
 /* 당첨 뱃지 스타일 */
 .badge-mail {
-    background-color: 	#228B22; /* 배경색을 초록색으로 설정 */
-    color: white; /* 텍스트 색상을 흰색으로 설정 */
-    border-radius: 5px; /* 라운드 처리 */
-    padding: 5px 10px; /* 내부 여백 설정 */
+    background-color: 	#228B22; /* 배경색-초록색 */
+    color: white; /* 글자-흰색*/
+    border-radius: 5px;
+    padding: 5px 10px;
 }
 
 </style>
