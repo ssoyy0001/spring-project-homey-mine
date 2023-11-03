@@ -54,3 +54,6 @@ FOR EACH ROW
 BEGIN
   INSERT INTO memberauth (mid, auth) VALUES (:new.mid, 'ROLE_MEMBER');
 END;
+
+- AS 문의 트리거
+CREATE SEQUENCE bno_seq  INCREMENT BY 1 START WITH 1;
