@@ -188,6 +188,13 @@
 								<!-- MPHONE, POSTCODE, ADDRESS, DETAILADDRESS -->
 								<h2>6. 시공할 곳의 주소, 연락처를 알려주세요.</h2>
 								<div class="form-group row" style="margin-bottom: 10px">
+									<label class="col-sm-2">이름</label>
+									<div class="col-sm-3">
+										<input type="text" value="${cvo.member.mname}"
+											readonly="readonly">
+									</div>
+								</div>
+								<div class="form-group row" style="margin-bottom: 10px">
 									<label class="col-sm-2">아이디</label>
 									<div class="col-sm-3">
 										<input type="text" name="mid" value="${mid}"
@@ -197,7 +204,7 @@
 								<div class="form-group row" style="margin-bottom: 10px">
 									<label class="col-sm-2">휴대폰 번호</label>
 									<div class="col-sm-5">
-										<input type="text" name="mphone" id="mphone"
+										<input type="text" name="mphone" id="mphone" value="${cvo.member.mphone}"
 											class="form-control" required placeholder="- 없이 숫자만 입력해주세요">
 									</div>
 								</div>
@@ -243,7 +250,9 @@
 									<input class="form-check-input" type="checkbox"
 										id="flexCheckDefault" required> <label
 										class="form-check-label" for="flexCheckDefault"
-										style="font-weight: bold;"> HOMEY 약관 & 개인정보 수집 및 이용에
+										style="font-weight: bold;"> HOMEY 약관  &amp;
+
+										 개인정보 수집 및 이용에
 										대한 안내 동의 (필수) &nbsp; </label> <a id="showModalBtn"
 										class="btn btn-sm btn-warning">보기</a>
 
@@ -253,7 +262,9 @@
 									<div class="modal-content">
 										<span class="close" id="closeModal">&times;</span>
 										<!-- 약관 내용 및 동의 체크박스 -->
-										<h4>약관 & 개인정보 수집 및 이용에 대한 안내 동의</h4>
+										<h4>약관  &amp;
+
+										 개인정보 수집 및 이용에 대한 안내 동의</h4>
 										<p>① “HOMEY”은(는) 제 7조 제 2항의 신청서기재사항 이외에 “이용자”의 콘텐츠이용에 필요한
 											최소한의 정보를 수집할 수 있습니다. 이를 위해 “핀테리어”이(가) 문의한 사항에 관해 “이용자”는 진실한
 											내용을 성실하게 고지하여야 합니다. ② “HOMEY”이(가) “이용자”의 개인 식별이 가능한 “개인정보”를
