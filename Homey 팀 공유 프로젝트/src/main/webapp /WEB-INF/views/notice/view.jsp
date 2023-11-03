@@ -19,106 +19,105 @@
     display: table-cell;
     padding: 5px 15px;
 }   
+/* 첨부파일 크기 조절*/
+.uploadResult ul li img {
+    max-width: 100%; /* 이미지를 부모 요소 너비에 맞게 조절 */
+    max-height: auto;
+    display: block;
+    width:50%;
+    margin:auto;
+}
 </style>
+
+
 </head>
 <body>
 
 <!-- ======= header ======= -->
 <%@ include file="../includes/header.jsp" %>
-
 <!-- ======= main ======= -->
 <main id="main">
 <!-- ======= Breadcrumbs ======= -->
 <div class="breadcrumbs d-flex align-items-center" style="background-image: url('../resources/assets/img/breadcrumbs-bg.jpg');">
   <div class="container position-relative d-flex flex-column align-items-center" data-aos="fade">
     <h2>공지사항 상세조회</h2>
-  	    <h4 style="color: white;">일반 / 서비스 안내</h4>
   </div>
 </div><!-- End Breadcrumbs -->
     
-    <section id="services" class="services section-bg blog"> <!-- blog를 추가해야 사이드바 스타일 활성화  -->
-      <div class="container" data-aos="fade-up">
-        <div class="row">
-        	<div class="col-lg-6">
+    <section id="blog" class="blog">
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row g-5">
+          <div class="col-lg-8 mx-auto">
+            <article class="blog-details">
+        
            		
-           	<div class="form-group">
-           	<label>No.</label>
-           	<input type="text" name="bno" class="form-control" value="${nvo.notNo }" readonly>
-           	</div>
+           	<!-- 내용 표시 시작 -------------------------- -->
            	
-           	<div class="form-group">
-           	<label>분류</label>
-           	${nvo.notCategory }
-           	</div>
+           	<h2 class="title">${nvo.notTitle }</h2>
+           	
+  			<div class="meta-top">
+				  <ul>
+				    <li class="d-flex align-items-center"><i class="bi bi-list-ol"></i> No. ${nvo.notNo } </li>
+				    <li class="d-flex align-items-center"><i class="bi bi-tags-fill"></i> 분류 | ${nvo.notCategory } </li>
+				    <li class="d-flex align-items-center"><i class="bi bi-person-fill"></i> 작성자 | ${nvo.mid } </li>
+				    <li class="d-flex align-items-center"><i class="bi bi-calendar-check-fill"></i> 작성일 | <fmt:formatDate value="${nvo.notDate}" pattern="yyyy-MM-dd (E)"/>  </li>
+				  </ul>
+			</div><!-- End meta top -->
 
-           	<div class="form-group">
-           	<label>작성일</label>
-           	<fmt:formatDate value="${nvo.notDate}" pattern="yyyy-MM-dd (E)"/> 
-           	</div>
-			
-			<div class="form-group">
-				<label>제목</label>
-				<input type="text" name="notTitle" class="form-control"
-					   value="${nvo.notTitle }" readonly></div>
-				
-			<div class="form-group">
-				<label>내용</label>
-				<textarea name="notCont" class="form-control"
-						  rows="3" readonly>${nvo.notCont }</textarea></div>
-				
-			<div class="form-group">
-				<label>작성자</label>
-				<input type="text" name="mid" class="form-control"
-					   value="${nvo.mid }" readonly></div>
-				
+		<div class="content">
+			<p>${nvo.notCont }</p>
+		</div>
+				<br>
+				<hr>
+				<br>
+								
+				 <!-- 첨부파일 -->
+				<div class = "row">
+					<div class = "col-lg-12">
+						<div class = "panel panel-default">
+							<div class = "panel-body">
+						<!-- 업로드 결과 출력 -->				
+						<div class="uploadResult">
+						<ul> </ul>
+						</div>
+						<!-- 업로드 결과 출력 -->				
+						
+						<!-- 썸네일 원본 이미지 표시 결과 출력 -->				
+						<div class="originImgDiv">
+							<div class="originImg"> </div>
+						</div>
+						<!-- 썸네일 원본 이미지 표시 결과 출력 -->				
+							</div>
+						</div>
+					</div>
+				</div>			
+
 			<form action="/notice/modify">
 				<input type="hidden" name="notNo" value="${nvo.notNo }">
-			
-			<sec:authorize access="hasRole('ROLE_ADMIN')"> <!-- 관리자만 수정 -->		
-			    <button data-oper="modify" class="btn btn-warning">
-			        수정
-			    </button>
-			</sec:authorize>
-					
-				<button data-oper="list" class="btn btn-primary"
-					 	formaction="/notice/list">
-					목록으로</button>
-						
+					<sec:authorize access="hasRole('ROLE_ADMIN')"> <!-- 관리자만 수정 -->		
+					    <button data-oper="modify" class="btn btn-warning">
+					        수정
+					    </button>
+					</sec:authorize>
+						<button data-oper="list" class="btn btn-primary"
+							 	formaction="/notice/list">
+							목록으로</button>
 					<!-- 페이지 번호와 페이지에 표시할 게시물의 수, 검색 타입, 키워드 -->
                 	<input type="hidden" name="type" 	value="${cri.type}">
                 	<input type="hidden" name="keyword" value="${cri.keyword}">	
 					<input type="hidden" name="pageNum" value="${cri.pageNum}">
                 	<input type="hidden" name="amount"  value="${cri.amount}">
                 	
-				</form>
- 
- <!-- 첨부파일 -->
-<div class = "row">
-	<div class = "col-lg-12">
-		<div class = "panel panel-default">
-			<div class = "panel-heading">Attach File</div>
-			<!-- /.panel-heading -->
-			<div class = "panel-body">
-		
-		<!-- 업로드 결과 출력 -->				
-		<div class="uploadResult">
-		<ul> </ul>
-		</div>
-		<!-- 업로드 결과 출력 -->				
-		
-		<!-- 썸네일 원본 이미지 표시 결과 출력 -->				
-		<div class="originImgDiv">
-			<div class="originImg"> </div>
-		</div>
-		<!-- 썸네일 원본 이미지 표시 결과 출력 -->				
-			</div>
-		</div>
-	</div>
-</div>			
-				</div>
-         	</div>
+		</form>
+				
+			<!-- 내용 표시 끝 -------------------------- -->
+	       
+	        </article><!-- End blog post -->
+				</div><!-- End post content -->	       	
         </div>
-    </section> 
+      </div>
+    </section><!-- End Blog Details Section -->
+    
 </main>
 
 <!-- ======= script ======= -->
@@ -211,19 +210,3 @@ function showOriginal(orginImg) {
 <!-- ======= END Footer ======= -->
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
