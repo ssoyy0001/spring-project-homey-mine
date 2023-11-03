@@ -74,7 +74,7 @@
 			<result property="etc" column="etc" />
 			<result property="etcD" column="etcD" />
 		</association>
-		<!-- QuotationVO의 속성 매핑 -->
+		<!-- consultVO의 속성 매핑 -->
 		<collection property="cvoList"
 			ofType="org.homey.domain.ConsultVO">
 			<id property="consultNo" column="consultNo" />
@@ -138,6 +138,5 @@
 	</select>
 
 </mapper>
-
 
 
