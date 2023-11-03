@@ -9,6 +9,11 @@
 <style>
 
 #notice {  color: red;		}
+
+/*이미 신청했거나 모집마감된 게시글이라고 알려줄 때 */
+.reqNotice{	text-align: center; 
+					color: red;	}		
+
 #fpTitleBox {		border: 2px solid #FFA500; /* 진노랑색 테두리 */
     						padding: 10px; /* 텍스트와 테두리 사이의 간격을 10px로 지정 */		}
 .fpTitle {	text-align: center;	}
@@ -19,7 +24,7 @@
         				outline: none; /* 포커스 표시 없음 */	}
 .imgNotice {	font-size: 10px; color: lightcoral;   }
 #fpItem {	margin-bottom: 20px; 	}
-#fpvoImg{ width:40%;	display: block;	margin:auto;	}			/* 띄울 사진 크기*/
+#fpImg{ width:90%;	display: block;	margin:auto;	}			/* 띄울 사진 크기*/
 .tags, p{	 color: #F44336; 	}
 .regiText{	color: #FFA000;		}
 .reqForm{		background-color: #FFF8E1;		}
@@ -50,6 +55,12 @@
   </div>
 </div><!-- End Breadcrumbs -->
 
+<!-- 제품나눔 신청완료 메시지가 있는 경우, qnaListAll.jsp로 돌아오면서 msg내용을 alert으로 띄우기 --> 
+<c:if test="${!empty msg }">
+	<script>
+			alert('${msg}');
+	</script>
+</c:if>
 
 <!-- ======= 제품 나눔 안내글 상세조회 ======= -->
 
@@ -125,7 +136,7 @@
 				<br>
 				
 				<div class="form-group">
-					<img src="../freePdt/display?fileName=${fpvo.fpImg}" id="fpvoImg">
+					<img src="../freePdt/display?fileName=${fpvo.fpImg}" id="fpImg">
 				</div>	
 
               </div><!-- End post content -->
@@ -149,19 +160,20 @@
     
     <form action="/freePdt/modify" method="get" role="form" id="actionFrm">
 		<input type="hidden" name="fpNo" value="${fpvo.fpNo}">
-        <input type="hidden" name="pageNum" value="${cri.pageNum}">
-      	<input type="hidden" name="amount"  value="${cri.amount}">
-        <input type="hidden" name="type"  value="${cri.type}">
-        <input type="hidden" name="keyword"  value="${cri.keyword}">
+        <input type="hidden" name="pageNum" value="${socri.pageNum}">
+      	<input type="hidden" name="amount"  value="${socri.amount}">
+        <input type="hidden" name="type"  value="${socri.type}">
+        <input type="hidden" name="keyword"  value="${socri.keyword}">
                	
-        <input type="hidden" name="${_csrf.parameterName }"	value="${_csrf.token }">
+        <!-- 시큐리티 -->
+		<input type="hidden" name="${_csrf.parameterName }"	value="${_csrf.token }">
                	
          <div class="text-center" id="btn-group">
-         	<button type="button" class="btn btn-secondary" onclick="history.back()">목록</button>
+         	<a id="ListBtn" class="btn btn-secondary">목록</a>
 			<sec:authorize access="hasRole('ROLE_ADMIN')">
 			<input type="submit" class="btn btn-warning" value="수정"/>
 			<button id="RemoveBtn" class="btn btn-danger">삭제</button>
-			<a href="/freePdtReq/list?fpNo=${fpvo.fpNo}&fpTitle=${fpvo.fpTitle}" class="btn btn-info">신청자 조회</a>
+			<a href="/freePdtReq/list?fpNo=${fpvo.fpNo}" class="btn btn-info">당첨자 조회</a>
 			</sec:authorize>
 		</div>
 	</form>
@@ -195,13 +207,27 @@
                   <br>
                   <input type="hidden" name="fpNo" value="${fpvo.fpNo}">
                   <input type="hidden" name="mid" value="<sec:authentication property="principal.Username"/>">
+                  <!-- 시큐리티 -->
+		          <input type="hidden" name="${_csrf.parameterName }"	value="${_csrf.token }">
                   
-                  <c:if test="${fpvo.fpState == 0 && checkResult == 0}"><!-- 중복신청여부(doubleCheck) : 0일 경우 -->
-	                  <div class="text-center" id="btn-group">
-	                  	<button type="submit"  id="reqBtn" class="btn btn-warning btn-lg">나눔 신청</button>
-<!-- 	                  	<input type="submit" id="reqBtn" class="btn btn-warning" value="신청하기"> -->
-					  </div>
-				  </c:if>
+                  
+                  <c:choose>
+					    <c:when test="${fpvo.fpState != 0}">
+					    	<hr>
+					        <h3 class="reqNotice">　<span class="badge bg-danger"> 모집이 마감된 이벤트입니다. </span></h3>
+					    </c:when>
+					    <c:when test="${checkResult != 0}">
+					        <hr>
+					        <h3 class="reqNotice">　<span class="badge bg-success"> 이미 신청한 이벤트입니다. </span></h3>
+					    </c:when>
+					    <c:otherwise>
+					    	<sec:authorize access="not hasRole('ROLE_ADMIN')"><!-- 관리자가 아닐 경우에 신청버튼 표시 -->
+			                  <div class="text-center" id="btn-group">
+			                  	<button type="submit"  id="reqBtn" class="btn btn-warning btn-lg">나눔 신청</button>
+							  </div>
+							</sec:authorize>
+					    </c:otherwise>
+					</c:choose>
                 </form>
 
               </div>
@@ -211,26 +237,6 @@
       </div>
     </section><!-- End Blog Details Section -->
 
-<!-- Modal 게시물 수정 완료 시 표시 -->
-             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                 <div class="modal-dialog">
-                     <div class="modal-content">
-                         <div class="modal-header">
-                             <button type="button" class="close" 
-                             		data-dismiss="modal" aria-hidden="true">&times;</button>
-                             <h4 class="modal-title" id="myModalLabel">
-                             	MESSAGE</h4>
-                         </div>
-                         <div class="modal-body">
-                             처리가 완료되었습니다.
-                         </div>
-                         <div class="modal-footer">
-                             <button type="button" class="btn btn-primary" data-dismiss="modal">닫기</button>
-                         </div>
-                     </div>  <!-- /.modal-content -->
-                 </div>		<!-- /.modal-dialog -->
-             </div>          <!-- /.modal -->
-<!-- END Modal 게시물 등록 완료 시 표시 -->
 
 </main><!-- End #main -->
 
@@ -252,31 +258,26 @@
 
 <script>
 
+//목록 버튼 클릭 이벤트 처리 ---------------------------------
 
-//"게시글 수정완료" 메시지가 있는 경우, msg내용을 alert으로 띄우기 ---------------------------------------
-var msg = '${msg}';
-checkModal(msg);
+document.addEventListener("DOMContentLoaded", function() {
+  // "목록" 버튼 찾아서 클릭 이벤트 핸들러를 연결
+  var ListBtn = document.getElementById("ListBtn");
+  if (ListBtn) {
+	  ListBtn.addEventListener("click", function() {
+        var form = document.getElementById("actionFrm");
+        form.action = "/freePdt/list"; 	// 삭제를 처리할 URL로 변경
+        form.method = "get";
+        form.submit();
+    });
+  }
+});
 
-//모달 창 재출력 방지
-history.replaceState({}, null, null); //history 초기화
-
-function checkModal(msg){
-	//msg 값이 있는 경우에 모달 창 표시 (msg는 수정 시 컨트롤러에서 보냄)
-	if(msg === '' || history.state) {
-		return;
-	}
-	
-	if( parseInt(msg) > 0) { 			//게시물이 등록된 경우 (msg에 게시물번호가 담김)
-		$('.modal-body').html(msg + '번 게시물이 등록되었습니다.'); 
-	}
-	
-	$('#myModal').modal('show');
-}
-//END 게시물 처리 결과 알림 모달창 처리 ---------------------------------------
+//END 목록 버튼 클릭 이벤트 처리 ---------------------------------
 
 
 
-//삭제 버튼 클릭 이벤트 처리 ---------------------------------
+//[삭제] 버튼 클릭 이벤트 처리 ---------------------------------
 
 document.addEventListener("DOMContentLoaded", function() {
   // "삭제" 버튼 찾아서 클릭 이벤트 핸들러를 연결
@@ -305,13 +306,17 @@ $('#reqBtn').click(function(event) {
     var privacyCheck = document.getElementById("privacyCheck");
     var readCheck = document.getElementById("readCheck");
 
-    if ( !privacyCheck.checked || !readCheck.checked) {
+ 	// 값을 비교하여 선착순 마감 여부 확인
+    if (${fpvo.fpPeople} === ${fpvo.fpNowPeople}) {
+        alert("선착순 마감되었습니다.");
+    } else if (!privacyCheck.checked || !readCheck.checked) {
         alert("체크박스를 확인해주세요.");
-    } else{
+    } else {
         if (confirm('신청하시겠습니까?')) {
             $('#reqFrm').submit();
         }
-    }
+    }//end If문
+ 	
 });
 
 
