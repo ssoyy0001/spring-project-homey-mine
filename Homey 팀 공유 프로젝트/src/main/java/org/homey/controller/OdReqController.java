@@ -105,7 +105,7 @@ public class OdReqController {
 	//원데이클래스 신청서 상세조회
 	@GetMapping("view")	
 	@PreAuthorize("principal.username == #mid or hasRole('ROLE_ADMIN')")
-	public String view(int odReqNo, String mid, Model model, @RequestParam("odNo") int odNo, @ModelAttribute("cri") SoCriteria cri) {
+	public String view(int odReqNo, String mid, Model model, @RequestParam("odNo") int odNo, @ModelAttribute("socri") SoCriteria socri) {
 		
 		log.info("view..... odReqNo : " + odReqNo);
 		
