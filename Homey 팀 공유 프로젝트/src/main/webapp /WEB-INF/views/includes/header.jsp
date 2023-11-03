@@ -104,8 +104,13 @@
 							class="bi bi-chevron-down dropdown-indicator"></i></a>
 						<ul>
 							<li><a href="#">문의게시판</a></li>
-							<li><a href="#">AS 게시판</a></li>
-							<li><a href="/notice/list">공지게시판</a></li>
+<sec:authorize access="hasRole('ROLE_ADMIN')">
+   <li><a href="/asboard/aslist">AS 문의 게시판</a></li>
+</sec:authorize>
+
+<sec:authorize access="hasRole('ROLE_MEMBER')">
+   <li><a href="/asboard/asmylist">나의 AS 문의 게시판</a></li>
+</sec:authorize>							<li><a href="/notice/list">공지게시판</a></li>
 						</ul></li>
 				</ul>
 			</nav>
