@@ -129,7 +129,7 @@ table td.title {    text-align: left;	}
 						<c:forEach begin="${pageDTO.start }" 
 								   end="${pageDTO.end }" var="i">
 						<%-- <c:url var="link" value=""/> --%>
-						<li class="page-item ${pageDTO.cri.pageNum == i ? 'active' : '' }">
+						<li class="page-item ${pageDTO.socri.pageNum == i ? 'active' : '' }">
 							<a href="${i }" 
 							   class="page-link">${i }</a>
 						</c:forEach>
@@ -145,10 +145,10 @@ table td.title {    text-align: left;	}
 
             <!-- 현재 페이지 번호 및 출력 게시물 수 전송 폼 -->
 			<form action="/odReview/myList" id="actionFrm">
-				<input type="hidden" name="pageNum" value="${pageDTO.cri.pageNum}">
-				<input type="hidden" name="amount"  value="${pageDTO.cri.amount}">
-				<input type="hidden" name="type"  value="${pageDTO.cri.type}">
-				<input type="hidden" name="keyword"  value="${pageDTO.cri.keyword}">
+				<input type="hidden" name="pageNum" value="${pageDTO.socri.pageNum}">
+				<input type="hidden" name="amount"  value="${pageDTO.socri.amount}">
+				<input type="hidden" name="type"  value="${pageDTO.socri.type}">
+				<input type="hidden" name="keyword"  value="${pageDTO.socri.keyword}">
 				<input type="hidden" name="mid" value="<sec:authentication property="principal.Username"/>">
 				
 				<!-- 시큐리티 -->
