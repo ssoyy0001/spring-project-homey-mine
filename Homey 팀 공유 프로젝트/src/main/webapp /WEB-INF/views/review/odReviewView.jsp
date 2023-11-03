@@ -135,10 +135,10 @@ li {    list-style: none;	}
 		<input type="hidden" name="orNo" value="${orvo.orNo}">
 		<input type="hidden" name="odName" value="${odvo.odName}">
 		<input type="hidden" name="mid" value="<sec:authentication property="principal.Username"/>">
-        <input type="hidden" name="pageNum" value="${cri.pageNum}">
-      	<input type="hidden" name="amount"  value="${cri.amount}">
-        <input type="hidden" name="type"  value="${cri.type}">
-        <input type="hidden" name="keyword"  value="${cri.keyword}">
+        <input type="hidden" name="pageNum" value="${socri.pageNum}">
+      	<input type="hidden" name="amount"  value="${socri.amount}">
+        <input type="hidden" name="type"  value="${socri.type}">
+        <input type="hidden" name="keyword"  value="${socri.keyword}">
                	
         <!-- 시큐리티 -->
 		<input type="hidden" name="${_csrf.parameterName }"	value="${_csrf.token }">
