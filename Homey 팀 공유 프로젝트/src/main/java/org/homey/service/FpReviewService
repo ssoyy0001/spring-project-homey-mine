@@ -12,10 +12,10 @@ public interface FpReviewService {
 	// 제품 나눔 리뷰게시판 관련 서비스단					
 	
 	//페이징
-	public List<FpReviewVO> listPaging(SoCriteria cri);	
-	public int totalCount(SoCriteria cri);
-	public List<FpReviewVO> listMine(String mid, SoCriteria cri);	//내가 작성한 리뷰 목록 조회(페이징)
-	public int mineCount(String mid, SoCriteria cri);						//내가 작성한 게시글 개수
+	public List<FpReviewVO> listPaging(SoCriteria socri);	
+	public int totalCount(SoCriteria socri);
+	public List<FpReviewVO> listMine(String mid, SoCriteria socri);	//내가 작성한 리뷰 목록 조회(페이징)
+	public int mineCount(String mid, SoCriteria socri);						//내가 작성한 게시글 개수
 	
 	public FpReviewVO view(int prNo);										//상세 조회
 	public boolean register(FpReviewVO prvo);							//게시물 추가
