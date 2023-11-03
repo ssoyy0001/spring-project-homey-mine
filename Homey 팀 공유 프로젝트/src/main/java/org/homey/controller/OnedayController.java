@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 import org.homey.service.OdReqService;
@@ -61,11 +63,27 @@ public class OnedayController {
 	public String view(int odNo, String mid, Model model,  @ModelAttribute("socri") SoCriteria socri) {
 		log.info("view....." + odNo);
 		
+		OnedayVO odvo = onedayService.odView(odNo);
+		
+		//onedayVO의 odDate의 포맷 재설정
+		String odDate = odvo.getOdDate();
+		SimpleDateFormat before = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+		SimpleDateFormat after = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		
+		try {
+			Date date = before.parse(odDate);
+			odDate = after.format(date);
+			odvo.setOdDate(odDate);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		//END onedayVO의 odDate의 포맷 재설정
+		
 		//원데이클래스 게시글 상세조회 화면에서 "신청하기"버튼 표시할지 말지를 알아야 하니까
 		//serviceImpl의 doubleCheck메서드를 호출한 후, 리턴값을 rttr에 담기
 		//view.jsp에서는 리턴값이 0인지 1인지를 판단한 후, 버튼 표시유무 결정
 		
-		model.addAttribute("odvo", onedayService.odView(odNo));
+		model.addAttribute("odvo", odvo);
 		model.addAttribute("checkResult", odReqService.doubleCheck(odNo, mid));
 		
 		return "/oneday/onedayView";
