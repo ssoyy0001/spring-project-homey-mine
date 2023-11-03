@@ -57,13 +57,13 @@
 <!-- 나의 게시물 전체조회 -->
 	<select id="selectMine" resultType="org.homey.domain.OdReviewVO">	
 	    <![CDATA[ 
-	    	SELECT ((#{cri.pageNum} - 1) * #{cri.amount}) + rownum orRn, orNo, mid, odNo, orTitle, orContent, orDate, orHit
+	    	SELECT ((#{socri.pageNum} - 1) * #{socri.amount}) + rownum orRn, orNo, mid, odNo, orTitle, orContent, orDate, orHit
 	    	FROM	(	SELECT	rownum rn, orNo, mid, odNo, orTitle, orContent, orDate, orHit
 	    					FROM	( SELECT * FROM odReview WHERE mid = #{mid} ORDER BY orNo DESC )
 	    					WHERE	]]>
-	   <![CDATA[ 		rownum <= #{cri.amount}	*	#{cri.pageNum}
+	   <![CDATA[ 		rownum <= #{socri.amount}	*	#{socri.pageNum}
 	   						ORDER BY orNo DESC		 )
-	    	WHERE		rn		>	#{cri.amount}	*	(	#{cri.pageNum}	 -1	)
+	    	WHERE		rn		>	#{socri.amount}	*	(	#{socri.pageNum}	 -1	)
 	  	]]>
 	  </select>
 
