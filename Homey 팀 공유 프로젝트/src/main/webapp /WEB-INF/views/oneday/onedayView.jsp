@@ -21,7 +21,7 @@
         				outline: none; /* 포커스 표시 없음 */	}
 .imgNotice {	font-size: 10px; color: lightcoral;   }
 #odItem {	margin-bottom: 20px; 	}
-#pvoImg{ width:40%;	display: block;	margin:auto;	}			/* 띄울 사진 크기*/
+#odImg{ width:90%;	display: block;	margin:auto;	}			/* 첨부된 이미지 크기, 정렬 */
 .tags, p{	 color: #F44336; 	}
 .regiText{	color: #FFA000;		}
 .reqForm{		background-color: #FFF8E1;		}
@@ -43,6 +43,12 @@
   </div>
 </div><!-- End Breadcrumbs -->
 
+<!-- 원데이클래스 신청완료 메시지가 있는 경우, qnaListAll.jsp로 돌아오면서 msg내용을 alert으로 띄우기 --> 
+<c:if test="${!empty msg }">
+	<script>
+			alert('${msg}');
+	</script>
+</c:if>
 
 <!-- ======= 원데이클래스 안내글 상세조회 ======= -->
 
@@ -93,14 +99,13 @@
 					<input type="text" name="odTime" class="regiItem" value="${odvo.odTime}" readonly>
 				</div>
 				
-				<div class="form-group" id="odItem">
+				<div id="odItem">
 					<label class="regiItemNm">모집인원</label>
 					<input type="text" name="odPeople" class="regiItem" value="${odvo.odPeople}명" readonly>
 				</div>
 				
-				<div class="form-group" id="odItem">
-					<label class="regiItemNm">원데이클래스 이름</label>
-					<input type="text" name="odName" class="regiItem" value="${odvo.odName}" readonly>
+				<div id="odItem">
+					<label class="regiItemNm">원데이클래스 이름</label>${odvo.odName}
 				</div>
 				
 				<br>
@@ -139,20 +144,21 @@
     
     <form action="/oneday/modify" method="get" role="form" id="actionFrm">
 		<input type="hidden" name="odNo" value="${odvo.odNo}">
-        <input type="hidden" name="pageNum" value="${cri.pageNum}">
-      	<input type="hidden" name="amount"  value="${cri.amount}">
-        <input type="hidden" name="type"  value="${cri.type}">
-        <input type="hidden" name="keyword"  value="${cri.keyword}">
+        <input type="hidden" name="pageNum" value="${socri.pageNum}">
+      	<input type="hidden" name="amount"  value="${socri.amount}">
+        <input type="hidden" name="type"  value="${socri.type}">
+        <input type="hidden" name="keyword"  value="${socri.keyword}">
                	
-        <input type="hidden" name="${_csrf.parameterName }"	value="${_csrf.token }">
+        <!-- 시큐리티 -->
+		<input type="hidden" name="${_csrf.parameterName }"	value="${_csrf.token }">
                	
          <div class="text-center" id="btn-group">
-         	<button type="button" class="btn btn-secondary" onclick="history.back()">목록</button>
+         	<a id="ListBtn" class="btn btn-secondary">목록</a>
 			<sec:authorize access="hasRole('ROLE_ADMIN')">
 			<input type="submit" class="btn btn-warning" value="수정"/>
-			<button id="RemoveBtn" class="btn btn-danger">삭제</button>
-			<a href="/odReq/list?odNo=${odvo.odNo}&odTitle=${odvo.odTitle}" class="btn btn-info">신청자 조회</a>
-			<a href="/odReq/winList?odNo=${odvo.odNo}&odTitle=${odvo.odTitle}" class="btn btn-primary">당첨자 조회</a>
+			<button type="button" id="RemoveBtn" class="btn btn-danger">삭제</button>
+			<a href="/odReq/list?odNo=${odvo.odNo}" class="btn btn-info">신청자 조회</a>
+			<a href="/odReq/winList?odNo=${odvo.odNo}" class="btn btn-primary">당첨자 조회</a>
 			</sec:authorize>
 		</div>
 	</form>
@@ -219,12 +225,17 @@
 					        <h3 class="reqNotice">　<span class="badge bg-success"> 이미 신청한 이벤트입니다. </span></h3>
 					    </c:when>
 					    <c:otherwise>
+					    	<sec:authorize access="not hasRole('ROLE_ADMIN')"><!-- 관리자가 아닐 경우에 신청버튼 표시 -->
 					        <div class="text-center" id="btn-group">
 					            <button type="submit" id="reqBtn" class="btn btn-warning">신청하기</button>
 					        </div>
+					        </sec:authorize>
 					    </c:otherwise>
 					</c:choose>
-				  
+					
+					<!-- 시큐리티 -->
+		          	<input type="hidden" name="${_csrf.parameterName }"	value="${_csrf.token }">
+		          	
                 </form>
 
               </div>
@@ -234,26 +245,6 @@
       </div>
     </section><!-- End Blog Details Section -->
 
-<!-- Modal 게시물 수정 완료 시 표시 -->
-             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                 <div class="modal-dialog">
-                     <div class="modal-content">
-                         <div class="modal-header">
-                             <button type="button" class="close" 
-                             		data-dismiss="modal" aria-hidden="true">&times;</button>
-                             <h4 class="modal-title" id="myModalLabel">
-                             	MESSAGE</h4>
-                         </div>
-                         <div class="modal-body">
-                             처리가 완료되었습니다.
-                         </div>
-                         <div class="modal-footer">
-                             <button type="button" class="btn btn-primary" data-dismiss="modal">닫기</button>
-                         </div>
-                     </div>  <!-- /.modal-content -->
-                 </div>		<!-- /.modal-dialog -->
-             </div>          <!-- /.modal -->
-<!-- END Modal 게시물 등록 완료 시 표시 -->
 
 </main><!-- End #main -->
 
@@ -276,26 +267,22 @@
 <script>
 
 
-//"게시글 수정완료" 메시지가 있는 경우, msg내용을 alert으로 띄우기 ---------------------------------------
-var msg = '${msg}';
-checkModal(msg);
+//목록 버튼 클릭 이벤트 처리 ---------------------------------
 
-//모달 창 재출력 방지
-history.replaceState({}, null, null); //history 초기화
+document.addEventListener("DOMContentLoaded", function() {
+  // "목록" 버튼 찾아서 클릭 이벤트 핸들러를 연결
+  var ListBtn = document.getElementById("ListBtn");
+  if (ListBtn) {
+	  ListBtn.addEventListener("click", function() {
+        var form = document.getElementById("actionFrm");
+        form.action = "/oneday/list"; 	// 삭제를 처리할 URL로 변경
+        form.method = "get";
+        form.submit();
+    });
+  }
+});
 
-function checkModal(msg){
-	//msg 값이 있는 경우에 모달 창 표시 (msg는 수정 시 컨트롤러에서 보냄)
-	if(msg === '' || history.state) {
-		return;
-	}
-	
-	if( parseInt(msg) > 0) { 			//게시물이 등록된 경우 (msg에 게시물번호가 담김)
-		$('.modal-body').html(msg + '번 게시물이 등록되었습니다.'); 
-	}
-	
-	$('#myModal').modal('show');
-}
-//END 게시물 처리 결과 알림 모달창 처리 ---------------------------------------
+//END 목록 버튼 클릭 이벤트 처리 ---------------------------------
 
 
 
