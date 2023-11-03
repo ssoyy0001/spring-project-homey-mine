@@ -43,7 +43,7 @@
 	            
 	            <div class="form-group mt-3">
 	                <label class="regiItemNm"><strong>* 진행일시</strong></label>
-	                <input type="text" name="odDate" class="regiItem" placeholder="ex) 2023-01-01 18:00">
+	                <input type="datetime-local" name="odDate" class="regiItem" placeholder="ex) 2023-01-01 18:00">
 	            </div>
 	            
 	            <div class="form-group mt-3">
@@ -67,8 +67,8 @@
 	            </div>
 	            
 	            <div class="form-group mt-3">
-	                <label class="regiItemNm"><strong>* 모집마감일</strong></label>
-	                <input type="date" name="odDeadline" value="" min="2020-01-01" max="2030-12-31">
+	                <label class="regiItemNm"><strong>* 모집마감 및 발표</strong></label>
+	                <input type="date" name="odDeadline" class="regiItem" value="" min="2020-01-01" max="2030-12-31">
 	            </div>
 	            
 	            <div class="form-group mt-3">
@@ -95,7 +95,8 @@
 	            	</div>
 	                <!-- 이미지 미리보기 -->
     				<img src="#" id="imagePreview" style="display: none; max-width: 200px; max-height: 200px;">
-	                
+	                <br>
+	                <div class="imgNotice">* 이미지는 한 장만 등록 가능</div>
 	                <div class="imgNotice">* 이미지 파일은 10mb 이내, 파일 확장자는 jpg 혹은 png만 가능</div>
 	            </div>
 	            
@@ -206,6 +207,7 @@ function insertCancel(event){
         	  event.preventDefault();
     };
 }
+//END원데이클래스 등록 폼에서 [취소] 버튼 클릭 시 
 
 
 //원데이클래스 등록 폼에서 [등록] 버튼 클릭 시
@@ -234,6 +236,44 @@ $('.regBtn').click(function(event) {
 	}
 	
 });
+//END 원데이클래스 등록 폼에서 [등록] 버튼 클릭 시
+
+
+
+//진행일시, 모집마감일을 과거 혹은 미래로 선택했을 경우 알림창 표시
+function checkDate(dateValue, inputValue) {
+    
+    var today = new Date();					//오늘 날짜
+    today.setHours(0, 0, 0, 0); 					//오늘 날짜의 시간 부분을 00:00:00으로 설정
+
+    var selectedDate = new Date(dateValue);		//입력받은 날짜를 Date 객체로 변환
+
+    if (selectedDate < today) {					//입력받은 날짜가 과거/오늘 날짜라면?
+        alert("잘못된 날짜입니다. 미래 날짜를 선택하세요.");
+    
+     	//이전 값 그대로 유지
+        inputValue.value = inputValue.getAttribute('data-original');
+    }
+}
+
+//진행일시 날짜 검토
+var odDate = document.querySelector('input[name="odDate"]');
+odDate.setAttribute('data-original', odDate.value); 					//초기값 저장
+odDate.addEventListener('change', function () {
+    checkDate(this.value, this);
+});
+
+//모집마감일 날짜 검토
+var odDeadline = document.querySelector('input[name="odDeadline"]');
+odDeadline.setAttribute('data-original', odDeadline.value); 		//초기값 저장
+odDeadline.addEventListener('change', function () {
+    checkDate(this.value, this);
+
+
+});
+
+//END 진행일시, 모집마감일을 과거 혹은 미래로 선택했을 경우 알림창 표시
+
 
 </script>
 
