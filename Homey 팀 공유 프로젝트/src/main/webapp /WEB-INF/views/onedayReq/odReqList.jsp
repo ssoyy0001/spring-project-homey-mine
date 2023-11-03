@@ -24,13 +24,13 @@ table a:hover { color : orange; }
 
 /* 클래스명 표시할 때 */
 .custom-rectangle {
-    background-color: #FFFACD; /* 연한 회색 배경색 */
+    background-color: #FFFACD; /* 연한 회색 */
     padding: 10px;
  
-    border-radius: 5px; /* 라운드 처리 */
+    border-radius: 5px;
 
     font-weight: bold;
-    color: #333333; /* 글자 색상 */
+    color: #333333;
 }
 
 .custom-rectangle .class-name {
@@ -41,18 +41,18 @@ table a:hover { color : orange; }
 
 /* 당첨 뱃지 스타일 */
 .badge-winning {
-    background-color: 	#FF8C00; /* 배경색을 빨간색으로 설정 */
-    color: white; /* 텍스트 색상을 흰색으로 설정 */
-    border-radius: 5px; /* 라운드 처리 */
-    padding: 5px 10px; /* 내부 여백 설정 */
+    background-color: 	#FF8C00; /* 배경색-빨간색 */
+    color: white; /* 글자-흰색 */
+    border-radius: 5px;
+    padding: 5px 10px;
 }
 
 /* 미당첨 뱃지 스타일 */
 .badge-notWin {
-    background-color: 	#696969	; /* 배경색을 진회색으로 설정 */
-    color: white; /* 텍스트 색상을 흰색으로 설정 */
-    border-radius: 5px; /* 라운드 처리 */
-    padding: 5px 10px; /* 내부 여백 설정 */
+    background-color: 	#696969	; /* 배경색-진회색 */
+    color: white; /* 글자-흰색 */
+    border-radius: 5px;
+    padding: 5px 10px;
 }
 
   
@@ -81,7 +81,7 @@ table a:hover { color : orange; }
     <div class="container" data-aos="fade-up" data-aos-delay="100">
     <div class="row justify-content-between gy-4 mt-4">
     <div class="col-lg-8 mx-auto">
-	    <div class="portfolio-description">
+	    <div class="portfolio-desption">
 	    	
 	    	<hr><br>
 	        <h2>👨‍👧‍👧원데이클래스 신청자 목록</h2>
@@ -144,7 +144,7 @@ table a:hover { color : orange; }
 
 			<div class="text-center" id="btn-group">
 				<sec:authorize access="hasRole('ROLE_ADMIN')">
-				<button  class="btn btn-warning" onclick="history.back()">이전으로</button>
+				<a href="/oneday/view?odNo=${odNo}&mid=<sec:authentication property="principal.Username"/>" class="btn btn-warning">이전으로</a>
 				</sec:authorize>
 			</div>
 			
@@ -166,13 +166,6 @@ table a:hover { color : orange; }
 
   <a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
   <div id="preloader"></div>
-
-
-<script>
-
-
-</script>
-
 
 </body>
 </html>
