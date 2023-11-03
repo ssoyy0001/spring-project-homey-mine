@@ -9,19 +9,23 @@
 <style>
 
 #notice {  color: red;		}
+
+/*이미 신청했거나 모집마감된 게시글이라고 알려줄 때 */
 .reqNotice{	text-align: center; 
-					color: red;	}		/*이미 신청했거나 모집마감된 게시글이라고 알려줄 때 */
+					color: red;	}
 #odTitleBox {		border: 2px solid #FFA500; /* 진노랑색 테두리 */
     						padding: 10px; /* 텍스트와 테두리 사이의 간격을 10px로 지정 */		}
 .odTitle {	text-align: center;	}
 .regiItemNm {	width: 150px;
 						font-weight: bold;		}
 .regiItem {		width: 200px;	
-						border: none; /* 테두리 없음 */
-        				outline: none; /* 포커스 표시 없음 */	}
+						border: none;
+        				outline: none;	}
 .imgNotice {	font-size: 10px; color: lightcoral;   }
 #odItem {	margin-bottom: 20px; 	}
-#odImg{ width:90%;	display: block;	margin:auto;	}			/* 첨부된 이미지 크기, 정렬 */
+
+/* 첨부된 이미지 크기, 정렬 */
+#odImg{ width:90%;	display: block;	margin:auto;	}			
 .tags, p{	 color: #F44336; 	}
 .regiText{	color: #FFA000;		}
 .reqForm{		background-color: #FFF8E1;		}
