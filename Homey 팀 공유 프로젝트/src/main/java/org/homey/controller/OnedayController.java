@@ -44,13 +44,13 @@ public class OnedayController {
 
 	
 	@GetMapping("list")
-	public String list(Model model, SoCriteria cri) {
-		log.info("list......" + cri);
+	public String list(Model model, SoCriteria socri) {
+		log.info("list......" + socri);
 		
-		int totalCount = onedayService.odTotalCount(cri);							//주어진 조건에 맞는 게시물 건수를 계산
+		int totalCount = onedayService.odTotalCount(socri);							//주어진 조건에 맞는 게시물 건수를 계산
 
-		model.addAttribute("list", onedayService.odListPaging(cri));
-		model.addAttribute("pageDTO", new PageDTO(cri, totalCount));	
+		model.addAttribute("list", onedayService.odListPaging(socri));
+		model.addAttribute("pageDTO", new PageDTO(socri, totalCount));	
 
 		return "/oneday/onedayList";
 	}//END list()
@@ -58,7 +58,7 @@ public class OnedayController {
 	
 	@GetMapping("view")	
 	@PreAuthorize("isAuthenticated()")
-	public String view(int odNo, String mid, Model model,  @ModelAttribute("cri") SoCriteria cri) {
+	public String view(int odNo, String mid, Model model,  @ModelAttribute("socri") SoCriteria socri) {
 		log.info("view....." + odNo);
 		
 		//원데이클래스 게시글 상세조회 화면에서 "신청하기"버튼 표시할지 말지를 알아야 하니까
@@ -166,7 +166,7 @@ public class OnedayController {
 	
 	@GetMapping("modify")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public String modify(int odNo, Model model, @ModelAttribute("cri") SoCriteria cri) {
+	public String modify(int odNo, Model model, @ModelAttribute("socri") SoCriteria socri) {
 		log.info("modify......" + odNo);
 		model.addAttribute("odvo", onedayService.odView(odNo));
 		
@@ -177,7 +177,7 @@ public class OnedayController {
 	
 	@PostMapping("modify")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public String modify(OnedayVO odvo, @RequestParam("uploadFile") MultipartFile uploadFile, RedirectAttributes rttr, @ModelAttribute("cri") SoCriteria cri) {	
+	public String modify(OnedayVO odvo, @RequestParam("uploadFile") MultipartFile uploadFile, RedirectAttributes rttr, @ModelAttribute("socri") SoCriteria socri) {	
 		log.info("modify......" + odvo);
 	
 		String upFileNm =null;
@@ -219,8 +219,8 @@ public class OnedayController {
 			rttr.addFlashAttribute("msg", "게시글 수정에 실패하였습니다.");
 		}
 		
-		rttr.addAttribute("pageNum", cri.getPageNum());
-		rttr.addAttribute("amount", cri.getAmount());
+		rttr.addAttribute("pageNum", socri.getPageNum());
+		rttr.addAttribute("amount", socri.getAmount());
 		
 		return "redirect:/oneday/view?odNo="+odvo.getOdNo()+"&mid="+odvo.getMid();
 	}//END modify()
@@ -229,7 +229,7 @@ public class OnedayController {
 
 	@PostMapping("remove")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public String remove(@RequestParam("odNo") int odNo, RedirectAttributes rttr, @ModelAttribute("cri") SoCriteria cri) {
+	public String remove(@RequestParam("odNo") int odNo, RedirectAttributes rttr, @ModelAttribute("socri") SoCriteria socri) {
 		log.info("remove......" + odNo);
 		
 		if(onedayService.odRemove(odNo) == true) {						//odNo번 게시물이 잘 지워졌으면	
@@ -238,8 +238,8 @@ public class OnedayController {
 			rttr.addFlashAttribute("msg", "게시글 삭제에 실패하였습니다.");
 		}
 		
-		rttr.addAttribute("pageNum", cri.getPageNum());
-		rttr.addAttribute("amount", cri.getAmount());
+		rttr.addAttribute("pageNum", socri.getPageNum());
+		rttr.addAttribute("amount", socri.getAmount());
 		
 		return "redirect:/oneday/list";
 	}//END remove()
