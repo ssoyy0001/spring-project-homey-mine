@@ -14,10 +14,10 @@ public interface OdReviewService {
 	//반환형도 boolean으로
 	
 	//페이징
-	public List<OdReviewVO> listPaging(SoCriteria cri);
-	public int totalCount(SoCriteria cri);
-	public List<OdReviewVO> listMine(String mid, SoCriteria cri);
-	public int mineCount(String mid, SoCriteria cri);
+	public List<OdReviewVO> listPaging(SoCriteria socri);
+	public int totalCount(SoCriteria socri);
+	public List<OdReviewVO> listMine(String mid, SoCriteria socri);
+	public int mineCount(String mid, SoCriteria socri);
 	
 	public OdReviewVO view(int orNo);											//상세 조회
 	public boolean register(OdReviewVO orvo);								//등록
