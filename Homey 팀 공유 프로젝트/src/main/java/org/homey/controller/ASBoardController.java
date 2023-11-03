@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -143,6 +144,15 @@ public class ASBoardController {
         if (asboardService.modify(asBoardVO)) {
             rttr.addFlashAttribute("result", "success");
         }
+        
+        // 수정이 완료된 후 관리자인지 확인
+        if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+            // 관리자라면 이메일 주소를 가져와서 이메일 발송 페이지로 리다이렉트
+            String email = asboardService.getEmail(asBoardVO.getBno());
+            rttr.addAttribute("bno", asBoardVO.getBno()); // 'bno' 파라미터 추가
+            rttr.addAttribute("mailAddress", email);
+            return "redirect:/asend/emailForm";
+        }
 
         rttr.addAttribute("pageNum", cri.getPageNum());
         rttr.addAttribute("amount", cri.getAmount());
@@ -150,7 +160,8 @@ public class ASBoardController {
         rttr.addAttribute("keyword", cri.getKeyword());
 
         return "redirect:/asboard/asview?bno=" + asBoardVO.getBno();
-        }
+    }
+
     
 
     @PostMapping("asremove")
