@@ -85,7 +85,8 @@
 	            	</div>
 	                <!-- 이미지 미리보기 -->
     				<img src="#" id="imagePreview" style="display: none; max-width: 200px; max-height: 200px;">
-	                
+	                <br>
+	                <div class="imgNotice">* 이미지는 한 장만 등록 가능</div>
 	                <div class="imgNotice">* 이미지 파일은 10mb 이내, 파일 확장자는 jpg 혹은 png만 가능</div>
 	            </div>
 	            
