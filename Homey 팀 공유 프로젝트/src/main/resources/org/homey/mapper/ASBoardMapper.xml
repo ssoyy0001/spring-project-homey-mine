@@ -4,20 +4,26 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.homey.mapper.ASBoardMapper">
 
-    <!-- Result Maps -->
-    <resultMap type="org.homey.domain.ASBoardVO" id="ASBoardMap">
-        <id property="bno" column="bno" />
-        <result property="title" column="title" />
-        <result property="content" column="content" />
-        <result property="mid" column="mid" />
-        <result property="regDate" column="regDate" />
-        <result property="updateDate" column="updateDate" />
-        <result property="status" column="status" />
-        <result property="replyContent" column="replyContent" />
-        <result property="replyRegDate" column="replyRegDate" />
-        <result property="replyUpdateDate" column="replyUpdateDate" />
-        <result property="replyMid" column="replyMid" />
-    </resultMap>
+<!-- Result Maps -->
+<resultMap type="org.homey.domain.ASBoardVO" id="ASBoardMap">
+    <id property="bno" column="bno" />
+    <result property="title" column="title" />
+    <result property="content" column="content" />
+    <result property="mid" column="mid" />
+    <result property="regDate" column="regDate" />
+    <result property="updateDate" column="updateDate" />
+    <result property="status" column="status" />
+    <result property="replyContent" column="replyContent" />
+    <result property="replyRegDate" column="replyRegDate" />
+    <result property="replyUpdateDate" column="replyUpdateDate" />
+    <result property="replyMid" column="replyMid" />
+
+    <!-- MemberVO 객체 매핑 -->
+    <association property="mvo" javaType="org.homey.domain.MemberVO">
+        <result property="mid" column="mid"/>
+        <result property="memail" column="memail"/>
+    </association>
+</resultMap>
 
   
 <select id="selectAllPaging" resultType="org.homey.domain.ASBoardVO" resultMap="ASBoardMap">
@@ -30,19 +36,21 @@
     FROM ASBoard A
   ]]>
   <choose>
-    <when test="type == 'status'">
-      <![CDATA[
-      WHERE status = #{keyword}
-      ]]>
-    </when>
+ <when test="type == 'status'">
+  <![CDATA[
+  WHERE status LIKE '%'||#{keyword}||'%'
+  ]]>
+</when>
     <when test="type == 'mid'">
       <![CDATA[
       WHERE mid LIKE '%'||#{keyword}||'%'
       ]]>
     </when>
-    <when test="type == 'regdate'">
+   <when test="type == 'regdate'"> <![CDATA[ WHERE regdate >= TO_DATE(#{keyword}, 'YYYY-MM-DD') ]]> </when>
+
+     <when test="type == 'title'">
       <![CDATA[
-       WHERE regdate >= TO_DATE(#{keyword}, 'YYYY-MM-DD')
+      WHERE title LIKE '%'||#{keyword}||'%'
       ]]>
     </when>
   </choose>
@@ -57,6 +65,7 @@
     SELECT COUNT(*)
     FROM ASBoard
 </select>
+
 <select id="selectAllPagingMe" resultType="org.homey.domain.ASBoardVO" resultMap="ASBoardMap">
 <![CDATA[
 SELECT *
@@ -71,6 +80,7 @@ WHERE rn <= #{amount} * #{pageNum}
 AND rn > #{amount} * (#{pageNum} - 1)
 ]]>
 </select>
+
 
     <!-- Select ASBoard entry by ID (bno) -->
     <select id="select" parameterType="int" resultMap="ASBoardMap">
@@ -112,10 +122,18 @@ AND rn > #{amount} * (#{pageNum} - 1)
   </insert>
    
 
+<!-- Select ASBoard entry by ID (bno) -->
+<select id="selectemail" parameterType="int" resultType="string">
+    SELECT m.memail
+    FROM ASBoard a
+    INNER JOIN Member m ON a.mid = m.mid
+    WHERE a.bno = #{bno}
+</select>
 
 
-    <!-- Update an existing ASBoard entry -->
-  <update id="update">
+
+<!-- Update an existing ASBoard entry -->
+<update id="update">
     UPDATE ASBoard
     SET title = #{title}, content = #{content}, updateDate = SYSDATE
     
@@ -129,12 +147,11 @@ AND rn > #{amount} * (#{pageNum} - 1)
 </update>
 
 
-
     <!-- Delete an ASBoard entry by ID (bno) -->
     <delete id="delete" parameterType="int">
         DELETE FROM ASBoard
         WHERE bno = #{bno}
     </delete>
-
+ 
 
 </mapper>
