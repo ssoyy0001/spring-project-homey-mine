@@ -22,20 +22,20 @@ table {  text-align: center; }
 table td.title {    	text-align: left;
 							padding-left: 40px;	/*테이블에서 게시글제목 부분이 너무 번호랑 붙어이어서 조금 뗌 */}
 
-/* 모집마감 뱃지 스타일 */
+/* 당첨 뱃지 스타일 */
 .badge-lucky {
-    background-color: 	#FF8C00; /* 배경색을 빨간색으로 설정 */
-    color: white; /* 텍스트 색상을 흰색으로 설정 */
-    border-radius: 5px; /* 라운드 처리 */
-    padding: 5px 10px; /* 내부 여백 설정 */
+    background-color: 	#FF8C00; /* 배경색-빨간색 */
+    color: white; /* 글자-흰색 */
+    border-radius: 5px;
+    padding: 5px 10px;
 }
 
-/* 모집중 뱃지 스타일 */
+/* 미당첨 뱃지 스타일 */
 .badge-unlucky {
-    background-color: 	#696969	; /* 배경색을 진회색으로 설정 */
-    color: white; /* 텍스트 색상을 흰색으로 설정 */
-    border-radius: 5px; /* 라운드 처리 */
-    padding: 5px 10px; /* 내부 여백 설정 */
+    background-color: 	#696969	; /* 배경색-진회색 */
+    color: white; /* 글자-흰색 */
+    border-radius: 5px;
+    padding: 5px 10px;
 }
   
   
@@ -118,7 +118,9 @@ table td.title {    	text-align: left;
 					            </c:choose>
 					        </td>
 					        <td><fmt:formatDate value="${odrvo.odReqDate}" pattern="yyyy-MM-dd" /></td>
-					        <td><a href="/odReview/register?odNo=${odrvo.odNo }" class="btn btn-success btn-sm">후기작성</a></td>
+					        <c:if test="${odrvo.odReqWin == 1}"><!-- 당첨일 때에만 후기작성버튼 표시 -->
+					        <td><a href="/odReview/register?odNo=${odrvo.odNo }" class="badge bg-success">후기작성</a></td>
+					        </c:if>
 					    </tr>
 					</c:forEach>
                     <!------------- END Model 데이터 출력 ----------->
