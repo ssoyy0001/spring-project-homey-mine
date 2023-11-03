@@ -41,11 +41,11 @@ public class OdReviewController {
 
 	
 	@GetMapping("list")						
-	public String list(Model model, SoCriteria cri) {
+	public String list(Model model, SoCriteria socri) {
 		
-		log.info("list......" + cri);
-		model.addAttribute("list", odReviewService.listPaging(cri));		
-		model.addAttribute("pageDTO", new PageDTO(cri, odReviewService.totalCount(cri)));	
+		log.info("list......" + socri);
+		model.addAttribute("list", odReviewService.listPaging(socri));		
+		model.addAttribute("pageDTO", new PageDTO(socri, odReviewService.totalCount(socri)));	
 		
 		return "/review/odReviewList";	
 	}
@@ -54,11 +54,11 @@ public class OdReviewController {
 	
 	@GetMapping("myList")
 	@PreAuthorize("principal.username == #mid")							//작성자의 경우에만 수정폼으로 이동 가능
-	public String myList(Model model, SoCriteria cri, String mid) {	
+	public String myList(Model model, SoCriteria socri, String mid) {	
 		
-		log.info( mid + "의 list......" + cri);
-		model.addAttribute("myReviewList", odReviewService.listMine(mid, cri));
-		model.addAttribute("pageDTO", new PageDTO(cri, odReviewService.mineCount(mid, cri)));	
+		log.info( mid + "의 list......" + socri);
+		model.addAttribute("myReviewList", odReviewService.listMine(mid, socri));
+		model.addAttribute("pageDTO", new PageDTO(socri, odReviewService.mineCount(mid, socri)));	
 		
 		return "/review/myOdReviewBrd";	
 	}
@@ -67,7 +67,7 @@ public class OdReviewController {
 	
 	@GetMapping("view")	
 	@PreAuthorize("isAuthenticated()")
-	public String view(int orNo, Model model, @ModelAttribute("cri") SoCriteria cri) {
+	public String view(int orNo, Model model, @ModelAttribute("socri") SoCriteria socri) {
 		log.info("view......" + orNo );
 		OdReviewVO orvo = odReviewService.view(orNo);
 		
@@ -124,7 +124,7 @@ public class OdReviewController {
 
 	@GetMapping("modify")
 	@PreAuthorize("principal.username == #mid")		//작성자의 경우에만 수정폼으로 이동 가능
-	public String modify(int orNo, String mid, String odName, Model model, @ModelAttribute("cri") SoCriteria cri) {
+	public String modify(int orNo, String mid, String odName, Model model, @ModelAttribute("socri") SoCriteria socri) {
 																															
 		log.info("modify......" + orNo);
 		model.addAttribute("orvo", odReviewService.view(orNo));	
@@ -135,7 +135,7 @@ public class OdReviewController {
 	
 	
 	@PostMapping("modify")
-	public String modify(OdReviewVO orvo, RedirectAttributes rttr, @ModelAttribute("cri") SoCriteria cri) {
+	public String modify(OdReviewVO orvo, RedirectAttributes rttr, @ModelAttribute("socri") SoCriteria socri) {
 		log.info("modify......");
 	
 		if(odReviewService.modify(orvo)) {						
@@ -143,10 +143,10 @@ public class OdReviewController {
 		}else {
 			rttr.addFlashAttribute("msg", "리뷰 수정에 실패하였습니다.");
 		}
-		rttr.addAttribute("pageNum", cri.getPageNum());
-		rttr.addAttribute("amount", cri.getAmount());
-		rttr.addAttribute("type", cri.getType());
-		rttr.addAttribute("keyword", cri.getKeyword());
+		rttr.addAttribute("pageNum", socri.getPageNum());
+		rttr.addAttribute("amount", socri.getAmount());
+		rttr.addAttribute("type", socri.getType());
+		rttr.addAttribute("keyword", socri.getKeyword());
 		
 		return "redirect:/odReview/view?orNo="+orvo.getOrNo();		//수정 후 상세조회 페이지로 이동
 
@@ -155,7 +155,7 @@ public class OdReviewController {
 	
 	@PostMapping("remove")
 	@PreAuthorize("principal.username == #mid")			//로그인한 id ==작성자id가 같은지 체크
-	public String remove(String mid, int orNo, RedirectAttributes rttr, @ModelAttribute("cri") SoCriteria cri) {
+	public String remove(String mid, int orNo, RedirectAttributes rttr, @ModelAttribute("socri") SoCriteria socri) {
 		log.info("remove......");
 		
 		List<OdReviewAttachVO> attachList = odReviewService.attachList(orNo);  	//해당 게시글의 첨부파일 목록 가져오기
@@ -167,10 +167,10 @@ public class OdReviewController {
 			rttr.addFlashAttribute("msg", "리뷰삭제에 실패하였습니다.");
 		}
 		
-		rttr.addAttribute("pageNum", cri.getPageNum());
-		rttr.addAttribute("amount", cri.getAmount());
-		rttr.addAttribute("type", cri.getType());
-		rttr.addAttribute("keyword", cri.getKeyword());
+		rttr.addAttribute("pageNum", socri.getPageNum());
+		rttr.addAttribute("amount", socri.getAmount());
+		rttr.addAttribute("type", socri.getType());
+		rttr.addAttribute("keyword", socri.getKeyword());
 		
 		return "redirect:/odReview/list";
 	}
