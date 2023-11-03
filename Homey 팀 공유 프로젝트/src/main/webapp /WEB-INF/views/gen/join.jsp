@@ -83,31 +83,35 @@
 									<input type="hidden" id="memail" name="memail" value="">
 								</div>
 							</div>
-
-							<div class="form-group row">
-								<label class="col-sm-2">주소</label>
-								<div class="col-sm-3">
-									<input type="text" class="form-control" name="addr" id="addr"
-										required="required">
-								</div>
-								<div class="col-sm-3">
-									<!-- <input type="button" value="검색" class="btn btn-secondary"
-								onclick="goPopup();"> csrf문제 -->
-								</div>
-							</div>
-
-							<div class="form-group row align-items-center">
-								<label class="col-sm-2">상세주소</label>
-								<div class="col-sm-4">
-									<div class="row">
-										<div class="col">
-											<input type="text" class="form-control" name="addrdetail"
-												id="addrdetail">
-										</div>
+		
+								<div class="form-group row" style="margin-bottom: 10px">
+									<label class="col-sm-2">도로명 주소</label>
+									<div class="col-sm-6">
+										<input type="text" name="address" id="address"
+											class="form-control" required placeholder="주소">
+									</div>
+									<div class="col-sm-2">
+										<input type="button" class="btn btn-outline-secondary"
+											value="검색" onclick="execDaumPostcode()">
 									</div>
 								</div>
+								<div class="form-group row" style="margin-bottom: 10px">
+									<label class="col-sm-2">상세 주소</label>
+									<div class="col-sm-6">
+										<input type="text" name="detailAddress" id="detailAddress"
+											class="form-control" placeholder="상세주소">
+									</div>
+								</div>
+								<div id="wrap"
+									style="display: none; border: 1px solid; width: 500px; height: 300px; margin: 5px 0; position: relative">
+									<img src="//t1.daumcdn.net/postcode/resource/images/close.png"
+										id="btnFoldWrap"
+										style="cursor: pointer; position: absolute; right: 0px; top: -1px; z-index: 1"
+										onclick="foldDaumPostcode()" alt="접기 버튼">
+								</div>
+								<!-- end 카카오 주소 api  -->
+
 								<input type="hidden" name="maddr" id="maddr" value="">
-							</div>
 
 							<div class="form-group row">
 								<label class="col-sm-2">연락처</label>
@@ -152,6 +156,7 @@
 	</main>
 </body>
 <!-- End #main -->
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js"
 	crossorigin="anonymous"></script>
 <!-- Font Awesome JS -->
@@ -331,8 +336,8 @@
 									var phone2 = $('#phone2').val();
 									var phone3 = $('#phone3').val();
 									var mphoneVal = phone1 + phone2 + phone3;
-									var addr = $('#addr').val();
-									var addrdetail = $('#addrdetail').val();
+									var addr = $('#address').val();
+									var addrdetail = $('#detailAddress').val();
 									var maddrVal = addr + " " + addrdetail;
 
 									if (email1 == "" || email2 == ""
@@ -350,17 +355,60 @@
 								});
 					});
 
-	//주소API사용-->csrf때문에 보류
-	/* function goPopup() {
-		var pop = window.open("/gen/jusoPopup", "pop",
-				"width=570,height=420, scrollbars=yes, resizable=yes");
-	}
+	//카카오 주소 API -----------------------------------------
+	 // 우편번호 찾기 찾기 화면을 넣을 element
+	    var element_wrap = document.getElementById('wrap');
 
-	function jusoCallBack(jibunAddr, addrDetail) {
-		$('#addr').val(jibunAddr);
-		$('#addrdetail').val(addrDetail);
-	} */
-	//주소API사용-END
+	    function foldDaumPostcode() {
+	        // iframe을 넣은 element를 안보이게
+	        element_wrap.style.display = 'none';
+	    }
+
+	    function execDaumPostcode() {
+	        // 현재 scroll 위치를 저장
+	        var currentScroll = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
+	        new daum.Postcode({
+	            oncomplete: function(data) {
+	                // 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+	                // 각 주소의 노출 규칙에 따라 주소를 조합
+	                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기
+	                var addr = ''; // 주소 변수
+	                var extraAddr = ''; // 참고항목 변수
+
+	                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져옴
+	                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+	                    addr = data.roadAddress;
+	                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+	                    addr = data.jibunAddress;
+	                }
+
+	                // 우편번호와 주소 정보를 해당 필드에 넣음
+
+	                document.getElementById("address").value = addr;
+	                // 커서를 상세주소 필드로 이동
+	                document.getElementById("detailAddress").focus();
+
+	                // iframe을 넣은 element를 안보이게 함
+	                // (autoClose:false 기능을 이용한다면, 아래 코드를 제거해야 화면에서 사라지지 않음
+	                element_wrap.style.display = 'none';
+
+	                // 우편번호 찾기 화면이 보이기 이전으로 scroll 위치를 되돌림
+	                document.body.scrollTop = currentScroll;
+	            },
+	            // 우편번호 찾기 화면 크기가 조정되었을때 실행할 코드를 작성. iframe을 넣은 element의 높이값을 조정
+	            onresize : function(size) {
+	                element_wrap.style.height = size.height+'px';
+	            },
+	            width : '100%',
+	            height : '100%'
+	        }).embed(element_wrap);
+
+	        // iframe을 넣은 element를 보이게 함.
+	        element_wrap.style.display = 'block';
+	    }
+	//END 카카오 주소 API -----------------------------------------
+
 </script>
 
 <%@ include file="../includes/footer.jsp"%>
