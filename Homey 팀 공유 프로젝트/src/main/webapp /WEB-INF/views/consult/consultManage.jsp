@@ -500,9 +500,15 @@
 									</c:forEach>
 								</c:if>
 							</sec:authorize>
+							
+														<sec:authorize access="hasRole('ROLE_MEMBER')">
 							<c:if test="${!empty cvo.qvoList}">
-							   	 <a href="/sirequest/sireqRegister?quoNo=${qvo.quoNo }" class="btn btn-danger" style="margin-top: 5px">시공의뢰 등록</a>
+							<c:forEach items="${cvo.qvoList}" var="qvo">
+<a href="/sirequest/sireqRegisterForm?quoNo=${qvo.quoNo }&consultNo=${cvo.consultNo}&itemNo=${cvo.item.itemNo}" class="btn btn-danger"
+                                 style="margin-top: 5px">시공의뢰 등록</a>							   	 </c:forEach>
 							</c:if>
+							</sec:authorize>
+							
 
 
 						</article>
