@@ -21,127 +21,161 @@
 	display: table-cell;
 	padding: 5px 15px;
 }
+/* 첨부파일 경고문구 */
+.imgNotice {	font-size: 10px; color: lightcoral;   }
+/* 필수입령항목 경고 문구 */
+#notice {  color: red;		}
+.regiItemNm {	width: 150px;	}
+/* 고정항목 */
+.staticItem {		width: 200px;	
+						border: none; /* 테두리 없음 */
+       					outline: none; /* 포커스 표시 없음 */	}
 </style>
 </head>
 <body>
 
-	<!-- ======= header ======= -->
-	<%@ include file="../includes/header.jsp"%>
+<!-- ======= header ======= -->
+<%@ include file="../includes/header.jsp"%>
 
-	<!-- ======= main ======= -->
-	<main id="main">
-		<!-- ======= Breadcrumbs ======= -->
-		<div class="breadcrumbs d-flex align-items-center"
-			style="background-image: url('../resources/assets/img/breadcrumbs-bg.jpg');">
-			<div
-				class="container position-relative d-flex flex-column align-items-center"
-				data-aos="fade">
-				<h2>공지사항 수정</h2>
-				<h4 style="color: white;">일반 / 서비스 안내</h4>
-			</div>
+<!-- ======= main ======= -->
+<main id="main">
+
+<!-- ======= Breadcrumbs ======= -->
+<div class="breadcrumbs d-flex align-items-center"
+	style="background-image: url('../resources/assets/img/breadcrumbs-bg.jpg');">
+	<div
+		class="container position-relative d-flex flex-column align-items-center"
+		data-aos="fade">
+		<h2>공지사항 수정</h2>
+	</div>
+</div>
+<!-- End Breadcrumbs -->
+
+<!-- ======= 게시물 수정 ======= -->
+<section id="project-details" class="project-details">
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="row justify-content-between gy-4 mt-4">
+    <div class="col-lg-8 mx-auto">
+	    <div class="portfolio-description">
+	        <h2>📝공지사항 수정</h2>
+	        <span id="notice">* 항목은 필수 입력 항목입니다.</span>
+	        <hr>
+
+		<!-- 게시물 수정/삭제 폼 -->
+		<form action="/notice/modify" method="post" role="form">
+
+		<div class="form-group mt-3">
+           <label class="regiItemNm"><strong>No.</strong></label>
+           <input type="text" name="notNo" class="staticItem" value="${nvo.notNo }" readonly>
+	    </div>
+
+		<div class="col-md-6 form-group">
+			<label>* 분류</label> <select name="notCategory" id="notCategory">
+				<option value="일반"
+					${nvo.notCategory == '일반' ? 'selected' : '' }>일반</option>
+				<option value="서비스안내"
+					${nvo.notCategory == '서비스안내' ? 'selected' : '' }>서비스안내</option>
+			</select>
 		</div>
-		<!-- End Breadcrumbs -->
 
-		<section id="services" class="services section-bg blog">
-			<!-- blog를 추가해야 사이드바 스타일 활성화  -->
-			<div class="container" data-aos="fade-up">
-				<div class="row">
-					<div class="col-lg-6">
+		<div class="form-group mt-3">
+           <label class="regiItemNm"><strong>작성일</strong></label>
+           <fmt:formatDate value="${nvo.notDate}" pattern="yyyy-MM-dd (E)" />
+	    </div>
 
-						<!-- 게시물 수정/삭제 폼 -->
-						<form action="/notice/modify" method="post" role="form">
+		<div class="form-group mt-3">
+           <label class="regiItemNm"><strong>* 작성자</strong></label>
+           <input type="text" name="mid" class="staticItem" value="${nvo.mid }" readonly>
+	    </div>
+	    
+        <div class="form-group mt-3">
+            <label class="regiItemNm"><strong>* 제   목</strong></label>
+            <input type="text" name="notTitle" class="form-control" value="${nvo.notTitle }" required>
+        </div>	 
 
-							<div class="form-group">
-								<label>No.</label> <input type="text" name="bno"
-									class="form-control" value="${nvo.notNo }" readonly>
-							</div>
+        <div class="form-group mt-3">
+         	<label class="regiItemNm"><strong>* 내   용</strong></label>
+         	<textarea class="form-control" name="notCont" rows="10" required>${nvo.notCont }</textarea>
+    	</div>     
+    	
+    	<br>   
+    	<br>   
+		
+		<div class="float-end">
+				<button data-oper="list" class="btn btn-primary"
+				formaction="/notice/list" formmethod="get">목록으로</button>
+			<sec:authorize access="hasRole('ROLE_ADMIN')">
+				<!-- 관리자만 수정 -->
+				<button data-oper="remove" class="btn btn-danger"
+					formaction="/notice/remove" onclick="notDelete(event);">삭제</button>
+				<button data-oper="modify" class="btn btn-warning">수정</button>
+			</sec:authorize>
+			
+			<input type="hidden" name="pageNum" value="${cri.pageNum}">
+			<input type="hidden" name="amount" value="${cri.amount}">
+			<input type="hidden" name="type" value="${cri.type}"> <input
+				type="hidden" name="keyword" value="${cri.keyword}"> <input
+				type="hidden" name="notNo" value="${nvo.notNo }">
+			<!-- 로그인 정보 보내기 -->
+			<input type="hidden" name="${_csrf.parameterName }"
+				value="${_csrf.token }">
+		</div>
+	</form>
+		<!-- END 게시물 수정/삭제 폼 -->
 
-							<div class="form-group">
-								<label>분류</label> <select name="notCategory" id="notCategory">
-									<option value="일반"
-										${nvo.notCategory == '일반' ? 'selected' : '' }>일반</option>
-									<option value="서비스안내"
-										${nvo.notCategory == '서비스안내' ? 'selected' : '' }>서비스안내</option>
-								</select>
-							</div>
+	<!-- 첨부파일 -------------------->
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="panel panel-default">
+				<div class="panel-heading"><strong>파일 첨부</strong></div>
+				<!-- /.panel-heading -->
+				<div class="panel-body">
 
-							<div class="form-group">
-								<label>작성일</label>
-								<fmt:formatDate value="${nvo.notDate}" pattern="yyyy-MM-dd (E)" />
-							</div>
-
-							<div class="form-group">
-								<label>제목</label> <input type="text" name="notTitle"
-									class="form-control" value="${nvo.notTitle }">
-							</div>
-
-							<div class="form-group">
-								<label>내용</label>
-								<textarea name="notCont" class="form-control" rows="3">${nvo.notCont }</textarea>
-							</div>
-
-							<div class="form-group">
-								<label>작성자</label> <input type="text" name="mid"
-									class="form-control" value="${nvo.mid }" readonly>
-							</div>
-
-							<sec:authorize access="hasRole('ROLE_ADMIN')">
-								<!-- 관리자만 수정 -->
-								<button data-oper="remove" class="btn btn-danger"
-									formaction="/notice/remove">삭제</button>
-								<button data-oper="modify" class="btn btn-warning">수정</button>
-							</sec:authorize>
-
-							<button data-oper="list" class="btn btn-primary"
-								formaction="/notice/list" formmethod="get">목록으로</button>
-							<input type="hidden" name="pageNum" value="${cri.pageNum}">
-							<input type="hidden" name="amount" value="${cri.amount}">
-							<input type="hidden" name="type" value="${cri.type}"> <input
-								type="hidden" name="keyword" value="${cri.keyword}"> <input
-								type="hidden" name="notNo" value="${nvo.notNo }">
-							<!-- 로그인 정보 보내기 -->
-							<input type="hidden" name="${_csrf.parameterName }"
-								value="${_csrf.token }">
-						</form>
-						<!-- END 게시물 수정/삭제 폼 -->
-
-						<!-- 첨부파일 -->
-						<div class="row">
-							<div class="col-lg-12">
-								<div class="panel panel-default">
-									<div class="panel-heading">Attach File</div>
-									<!-- /.panel-heading -->
-									<div class="panel-body">
-
-										<!-- 업로드 -->
-										<div class="form-group uploadDiv">
-											<input type="file" name="uploadFile" multiple>
-										</div>
-										<!-- 업로드 -->
-
-										<!-- 업로드 결과 출력 -->
-										<div class="uploadResult">
-											<ul>
-											</ul>
-										</div>
-										<!-- 업로드 결과 출력 -->
-									</div>
-									<!-- /.panel-body -->
-								</div>
-								<!-- /.panel -->
-							</div>
-							<!-- /.col-lg-12 -->
-						</div>
-						<!-- /.row -->
-
+					<!-- 업로드 -->
+					<div class="form-group uploadDiv">
+						<input type="file" name="uploadFile" multiple>
 					</div>
+					<!-- 업로드 -->
+					<div class="imgNotice">* 이미지 파일은 10mb 이내, 파일 확장자는 jpg 혹은 png만 가능</div>
+					<!-- 업로드 결과 출력 -->
+					<div class="uploadResult">
+						<ul>
+						</ul>
+					</div>
+					<!-- 업로드 결과 출력 -->
 				</div>
+				<!-- /.panel-body -->
 			</div>
-		</section>
-	</main>
+			<!-- /.panel -->
+		</div>
+		<!-- /.col-lg-12 -->
+	</div>
+	<!-- /.row -->
 
-	<script>
-		// 첨부파일 목록 가져오기
+	    </div><!-- End portfolio-description -->
+    </div><!-- End col-lg-8 mx-auto -->
+    </div><!-- End row justify-content-between -->
+    </div><!-- End container -->
+</section><!-- End Project Details Section -->
+		
+</main>
+	
+	
+	
+	
+<!-- ======= script ======= -->
+<script>
+//삭제 버튼 누를 시 ----------------------------
+function notDelete(event){
+    var confirmation = confirm('정말로 이 게시글을 삭제하시겠습니까?');
+    if (!confirmation) {
+        event.preventDefault();
+    	}
+	};
+//END 삭제 버튼 누를 시 ----------------------------
+
+
+// 첨부파일 목록 가져오기
 		var notNoVal = '${nvo.notNo}';
 		//(function()
 		$.getJSON("/notice/attachList", {
@@ -336,20 +370,4 @@
 	<!-- ======= END Footer ======= -->
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
