@@ -41,11 +41,11 @@ public class FpReviewController {
 	
 	
 	@GetMapping("list")
-	public String list(Model model, SoCriteria cri) {	//결과 페이지로 보낼 데이터를 model에 담음
+	public String list(Model model, SoCriteria socri) {	//결과 페이지로 보낼 데이터를 model에 담음
 		
-		log.info("list......" + cri);
-		model.addAttribute("list", fpReviewService.listPaging(cri));
-		model.addAttribute("pageDTO", new PageDTO(cri, fpReviewService.totalCount(cri)));	
+		log.info("list......" + socri);
+		model.addAttribute("list", fpReviewService.listPaging(socri));
+		model.addAttribute("pageDTO", new PageDTO(socri, fpReviewService.totalCount(socri)));	
 		
 		return "/review/fpReviewList";	
 	}
@@ -53,11 +53,11 @@ public class FpReviewController {
 	
 	@GetMapping("myList")
 	@PreAuthorize("principal.username == #mid")							//작성자의 경우에만 수정폼으로 이동 가능
-	public String myList(Model model, SoCriteria cri, String mid) {		//결과 페이지로 보낼 데이터를 model에 담음
+	public String myList(Model model, SoCriteria socri, String mid) {		//결과 페이지로 보낼 데이터를 model에 담음
 		
-		log.info( mid + "의 list......" + cri);
-		model.addAttribute("myReviewList", fpReviewService.listMine(mid, cri));
-		model.addAttribute("pageDTO", new PageDTO(cri, fpReviewService.mineCount(mid, cri)));	
+		log.info( mid + "의 list......" + socri);
+		model.addAttribute("myReviewList", fpReviewService.listMine(mid, socri));
+		model.addAttribute("pageDTO", new PageDTO(socri, fpReviewService.mineCount(mid, socri)));	
 		
 		return "/review/myFpReviewBrd";	
 	}
@@ -66,7 +66,7 @@ public class FpReviewController {
 	
 	@GetMapping("view")	
 	@PreAuthorize("isAuthenticated()")		//로그인한 경우에만 가능
-	public String view(int prNo, Model model, @ModelAttribute("cri") SoCriteria cri) {		//@ModelAttribute("cri") : pageNum, amount라는 이름으로 받아오므로 "cri"를 붙여줘야 매칭됨
+	public String view(int prNo, Model model, @ModelAttribute("socri") SoCriteria socri) {		//@ModelAttribute("socri") : pageNum, amount라는 이름으로 받아오므로 "socri"를 붙여줘야 매칭됨
 		log.info("view......" + prNo );
 		FpReviewVO prvo = fpReviewService.view(prNo);
 		
@@ -123,7 +123,7 @@ public class FpReviewController {
 	
 	@GetMapping("modify")
 	@PreAuthorize("principal.username == #mid")									//작성자의 경우에만 수정폼으로 이동 가능
-	public String modify(int prNo, String mid, String freePdt, Model model, @ModelAttribute("cri") SoCriteria cri) {
+	public String modify(int prNo, String mid, String freePdt, Model model, @ModelAttribute("socri") SoCriteria socri) {
 		log.info("modify......" + prNo);
 		model.addAttribute("prvo", fpReviewService.view(prNo));
 		model.addAttribute("freePdt", freePdt);
@@ -133,7 +133,7 @@ public class FpReviewController {
 	
 	
 	@PostMapping("modify")
-	public String modify(FpReviewVO prvo, RedirectAttributes rttr, @ModelAttribute("cri") SoCriteria cri) {		
+	public String modify(FpReviewVO prvo, RedirectAttributes rttr, @ModelAttribute("socri") SoCriteria socri) {		
 		log.info("modify......");
 	
 		if(fpReviewService.modify(prvo)) {
@@ -141,10 +141,10 @@ public class FpReviewController {
 		}else {
 			rttr.addFlashAttribute("msg", "리뷰 수정에 실패하였습니다.");
 		}
-		rttr.addAttribute("pageNum", cri.getPageNum());
-		rttr.addAttribute("amount", cri.getAmount());
-		rttr.addAttribute("type", cri.getType());
-		rttr.addAttribute("keyword", cri.getKeyword());
+		rttr.addAttribute("pageNum", socri.getPageNum());
+		rttr.addAttribute("amount", socri.getAmount());
+		rttr.addAttribute("type", socri.getType());
+		rttr.addAttribute("keyword", socri.getKeyword());
 		
 		return "redirect:/fpReview/view?prNo="+prvo.getPrNo();			//수정 후 상세조회 페이지로 이동
 	}
@@ -152,7 +152,7 @@ public class FpReviewController {
 	
 	@PostMapping("remove")
 	@PreAuthorize("principal.username == #mid")
-	public String remove(String mid, int prNo, RedirectAttributes rttr, @ModelAttribute("cri") SoCriteria cri) {	
+	public String remove(String mid, int prNo, RedirectAttributes rttr, @ModelAttribute("socri") SoCriteria socri) {	
 		log.info("remove......");
 		
 		List<FpReviewAttachVO> attachList = fpReviewService.attachList(prNo);  //해당 게시글의 첨부파일 목록 가져오기
@@ -163,10 +163,10 @@ public class FpReviewController {
 		}else {
 			rttr.addFlashAttribute("msg", "리뷰삭제에 실패하였습니다.");
 		}
-		rttr.addAttribute("pageNum", cri.getPageNum());
-		rttr.addAttribute("amount", cri.getAmount());
-		rttr.addAttribute("type", cri.getType());
-		rttr.addAttribute("keyword", cri.getKeyword());
+		rttr.addAttribute("pageNum", socri.getPageNum());
+		rttr.addAttribute("amount", socri.getAmount());
+		rttr.addAttribute("type", socri.getType());
+		rttr.addAttribute("keyword", socri.getKeyword());
 		
 		return "redirect:/fpReview/list";
 	}
