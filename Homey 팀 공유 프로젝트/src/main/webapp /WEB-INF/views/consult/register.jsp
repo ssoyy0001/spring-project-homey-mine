@@ -221,7 +221,7 @@
 									<label class="col-sm-2">상세 주소</label>
 									<div class="col-sm-6">
 										<input type="text" name="detailAddress" id="detailAddress"
-											class="form-control" placeholder="상세주소">
+											class="form-control" placeholder="상세주소" required>
 									</div>
 								</div>
 								<div id="wrap"
