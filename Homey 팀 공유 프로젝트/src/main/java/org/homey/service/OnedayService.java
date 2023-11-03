@@ -14,10 +14,9 @@ public interface OnedayService {
 	//반환형도 boolean으로 바꿈
 	
 	//페이징
-	public int odTotalCount(SoCriteria cri);								//원데이클래스 게시글 개수
-	public List<OnedayVO> odListPaging(SoCriteria cri);			//원데이클래스 게시글 전체조회 , SoCriteria에는 amount, pageNum, searchOpt, searchKywd 들어있음
+	public int odTotalCount(SoCriteria socri);								//원데이클래스 게시글 개수
+	public List<OnedayVO> odListPaging(SoCriteria socri);			//원데이클래스 게시글 전체조회
 
-	public List<OnedayVO> odList(String mid);									//내가 신청한 원데이클래스 게시글 전체조회
 	public OnedayVO odView(int odNo);								//원데이클래스 게시글 상세조회
 	public boolean odRegister(OnedayVO odvo);					//원데이클래스 게시글 등록
 	public boolean odRemove(int odNo);							//원데이클래스 게시글 삭제
