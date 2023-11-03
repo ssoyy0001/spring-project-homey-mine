@@ -49,11 +49,11 @@ public class FreePdtController {
 	
 	
 	@GetMapping("/freePdt/list")
-	public String list(Model model, SoCriteria cri) {		//결과 페이지로 보낼 값들을 model에 담음
-		log.info("list......" + cri);
+	public String list(Model model, SoCriteria socri) {		//결과 페이지로 보낼 값들을 model에 담음
+		log.info("list......" + socri);
 		
-		model.addAttribute("list", freePdtService.fpListPaging(cri));
-		model.addAttribute("pageDTO", new PageDTO(cri, freePdtService.fpTotalCount(cri)));	
+		model.addAttribute("list", freePdtService.fpListPaging(socri));
+		model.addAttribute("pageDTO", new PageDTO(socri, freePdtService.fpTotalCount(socri)));	
 	
 		return "/freePdt/fPdtList";
 	}//END list()
@@ -61,7 +61,7 @@ public class FreePdtController {
 	
 	@GetMapping("/freePdt/view")
 	@PreAuthorize("isAuthenticated()")							//로그인한 경우에만 상세조회 가능
-	public String view(int fpNo, String mid, Model model,  @ModelAttribute("cri") SoCriteria cri) {
+	public String view(int fpNo, String mid, Model model,  @ModelAttribute("socri") SoCriteria socri) {
 	
 		log.info("view....." + fpNo);
 		
@@ -164,7 +164,7 @@ public class FreePdtController {
 	
 	@GetMapping("/freePdt/modify")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public String modify(int fpNo, Model model, @ModelAttribute("cri") SoCriteria cri) {
+	public String modify(int fpNo, Model model, @ModelAttribute("socri") SoCriteria socri) {
 		log.info("modify......" + fpNo);
 		model.addAttribute("fpvo", freePdtService.fpView(fpNo));
 		
@@ -175,7 +175,7 @@ public class FreePdtController {
 	
 	@PostMapping("/freePdt/modify")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public String modify(FreePdtVO fpvo, @RequestParam("uploadFile") MultipartFile uploadFile, RedirectAttributes rttr, @ModelAttribute("cri") SoCriteria cri) {	
+	public String modify(FreePdtVO fpvo, @RequestParam("uploadFile") MultipartFile uploadFile, RedirectAttributes rttr, @ModelAttribute("socri") SoCriteria socri) {	
 		log.info("modify......" + fpvo);
 	
 		String upFileNm =null;
@@ -215,8 +215,8 @@ public class FreePdtController {
 			rttr.addFlashAttribute("result", "success");
 		}
 		
-		rttr.addAttribute("pageNum", cri.getPageNum());
-		rttr.addAttribute("amount", cri.getAmount());
+		rttr.addAttribute("pageNum", socri.getPageNum());
+		rttr.addAttribute("amount", socri.getAmount());
 		
 		return "redirect:/freePdt/view?fpNo=" + fpvo.getFpNo() + "&mid=" + fpvo.getMid();
 	}//END modify()
@@ -225,7 +225,7 @@ public class FreePdtController {
 	
 	@PostMapping("/freePdt/remove")	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public String remove(@RequestParam("fpNo")int fpNo, RedirectAttributes rttr, @ModelAttribute("cri") SoCriteria cri) {
+	public String remove(@RequestParam("fpNo")int fpNo, RedirectAttributes rttr, @ModelAttribute("socri") SoCriteria socri) {
 		log.info("remove......" + fpNo);
 		
 		if(freePdtService.fpRemove(fpNo) == true) {						//fpNo인 게시물이 잘 지워졌으면	
@@ -234,8 +234,8 @@ public class FreePdtController {
 			rttr.addFlashAttribute("msg", "게시글 삭제에 실패하였습니다.");
 		}
 		
-		rttr.addAttribute("pageNum", cri.getPageNum());
-		rttr.addAttribute("amount", cri.getAmount());
+		rttr.addAttribute("pageNum", socri.getPageNum());
+		rttr.addAttribute("amount", socri.getAmount());
 		
 		return "redirect:/freePdt/list";
 	}//END remove()
