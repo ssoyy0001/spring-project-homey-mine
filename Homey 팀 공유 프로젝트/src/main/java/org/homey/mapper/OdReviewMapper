@@ -12,10 +12,10 @@ public interface OdReviewMapper {
 	//원데이클래스 리뷰게시판 관련 맵퍼
 	
 	//페이징
-	public int totalCount(SoCriteria cri);
-	public List<OdReviewVO> selectAllPaging(SoCriteria cri);
-	public int mineCount(@Param("mid")String mid, SoCriteria cri);			//criteria sql 쓸 수 없음. 파라미터로 type, keyword 넘겨야 해 ! 시간 남으면 하기
-	public List<OdReviewVO> selectMine(@Param("mid")String mid, @Param("cri")SoCriteria cri);		//내가 작성한 리뷰 목록 조회(페이징)
+	public int totalCount(SoCriteria socri);
+	public List<OdReviewVO> selectAllPaging(SoCriteria socri);
+	public int mineCount(@Param("mid")String mid, SoCriteria socri);			//criteria sql 쓸 수 없음. 파라미터로 type, keyword 넘겨야 해 ! 시간 남으면 하기
+	public List<OdReviewVO> selectMine(@Param("mid")String mid, @Param("socri")SoCriteria socri);		//내가 작성한 리뷰 목록 조회(페이징)
 	
 	public OdReviewVO select(int orNo);												//리뷰 상세 조회
 	public int insertSelectKey(OdReviewVO orvo);									//리뷰 등록
