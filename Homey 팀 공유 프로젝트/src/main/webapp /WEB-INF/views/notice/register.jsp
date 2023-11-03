@@ -23,150 +23,188 @@
 }
 /* 첨부파일 경고문구 */
 .imgNotice {	font-size: 10px; color: lightcoral;   }
+/* 필수입령항목 경고 문구 */
+#notice {  color: red;		}
+.regiItemNm {	width: 150px;	}
+/* 고정항목 */
+.staticItem {		width: 200px;	
+						border: none; /* 테두리 없음 */
+       					outline: none; /* 포커스 표시 없음 */	}
+
 </style>
 </head>
 <body>
 
-	<!-- ======= header ======= -->
-	<%@ include file="../includes/header.jsp"%>
+<!-- ======= header ======= -->
+<%@ include file="../includes/header.jsp"%>
 
-	<!-- ======= main ======= -->
-	<main id="main">
-		<!-- ======= Breadcrumbs ======= -->
-		<div class="breadcrumbs d-flex align-items-center"
-			style="background-image: url('../resources/assets/img/breadcrumbs-bg.jpg');">
-			<div
-				class="container position-relative d-flex flex-column align-items-center"
-				data-aos="fade">
-				<h2>공지사항 등록</h2>
-			</div>
+<!-- ======= main ======= -->
+<main id="main">
+
+<!-- ======= Breadcrumbs ======= -->
+<div class="breadcrumbs d-flex align-items-center"
+	style="background-image: url('../resources/assets/img/breadcrumbs-bg.jpg');">
+	<div
+		class="container position-relative d-flex flex-column align-items-center"
+		data-aos="fade">
+		<h2>공지사항 등록</h2>
+	</div>
+</div>
+<!-- End Breadcrumbs -->
+
+<!-- ======= 게시물 등록 ======= -->
+<section id="project-details" class="project-details">
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="row justify-content-between gy-4 mt-4">
+    <div class="col-lg-8 mx-auto">
+	    <div class="portfolio-description">
+	        <h2>📝공지사항 등록</h2>
+	        <span id="notice">* 항목은 필수 입력 항목입니다.</span>
+	        <hr>
+
+	<!----------게시물 등록 폼 -->
+	<form action="/notice/register" method="post" role="form">
+		
+		<div class="col-md-6 form-group">
+			<label>* 분류</label> <select name="notCategory" id="notCategory">
+				<option value="일반">일반</option>
+				<option value="서비스안내">서비스안내</option>
+			</select>
 		</div>
-		<!-- End Breadcrumbs -->
+		
+		<div class="form-group mt-3">
+           <label class="regiItemNm"><strong>* 작성자</strong></label>
+           <input type="text" name="mid" class="staticItem" value="<sec:authentication property="principal.Username"/>" readonly>
+	    </div>
+	    
+        <div class="form-group mt-3">
+            <label class="regiItemNm"><strong>* 제   목</strong></label>
+            <input type="text" name="notTitle" class="form-control" required>
+        </div>	    
 
-		<section id="services" class="services section-bg blog">
-			<!-- blog를 추가해야 사이드바 스타일 활성화  -->
-			<div class="container" data-aos="fade-up">
-				<div class="row">
-					<div class="col-lg-6">
+        <div class="form-group mt-3">
+         	<label class="regiItemNm"><strong>* 내   용</strong></label>
+         	<textarea class="form-control" name="notCont" rows="10" required></textarea>
+    	</div>     
+    	
+    	<br>   
+    	<br>   
+		
+		<div class="float-end">
+		<button type="reset" class="btn btn-secondary">초기화</button>
+		<button type="button" class="btn btn-warning"
+			onclick="insertCancel(event);">목록으로</button>
+		<button type="submit" class="btn btn-primary regBtn">등록</button>
+		</div>
+		<input type="hidden" name="${_csrf.parameterName }"
+			value="${_csrf.token }">
 
-						<!-- 게시물 등록 폼 -->
-						<form action="/notice/register" method="post" role="form">
-							<div class="col-md-6 form-group">
-								<label>분류</label> <select name="notCategory" id="notCategory">
-									<option value="일반">일반</option>
-									<option value="서비스안내">서비스안내</option>
-								</select>
-							</div>
+	</form>
+	<!-- END 게시물 등록 폼 -->
 
-							<div class="form-group">
-								<label>제목</label> <input type="text" name="notTitle"
-									class="form-control" required>
-							</div>
-
-							<div class="form-group">
-								<label>내용</label>
-								<textarea name="notCont" class="form-control" rows="3"></textarea>
-							</div>
-
-							<div class="form-group">
-								<label>작성자</label>
-								<!--  로그인 한 아이디 값 나옴 -->
-								<input type="text" name="mid" class="form-control"
-									value='<sec:authentication property="principal.username"/>'
-									readonly>
-							</div>
-
-							<button type="reset" class="btn btn-default">초기화</button>
-							<button type="button" class="btn btn-warning"
-								onclick="history.back()">목록으로</button>
-							<button type="submit" class="btn btn-primary">등록</button>
-							<input type="hidden" name="${_csrf.parameterName }"
-								value="${_csrf.token }">
-						</form>
-						<!-- END 게시물 등록 폼 -->
-
-						<!-- 첨부 파일 ------------------------------->
-						<div class="row">
-							<div class="col-lg-12">
-								<div class="panel panel-default">
-									<div class="panel-heading">File Attach</div>
-									<!-- /.panel-heading -->
-									<div class="panel-body">
-										<div class="form-group uploadDiv">
-											<input type="file" name="uploadFile" multiple>
-										</div>
-										<div class="imgNotice">* 이미지 파일은 10mb 이내, 파일 확장자는 jpg 혹은 png만 가능</div>
-										<!-- 업로드 결과 출력 -->
-										<div class="uploadResult">
-											<ul>
-											</ul>
-										</div>
-										<!-- END 업로드 결과 출력 -->
-									</div>
-									<!-- /.panel-body -->
-								</div>
-								<!-- /.panel -->
-							</div>
-							<!-- /.col-lg-12 -->
-						</div>
-						<!-- /.row -->
-						<!-- END 첨부 파일 --------------------------->
+	<!-- 첨부 파일 ------------------------------->
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="panel panel-default">
+				<div class="panel-heading"><strong>파일 첨부</strong></div>
+				<br>
+				<!-- /.panel-heading -->
+				<div class="panel-body">
+					<div class="form-group uploadDiv">
+						<input type="file" name="uploadFile" multiple>
 					</div>
+					<div class="imgNotice">* 이미지 파일은 10mb 이내, 파일 확장자는 jpg 혹은 png만 가능</div>
+					<!-- 업로드 결과 출력 -->
+					<div class="uploadResult">
+						<ul>
+						</ul>
+					</div>
+					<!-- END 업로드 결과 출력 -->
 				</div>
+				<!-- /.panel-body -->
 			</div>
-		</section>
-	</main>
+			<!-- /.panel -->
+		</div>
+		<!-- /.col-lg-12 -->
+	</div>
+	<!-- /.row -->
+	<!-- END 첨부 파일 --------------------------->
 
-	<script>
-		//submit 버튼을 누르면 먼저 폼 전송부터 하게 하지 말고,
-		//hidden태그를 만들고 //그 이후에 폼을 전송해
+	    </div><!-- End portfolio-description -->
+    </div><!-- End col-lg-8 mx-auto -->
+    </div><!-- End row justify-content-between -->
+    </div><!-- End container -->
+</section><!-- End Project Details Section -->
 
-		var frm = $('form[role="form"]');
+</main>
 
-		//submit 버튼 이벤트 처리 -----------------
-		$('button[type="submit"]')
-				.on(
-						'click',
-						function(e) {
-							e.preventDefault();
 
-							var hiddenTag = ''; //서버 전송을 위한 추가부분	
+<!-- ======= script ======= -->
+<script>
+	
+//취소 버튼 누를 시 ----------------------------
+	function insertCancel(event){
+	if(confirm('작성하던 글이 모두 사라집니다. \n게시글 등록을 취소하시겠습니까?')){
+		 history.back(); 
+    }else if(!cancel){
+        	  event.preventDefault();
+    };
+}
+// END 취소 버튼 누를 시 ----------------------------
 
-							$('.uploadResult ul li')
-									.each(
-											function(i, obj) {//개발자 도구에 소문자로 넣어짐
-												hiddenTag += '<input type="hidden" name="attachList['
-														+ i
-														+ '].uuid" '
-														+ ' value="'
-														+ $(obj).data('uuid')
-														+ '">';
 
-												hiddenTag += '<input type="hidden" name="attachList['
-														+ i
-														+ '].upFolder" '
-														+ ' value="'
-														+ $(obj).data('folder')
-														+ '">';
+//등록 버튼 누를 시 ----------------------------
+//submit 버튼을 누르면 먼저 폼 전송부터 하게 하지 말고,
+//hidden태그를 만들고 //그 이후에 폼을 전송해
+var frm = $('form[role="form"]');
+//submit 버튼 이벤트 처리 -----------------
+$('button[type="submit"]')
+		.on(
+				'click',
+				function(e) {
+					e.preventDefault();
 
-												hiddenTag += '<input type="hidden" name="attachList['
-														+ i
-														+ '].fileName" '
-														+ ' value="'
-														+ $(obj).data('filenm')
-														+ '">';
+					var hiddenTag = ''; //서버 전송을 위한 추가부분	
 
-												hiddenTag += '<input type="hidden" name="attachList['
-														+ i
-														+ '].image" '
-														+ ' value="'
-														+ $(obj).data('image')
-														+ '">';
-											});
-							//앞은 DTO랑 똑같이, 뒤는 li와 똑같이
-							frm.append(hiddenTag);
-							frm.submit();
-						});//END submit 버튼 이벤트 처리 -------------
+					$('.uploadResult ul li')
+							.each(
+									function(i, obj) {//개발자 도구에 소문자로 넣어짐
+										hiddenTag += '<input type="hidden" name="attachList['
+												+ i
+												+ '].uuid" '
+												+ ' value="'
+												+ $(obj).data('uuid')
+												+ '">';
+
+										hiddenTag += '<input type="hidden" name="attachList['
+												+ i
+												+ '].upFolder" '
+												+ ' value="'
+												+ $(obj).data('folder')
+												+ '">';
+
+										hiddenTag += '<input type="hidden" name="attachList['
+												+ i
+												+ '].fileName" '
+												+ ' value="'
+												+ $(obj).data('filenm')
+												+ '">';
+
+										hiddenTag += '<input type="hidden" name="attachList['
+												+ i
+												+ '].image" '
+												+ ' value="'
+												+ $(obj).data('image')
+												+ '">';
+									});
+					//앞은 DTO랑 똑같이, 뒤는 li와 똑같이
+					frm.append(hiddenTag);
+					frm.submit();
+				});//END submit 버튼 이벤트 처리 -------------
+// END 등록 버튼 누를 시 ----------------------------
+		
+
+
 
 		//업로드 제한 확인 ------------------------
 		var regEx = new RegExp("(.*?)\.(exe|sh|zip)$"); //일부 확장자 파일은 못올리게 함
@@ -334,5 +372,4 @@
 	<!-- ======= END Footer ======= -->
 </body>
 </html>
-
 
