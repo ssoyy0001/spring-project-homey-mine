@@ -13,7 +13,6 @@ public interface OdReqService {
 	//반환형도 boolean으로 바꿈
 	
 	//페이징
-//	public int odTotalCount(Criteria cri);							//원데이클래스 게시글 개수 -> 페이징 안해서 지움
 	public List<OdReqVO> odReqList(int odNo);				//원데이클래스 신청목록 전체조회 -> "특정 클래스"(odNo)의 전체신청목록
 	public List<OdReqVO> odReqListMine(String mid);		//나의 원데이클래스 신청목록 조회 -> sid가 신청한 신청목록을 "신청일" 기준 최근 15개까지 조회하기	
 	public OdReqVO odReqView(int odReqNo);					//원데이클래스 신청 상세조회
