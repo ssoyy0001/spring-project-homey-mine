@@ -4,26 +4,6 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.homey.mapper.SiRequestMapper">
 
-  <!-- 쿼리 보관 -->
-  <sql id="SireqCriteria">
-  	 <trim prefix="(" suffix=") AND " prefixOverrides="OR">
-	 	<foreach item="type" collection="typeArr">
-	 	  <trim prefix="OR">
-	 		<choose>
-	 			<when test="type == 'N'.toString()">
-	 				m.mname LIKE '%'||#{keyword}||'%'
-	 			</when>
-	 			<when test="type == 'Q'.toString()">
-	 				s.quoNo LIKE '%'||#{keyword}||'%'
-	 			</when>
-	 		</choose>
-	 	  </trim>
-	 	</foreach>
-	 </trim>
-  </sql>
-  
-	
-
 	<resultMap type ="org.homey.domain.SiRequestVO" id="sireqMap" >
 		<id property="sireqNo" column="sireqNo" />
 		<result property="sireqDate" column="sireqDate" />
@@ -81,6 +61,7 @@
 	
 	</resultMap>
 	 
+	 
 	<select id="totalCount" resultType="int">
   	<![CDATA[ 
 	  	SELECT 	COUNT(*) 
@@ -90,17 +71,7 @@
 	    		<include refid="SireqCriteria"></include>
 	<![CDATA[ 	sireqNo > 0	]]>
   </select>
-   
-	
-	<select id="mytotalCount" resultType="int">
-  	<![CDATA[ 
-	  	SELECT 	COUNT(*) 
-	  	FROM 	sireq
-	    WHERE	]]>
-	     		<!-- 보관해 둔 쿼리 사용 -->
-	    		<include refid="SireqCriteria"></include>
-	<![CDATA[ 	mid = #{mid}	]]>
-  </select>
+  
   	
   	<!-- 아이템 항목 업데이트 quotationMapper.updateItem(ivo) -->
 	  <update id="updateItem" >
@@ -137,74 +108,91 @@
 	  </update>
 	  
 	  <!-- insert -->
-	<insert id="insert">
-   		INSERT INTO SIREQ(sireqNo, quoNo, itemNo, consultNo, mid, mname, sireqDate, sigongTotal, sireqStatus, payStatus, sireqUpdateDate)
-   		VALUES(sireq_seq.nextval, #{qvo.quoNo}, #{itemNo}, #{consultNo}, #{mid}, #{mname}, SYSDATE, #{sigongTotal}, DEFAULT, DEFAULT, SYSDATE)
-	
-  	</insert>	
+		<insert id="insert">
+	   		INSERT INTO SIREQ(sireqNo, quoNo, itemNo, consultNo, mid, mname, sireqDate, sigongTotal, sireqStatus, payStatus, sireqUpdateDate)
+	   		VALUES(sireq_seq.nextval, #{qvo.quoNo}, #{itemNo}, #{consultNo}, #{mid}, #{mname}, SYSDATE, #{sigongTotal}, DEFAULT, DEFAULT, SYSDATE)
+		
+	  	</insert>	
 	  
-  <!-- 시공의뢰 등록 -->
-  <insert id="insertSelectkey">
-		<selectKey keyProperty="sireqNo" order="BEFORE" resultType="int">
-			select sireq_seq.nextval from dual		
-		</selectKey>	
-		INSERT INTO SIREQ (sireqNo, quoNo, itemNo, consultNo, mid, mname, sireqDate, sigongTotal, sireqStatus, payStatus, sireqUpdateDate)
-		VALUES (#{sireqNo}, #{quotationvo.quoNo}, #{ivo.itemNo}, #{consultvo.consultNo}, #{mvo.mid}, #{mvo.mname}, SYSDATE, #{sigongTotal}, DEFAULT, DEFAULT, SYSDATE)
-     
- </insert>
+	  <!-- 시공의뢰 등록 -->
+	  <insert id="insertSelectkey">
+			<selectKey keyProperty="sireqNo" order="BEFORE" resultType="int">
+				select sireq_seq.nextval from dual		
+			</selectKey>	
+			INSERT INTO SIREQ (sireqNo, quoNo, itemNo, consultNo, mid, mname, sireqDate, sigongTotal, sireqStatus, payStatus, sireqUpdateDate)
+			VALUES (#{sireqNo}, #{quotationvo.quoNo}, #{ivo.itemNo}, #{consultvo.consultNo}, #{mvo.mid}, #{mvo.mname}, SYSDATE, #{sigongTotal}, DEFAULT, DEFAULT, SYSDATE)
+	     
+	 </insert>
   
-  <!-- 시공의뢰 전체조회 (페이징x) -->
-  <select id="getList" resultMap="sireqMap">       
-		<![CDATA[ SELECT
-				    sireqNo, quoNo, mid, mname, sireqDate, sireqStatus, payStatus, sireqUpdateDate
-				FROM
-				    (
-				    SELECT 
-				         /*+INDEX_DESC(sireq PK_SIREQ) */
-				        rownum rn, s.sireqNo, q.quoNo, m.mid, m.mname, s.sireqDate, s.sireqStatus, s.payStatus, s.sireqUpdateDate
-				    FROM sireq s
-				    JOIN member m ON s.mid = m.mid
-					JOIN quotation q ON s.quoNo = q.quoNo 
-					ORDER BY s.sireqDate DESC
-					)
-					
-   	
-    ]]>
-	</select>
+	  <!-- 시공의뢰 전체조회 (페이징x) -->
+	  <select id="getList" resultMap="sireqMap">       
+			<![CDATA[ SELECT
+					    sireqNo, quoNo, mid, mname, sireqDate, sireqStatus, payStatus, sireqUpdateDate
+					FROM
+					    (
+					    SELECT 
+					         /*+INDEX_DESC(sireq PK_SIREQ) */
+					        rownum rn, s.sireqNo, q.quoNo, m.mid, m.mname, s.sireqDate, s.sireqStatus, s.payStatus, s.sireqUpdateDate
+					    FROM sireq s
+					    JOIN member m ON s.mid = m.mid
+						JOIN quotation q ON s.quoNo = q.quoNo 
+						ORDER BY s.sireqDate DESC
+						)
+						
+	   	
+	    ]]>
+		</select>
+		
+		<!-- 쿼리 보관 -->
+	  <sql id="SireqCriteria">
+	  	 <trim prefix="(" suffix=") AND " prefixOverrides="OR">
+		 	<foreach item="type" collection="typeArr">
+		 	  <trim prefix="OR">
+		 		<choose>
+		 			<when test="type == 'N'.toString()">
+		 				mname LIKE '%'||#{keyword}||'%'
+		 			</when>
+		 			<when test="type == 'Q'.toString()">
+		 				quoNo LIKE '%'||#{keyword}||'%'
+		 			</when>
+				</choose>
+		 	  </trim>
+		 	</foreach>
+		 </trim>
+	  </sql>
+		
+		<!-- 시공의뢰 전체조회 -->
+	   <select id="getListWithPaging" resultMap="sireqMap">    
+	  			<![CDATA[ SELECT
+					    sireqNo, quoNo, mid, mname, sireqDate, sireqStatus, payStatus, sireqUpdateDate
+					FROM
+					    (
+					    SELECT 
+					         /*+INDEX_DESC(sireq PK_SIREQ) */
+					        rownum rn, s.sireqNo, q.quoNo, m.mid, m.mname, s.sireqDate, s.sireqStatus, s.payStatus, s.sireqUpdateDate
+					    FROM sireq s
+					    JOIN member m ON s.mid = m.mid
+						JOIN quotation q ON s.quoNo = q.quoNo
+						WHERE ]]>
+	    			 	    
+	    			 	<![CDATA[   rownum <= #{amount} * #{pageNum})										
+						WHERE rn > #{amount} * ( #{pageNum} - 1 )
+	   					ORDER BY sireqDate DESC
+	    		]]>   
 	
-	<!-- 시공의뢰 전체조회 -->
-  <select id="getListWithPaging" resultMap="sireqMap">    
-  			<![CDATA[ SELECT
-				    sireqNo, quoNo, mid, mname, sireqDate, sireqStatus, payStatus, sireqUpdateDate
-				FROM
-				    (
-				    SELECT 
-				         /*+INDEX_DESC(sireq PK_SIREQ) */
-				        rownum rn, s.sireqNo, q.quoNo, m.mid, m.mname, s.sireqDate, s.sireqStatus, s.payStatus, s.sireqUpdateDate
-				    FROM sireq s
-				    JOIN member m ON s.mid = m.mid
-					JOIN quotation q ON s.quoNo = q.quoNo
-					WHERE ]]>
-    			 	    <!-- 보관해 둔 쿼리 사용 -->
-    			 	    <include refid="SireqCriteria"></include>
-    			 	<![CDATA[    rownum <= #{amount} * #{pageNum})										
-					WHERE rn > #{amount} * ( #{pageNum} - 1 )
-   					ORDER BY sireqDate DESC
-    		]]>   
-
-	</select>
+		</select>
 		
 	<!-- 시공의뢰 상세조회 -->
 	<select id="read" resultMap="sireqMap">
     	SELECT
-				    sireqNo, quoNo, mid, mname, sireqDate, constScheduleStart, constScheduleEnd, buildingType, pyeongsu, 
+				    sireqNo, quoNo, consultNo, itemNo, mid, mname, sireqDate, constScheduleStart, constScheduleEnd, buildingType, pyeongsu, 
 				    tiling, tilingD, flooring, flooringD, kitchen, kitchenD, bathroom, bathroomD, entrance, entranceD, balcony, balconyD, lighting, lightingD, door, doorD, etc, etcD, 
 				    demolTotal, constTotal, sigongTotal, sireqStatus, payStatus
 				FROM
 				    (
 				    SELECT 
 				         /*+INDEX_DESC(sireq PK_SIREQ) */
-				        rownum rn, s.sireqNo, q.quoNo, m.mid, m.mname, s.sireqDate, q.constScheduleStart, q.constScheduleEnd, c.buildingType, c.pyeongsu, 
+				        rownum rn, s.sireqNo, q.quoNo, c.consultNo, i.itemNo, m.mid, m.mname, s.sireqDate, q.constScheduleStart, q.constScheduleEnd, c.buildingType, c.pyeongsu, 
 				    i.tiling, i.tilingD, i.flooring, i.flooringD, i.kitchen, i.kitchenD, i.bathroom, i.bathroomD, i.entrance, i.entranceD, i.balcony, i.balconyD, i.lighting, i.lightingD, i.door, i.doorD, i.etc, i.etcD, 
 				    q.demolTotal, q.constTotal, s.sigongTotal, s.sireqStatus, s.payStatus
 				    FROM sireq s
@@ -240,7 +228,7 @@
   	
   	<!-- 나의 시공의뢰 전체조회 -->
   <select id="myselectAllPaging" resultMap="sireqMap">    
-  			<![CDATA[ SELECT
+  	<![CDATA[ 	SELECT
 				    sireqNo, quoNo, mid, mname, sireqDate, sireqStatus, payStatus, sireqUpdateDate
 				FROM
 				    (
@@ -250,15 +238,9 @@
 				    FROM sireq s
 				    JOIN member m ON s.mid = m.mid
 					JOIN quotation q ON s.quoNo = q.quoNo
-					WHERE ]]>
-    			 	    <!-- 보관해 둔 쿼리 사용 -->
-    			 	    <include refid="SireqCriteria"></include>
-    			 	<![CDATA[    rownum <= #{amount} * #{pageNum})										
-					WHERE rn > #{amount} * ( #{pageNum} - 1 )
-   					ORDER BY sireqDate DESC
-    		]]>   
-    		WHERE mid = #{mid}
-
+                    ORDER BY sireqDate DESC)
+                    WHERE mid = #{mid}
+	]]>   
 	</select>
 	
 	<!--견적서 상세조회 select  -->
