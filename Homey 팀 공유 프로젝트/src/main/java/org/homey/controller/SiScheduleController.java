@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.homey.domain.SiScheduleVO;
+import org.homey.service.SiRequestService;
 import org.homey.service.SiScheduleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,7 @@ import lombok.extern.log4j.Log4j;
 @AllArgsConstructor
 public class SiScheduleController {
 	private SiScheduleService sicheService;
-	// private SiRequestService sireqService;
+	private SiRequestService sireqService;
 	@GetMapping("sicheList")
 
 	public void sicheList() {
@@ -87,7 +88,7 @@ public class SiScheduleController {
 		}
 	@GetMapping("sicheRegist")
 	public void sicheRegist(int sireqNo,Model model) {
-		//model.addaddAttribute("sireqVO",sireqService.get(sireqNo));
+		model.addAttribute("sireqVO",sireqService.get(sireqNo));
 	}
 	@PostMapping("sicheRegist")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
