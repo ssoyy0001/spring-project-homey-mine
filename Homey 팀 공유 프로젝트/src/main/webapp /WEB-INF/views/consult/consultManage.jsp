@@ -500,8 +500,10 @@
 									</c:forEach>
 								</c:if>
 							</sec:authorize>
-							<a href="/sirequest/sireqRegister?quoNo=${qvo.quoNo }"
-								class="btn btn-danger" style="margin-top: 5px">시공의뢰 등록</a>
+							<c:if test="${!empty cvo.qvoList}">
+							   	 <a href="/sirequest/sireqRegister?quoNo=${qvo.quoNo }" class="btn btn-danger" style="margin-top: 5px">시공의뢰 등록</a>
+							</c:if>
+
 
 						</article>
 						<!-- END 견적서 표시 -->
@@ -955,8 +957,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 	    var description = info.event.extendedProps.description; // 설명 가져오기
 
                 	    tippy(info.el, {
-                	        content: '견적 상담 번호 '+ consultNo + '번의 방문 스케줄' + (description ? ' : ' + description : ''), // 제목을 'consultNo번의 방문 스케줄'로 수정
-                	        placement: 'bottom', //툴팁 방향
+                	    	content: (description ? description : '등록된 설명 없음'), // visisStatus가 뜬다.                	        placement: 'bottom', //툴팁 방향
                 	        theme: 'yellow', //css테마 설정된 데이터 값
                 	        arrow: false //툴팁에서 말풍선 모양처럼 화살표 출력여부
                 	    });
