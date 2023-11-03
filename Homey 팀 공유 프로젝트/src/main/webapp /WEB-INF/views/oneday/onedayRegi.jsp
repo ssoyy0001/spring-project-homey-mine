@@ -254,7 +254,7 @@ function checkDate(dateValue, inputValue) {
      	//이전 값 그대로 유지
         inputValue.value = inputValue.getAttribute('data-original');
     }
-}
+}//END checkDate()
 
 //진행일시 날짜 검토
 var odDate = document.querySelector('input[name="odDate"]');
