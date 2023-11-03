@@ -48,7 +48,7 @@
 	            
 	            <div class="form-group mt-3">
 	                <label class="regiItemNm"><strong>* 수령일</strong></label>
-	                <input type="date" name="fpGetDate" value="" min="2020-01-01" max="2030-12-31">
+	                <input type="date" name="fpGetDate" class="regiItem" min="2020-01-01" max="2030-12-31">
 	            </div>
 	            
 	            <div class="form-group mt-3">
@@ -63,7 +63,7 @@
 	            
 	            <div class="form-group mt-3">
 	                <label class="regiItemNm"><strong>* 모집마감일</strong></label>
-	                <input type="date" name="fpDeadline" value="" min="2020-01-01" max="2030-12-31">
+	                <input type="date" name="fpDeadline" class="regiItem" min="2020-01-01" max="2030-12-31">
 	            </div>
 	            
 	            <div class="form-group mt-3">
@@ -222,6 +222,45 @@ $('.regBtn').click(function(event) {
 	}
 	
 });
+
+
+
+//수령일, 모집마감일을 과거 혹은 오늘로 선택했을 경우 알림창 표시
+function checkDate(dateValue, inputValue) {
+    
+    var today = new Date();					//오늘 날짜
+    today.setHours(0, 0, 0, 0); 					//오늘 날짜의 시간 부분을 00:00:00으로 설정
+
+    var selectedDate = new Date(dateValue);		//입력받은 날짜를 Date 객체로 변환
+
+    if (selectedDate < today) {					//입력받은 날짜가 과거/오늘 날짜라면?
+        alert("잘못된 날짜입니다. 오늘 이후의 날짜를 선택하세요.");
+    
+     	//이전 값 그대로 유지
+        inputValue.value = inputValue.getAttribute('data-original');
+    }
+}//END checkDate()
+
+//수령일 날짜 검토
+var fpGetDate = document.querySelector('input[name="fpGetDate"]');
+fpGetDate.setAttribute('data-original', fpGetDate.value); 					//초기값 저장
+fpGetDate.addEventListener('change', function () {
+    checkDate(this.value, this);
+});
+
+//모집마감일 날짜 검토
+var fpDeadline = document.querySelector('input[name="fpDeadline"]');
+fpDeadline.setAttribute('data-original', fpDeadline.value); 		//초기값 저장
+fpDeadline.addEventListener('change', function () {
+    checkDate(this.value, this);
+
+
+});
+
+//END 진행일시, 모집마감일을 과거 혹은 미래로 선택했을 경우 알림창 표시
+
+
+
 
 </script>
 
