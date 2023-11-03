@@ -17,6 +17,7 @@ public interface ASBoardService {
     public List<ASBoardVO> list(asCriteria cri, String mid); // 나의 견적상담 전체 목록 조회 + 페이징
     public int getTotal(asCriteria cri); // AS 게시물 전체 개수 조회
     public List<ASBoardAttachVO> getBoardAttachList(int bno);
+    public String getEmail(int bno);
     
 
    

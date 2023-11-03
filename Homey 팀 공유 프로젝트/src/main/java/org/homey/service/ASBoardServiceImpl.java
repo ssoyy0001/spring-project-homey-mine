@@ -90,7 +90,7 @@ public class ASBoardServiceImpl implements ASBoardService {
         return asBoardMapper.delete(bno) == 1;
     }
 
-    
+   
     @Override
     public List<ASBoardVO> listPaging(asCriteria cri) {
         log.info("getListPaging..........");
@@ -110,5 +110,9 @@ public class ASBoardServiceImpl implements ASBoardService {
         return asBoardAttachMapper.select(bno);
     }
 
-    
-}
+    @Override
+    public String getEmail(int bno) {
+        return asBoardMapper.selectemail(bno);
+    }
+}	
+
