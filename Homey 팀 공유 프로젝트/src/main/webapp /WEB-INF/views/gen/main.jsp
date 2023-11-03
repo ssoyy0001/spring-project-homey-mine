@@ -24,15 +24,15 @@
 			data-bs-interval="5000">
 
 			<div class="carousel-item active"
-				style="background-image: url(../resources/assets/img/hero-carousel/hero-carousel-1.jpg)"></div>
+				style="background-image: url(https://cdn.pixabay.com/photo/2017/03/28/12/10/chairs-2181947_1280.jpg"></div>
 			<div class="carousel-item"
-				style="background-image: url(../resources/assets/img/hero-carousel/hero-carousel-2.jpg)"></div>
+				style="background-image: url(https://cdn.pixabay.com/photo/2020/05/25/17/54/library-5219747_1280.jpg)"></div>
 			<div class="carousel-item"
-				style="background-image: url(../resources/assets/img/hero-carousel/hero-carousel-3.jpg)"></div>
+				style="background-image: url(https://cdn.pixabay.com/photo/2017/03/28/12/16/chairs-2181980_1280.jpg)"></div>
 			<div class="carousel-item"
-				style="background-image: url(../resources/assets/img/hero-carousel/hero-carousel-4.jpg)"></div>
+				style="background-image: url(https://cdn.pixabay.com/photo/2019/03/08/20/17/kitchen-4043098_1280.jpg)"></div>
 			<div class="carousel-item"
-				style="background-image: url(../resources/assets/img/hero-carousel/hero-carousel-5.jpg)"></div>
+				style="background-image: url(https://cdn.pixabay.com/photo/2020/02/02/17/07/living-room-modern-tv-4813591_1280.jpg)"></div>
 
 			<a class="carousel-control-prev" href="#hero-carousel" role="button"
 				data-bs-slide="prev"> <span
@@ -61,7 +61,7 @@ $(document).ready(function () {
 
 function checkResult(result) {
     if (result) {
-        showAlert(result+' 번 견적상담이 등록되었습니다.\n예정시간에 해피콜을 기다려주세요.\n 자세한 점은 마이페이지의 나의 견적상담관리를 통해\n확인해주시길 바랍니다.');
+        showAlert('견적상담이 등록되었습니다.\n 예정시간에 해피콜을 기다려주세요. \n 자세한 사항은 견적상담 내역 조회를 통해 확인해주시길 바랍니다.');
     }
 }
 
