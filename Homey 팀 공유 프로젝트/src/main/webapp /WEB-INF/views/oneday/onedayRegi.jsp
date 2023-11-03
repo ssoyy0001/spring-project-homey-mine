@@ -43,7 +43,7 @@
 	            
 	            <div class="form-group mt-3">
 	                <label class="regiItemNm"><strong>* 진행일시</strong></label>
-	                <input type="text" name="odDate" class="regiItem" placeholder="ex) 2023/01/01 18:00">
+	                <input type="text" name="odDate" class="regiItem" placeholder="ex) 2023-01-01 18:00">
 	            </div>
 	            
 	            <div class="form-group mt-3">
