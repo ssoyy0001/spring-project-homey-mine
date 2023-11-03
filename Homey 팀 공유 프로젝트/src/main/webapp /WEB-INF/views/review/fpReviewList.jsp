@@ -80,17 +80,17 @@ table td.title {    text-align: left;	}
 				<div class="col-lg-12">
 		        <form id="searchFrm" action="/fpReview/list">
 		        	<select name="type">
-						<option value="T" ${pageDTO.cri.type == 'T' ? 'selected' : ''} >제목</option>
-						<option value="C" ${pageDTO.cri.type == 'C' ? 'selected' : ''}>내용</option>
-						<option value="W" ${pageDTO.cri.type == 'W' ? 'selected' : ''}>작성자</option>
-						<option value="TC" ${pageDTO.cri.type == 'TC' ? 'selected' : ''}>제목 or 내용</option>
+						<option value="T" ${pageDTO.socri.type == 'T' ? 'selected' : ''} >제목</option>
+						<option value="C" ${pageDTO.socri.type == 'C' ? 'selected' : ''}>내용</option>
+						<option value="W" ${pageDTO.socri.type == 'W' ? 'selected' : ''}>작성자</option>
+						<option value="TC" ${pageDTO.socri.type == 'TC' ? 'selected' : ''}>제목 or 내용</option>
 					</select>
-					<input type="text" name="keyword" value="${pageDTO.cri.keyword }"/>
+					<input type="text" name="keyword" value="${pageDTO.socri.keyword }"/>
 					<button class="btn btn-outline-warning btn-xs searchBtn">검색</button>
 					<a href="/odReview/list" class="btn btn-warning btn-xs">전체보기</a>
 		                	
-					<input type="hidden" name="pageNum" value="${pageDTO.cri.pageNum}">
-		          	<input type="hidden" name="amount"  value="${pageDTO.cri.amount}">
+					<input type="hidden" name="pageNum" value="${pageDTO.socri.pageNum}">
+		          	<input type="hidden" name="amount"  value="${pageDTO.socri.amount}">
 		          	<!-- 시큐리티 -->
 		          	<input type="hidden" name="${_csrf.parameterName }"	value="${_csrf.token }">
 		        </form>
@@ -156,7 +156,7 @@ table td.title {    text-align: left;	}
 						<c:forEach begin="${pageDTO.start }" 
 								   end="${pageDTO.end }" var="i">
 						<%-- <c:url var="link" value=""/> --%>
-						<li class="page-item ${pageDTO.cri.pageNum == i ? 'active' : '' }">
+						<li class="page-item ${pageDTO.socri.pageNum == i ? 'active' : '' }">
 							<a href="${i }" 
 							   class="page-link">${i }</a>
 						</c:forEach>
@@ -172,10 +172,10 @@ table td.title {    text-align: left;	}
 
             <!-- 현재 페이지 번호 및 출력 게시물 수 전송 폼 -->
 				<form action="/fpReview/list" id="actionFrm">
-					<input type="hidden" name="pageNum" value="${pageDTO.cri.pageNum}">
-					<input type="hidden" name="amount"  value="${pageDTO.cri.amount}">
-					<input type="hidden" name="type"  value="${pageDTO.cri.type}">
-					<input type="hidden" name="keyword"  value="${pageDTO.cri.keyword}">
+					<input type="hidden" name="pageNum" value="${pageDTO.socri.pageNum}">
+					<input type="hidden" name="amount"  value="${pageDTO.socri.amount}">
+					<input type="hidden" name="type"  value="${pageDTO.socri.type}">
+					<input type="hidden" name="keyword"  value="${pageDTO.socri.keyword}">
 					
 					<!-- 시큐리티 -->
 		          	<input type="hidden" name="${_csrf.parameterName }"	value="${_csrf.token }">
