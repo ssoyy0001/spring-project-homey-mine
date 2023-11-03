@@ -105,7 +105,7 @@
 								<h2>2. 시공할 건물의 평수를 입력해주세요.</h2>
 								<div style="display: flex; align-items: center;">
 									<input type="number" name="pyeongsu" id="pyeongsu"
-										class="form-control" value="0" min="0" step="10"
+										class="form-control" min="0"
 										style="width: 70px;" required> <span
 										style="margin-left: 5px;">평</span>
 								</div>
@@ -142,7 +142,7 @@
 								<div style="display: flex; align-items: center;">
 									<input type="number" name="budget" id="budget"
 										class="form-control" value="1000" step="1000"
-										style="width: 200px" required> <span
+										style="width: 200px" min="0" required> <span
 										style="margin-left: 5px;">만(원)</span>
 								</div>
 								<hr>
