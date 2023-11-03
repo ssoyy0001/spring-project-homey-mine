@@ -14,30 +14,31 @@
 .reqNotice{	text-align: center; 
 					color: red;	}		
 
-#fpTitleBox {		border: 2px solid #FFA500; /* 진노랑색 테두리 */
-    						padding: 10px; /* 텍스트와 테두리 사이의 간격을 10px로 지정 */		}
+/* 제품나눔 게시글 제목 */
 .fpTitle {	text-align: center;	}
+
 .regiItemNm {	width: 150px;
 						font-weight: bold;		}
 .regiItem {		width: 200px;	
-						border: none; /* 테두리 없음 */
+						border: none;
         				outline: none; /* 포커스 표시 없음 */	}
-.imgNotice {	font-size: 10px; color: lightcoral;   }
 #fpItem {	margin-bottom: 20px; 	}
-#fpImg{ width:90%;	display: block;	margin:auto;	}			/* 띄울 사진 크기*/
+
+/* 띄울 사진 크기*/
+#fpImg{ width:90%;	display: block;	margin:auto;	}			
 .tags, p{	 color: #F44336; 	}
-.regiText{	color: #FFA000;		}
 .reqForm{		background-color: #FFF8E1;		}
 
-  .redText {
-    color: #FF6347; /* 텍스트 색상을 빨간색으로 지정 */
-  }
+.redText {
+  color: #FF6347; /* 빨간색 */
+}
 
-  /* boldText 클래스의 스타일 */
-  .boldText {
-    font-weight: bold;
-    color: #FF8C00; /* 글자를 두꺼운 굵은체로 설정 */
-  }
+/* 당첨인원, 현재 참여인원 글자스타일 */
+.boldText {
+  font-weight: bold;
+  color: #FF8C00; /* 글자를 두꺼운 굵은체로 설정 */
+}
+
 </style>
 
 </head>
