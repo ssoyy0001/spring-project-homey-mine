@@ -21,6 +21,8 @@
 	display: table-cell;
 	padding: 5px 15px;
 }
+/* 첨부파일 경고문구 */
+.imgNotice {	font-size: 10px; color: lightcoral;   }
 </style>
 </head>
 <body>
@@ -93,7 +95,7 @@
 										<div class="form-group uploadDiv">
 											<input type="file" name="uploadFile" multiple>
 										</div>
-
+										<div class="imgNotice">* 이미지 파일은 10mb 이내, 파일 확장자는 jpg 혹은 png만 가능</div>
 										<!-- 업로드 결과 출력 -->
 										<div class="uploadResult">
 											<ul>
@@ -332,6 +334,5 @@
 	<!-- ======= END Footer ======= -->
 </body>
 </html>
-
 
 
