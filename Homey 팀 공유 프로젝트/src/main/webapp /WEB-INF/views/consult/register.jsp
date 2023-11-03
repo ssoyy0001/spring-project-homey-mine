@@ -126,7 +126,7 @@
 										미정 &nbsp;
 									</label> <label class="radio-inline"> <input type="radio"
 										name="scheduledDate" id="scheduledDate4" value="그 외">
-										그 외 <input type="text" name="scheduledDate"
+										그 외 <input type="text" id="scheduledDateEtc"
 										placeholder="기간을 직접 입력해주세요">
 									</label> <br>
 									<div id="callout">
@@ -362,17 +362,22 @@
         // 적용할 라디오 버튼과 입력 상자를 가져옵니다.
         var radioOther = document.getElementById("buildingType5");
         var inputOther = document.getElementById("buildingEtc");
+        var radioOther2 = document.getElementById("scheduledDate4");
+        var inputOther2 = document.getElementById("scheduledDateEtc");
 
         // '그 외' 라디오 버튼을 클릭하면 입력 상자를 활성화합니다.
         radioOther.onclick = function() {
             inputOther.disabled = false;
         }
+        radioOther2.onclick = function() {
+        	inputOther2.disabled = false;
+        }
 
         // 폼 제출 시 '그 외' 라디오 버튼이 선택되어 있고 입력 상자에 텍스트가 있다면 그 값을 사용합니다.
         document.querySelector('form').onsubmit = function() {
-            if (radioOther.checked) {
-                if (inputOther.value.trim() !== "") {
-                    radioOther.value = inputOther.value;
+            if (radioOther2.checked) {
+                if (inputOther2.value.trim() !== "") {
+                	radioOther2.value = inputOther2.value;
                 }
             }
         }
