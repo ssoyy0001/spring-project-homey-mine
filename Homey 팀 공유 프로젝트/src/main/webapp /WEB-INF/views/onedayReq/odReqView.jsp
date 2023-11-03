@@ -11,15 +11,15 @@
 .regiItemNm {	width: 150px;
 						font-weight: bold;		}
 .regiItem {		width: 200px;	
-						border: none; /* 테두리 없음 */
+						border: none;
         				outline: none; /* 포커스 표시 없음 */
         				background-color: 	#FFFAF0;	}
 .odReqTitle{		border: none; 
         				outline: none; /* 포커스 표시 없음 */
-        				background-color: 	#f8f8bd;	/*신청서 제목 연두색*/	}	
+        				background-color: 	#f8f8bd;	/*신청서 제목-연두색*/	}	
 #odReqItem {	margin-bottom: 20px; 	}
 
-/* 상단의 [원데이클래스 신청서] 글자 초록색'*/
+/* 상단의 [원데이클래스 신청서] 글자 : 초록색*/
 .regiText{	color: #008000;		}	
 
 /* 신청서 전반의 배경색 : 노란색 */
@@ -107,7 +107,7 @@
 			       	
 				<!-- 관리자가 로그인했을 경우 [이전으로], [당첨자로 선정], [당첨취소] -->
 				<sec:authorize access="hasRole('ROLE_ADMIN')">
-				    <button type="button" class="btn btn-secondary" onclick="history.back()">이전으로</button>
+				    <a href="/odReq/list?odNo=${odrvo.odNo}" class="btn btn-secondary">신청자 목록으로</a>
 				    <c:choose>
 				        <c:when test="${odState eq 0 && odrvo.odReqWin eq 0}">
 				            <a href="/odReq/win?odReqNo=${odrvo.odReqNo}&odNo=${odrvo.odNo}&mid=<sec:authentication property="principal.Username"/>" class="btn btn-success win" onclick="return confirm('당첨자로 선정하시겠습니까?')">당첨자로 선정</a>
@@ -143,13 +143,6 @@
   <script src="../resources/assets/vendor/php-email-form/validate.js"></script>
   <!-- Template Main JS File -->
   <script src="../resources/assets/js/main.js"></script>
-
-
-<script>
-
-
-</script>
-
 
 </body>
 </html>
