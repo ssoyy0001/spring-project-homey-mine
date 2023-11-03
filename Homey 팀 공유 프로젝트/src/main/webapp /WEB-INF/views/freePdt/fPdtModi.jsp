@@ -62,7 +62,7 @@
 	            
 	            <div class="form-group mt-3">
 	                <label class="regiItemNm"><strong>* 수령일</strong></label>
-	                <input type="text" name="fpGetDate" class="regiItem" value="${fpvo.fpGetDate}">
+	                <input type="date" class= "regiItem" name="fpGetDate" value="" min="2020-01-01" max="2030-12-31">
 	            </div>
 	            
 	            <div class="form-group mt-3">
@@ -77,7 +77,7 @@
 	            
 	            <div class="form-group mt-3">
 	                <label class="regiItemNm"><strong>* 모집마감일</strong></label>
-	                <input type="date" name="fpDeadline" value="${fpvo.fpDeadline}" min="2020-01-01" max="2030-12-31">
+	                <input type="date" class= "regiItem" name="fpDeadline" value="${fpvo.fpDeadline}" min="2020-01-01" max="2030-12-31">
 	            </div>
 	            
 	            <div class="form-group mt-3">
@@ -105,10 +105,10 @@
 <%-- 	            <input type="hidden" name="mid" value="${pageContext.request.userPrincipal.name}"> --%>
 	            
 	            <!---- 수정 이후에 Criteria 내용을 유지하기 위함 ------------------------>
-	            <input type="hidden" name="pageNum" value="${cri.pageNum}">
-		        <input type="hidden" name="amount"  value="${cri.amount}">
-	            <input type="hidden" name="type" value="${cri.type}">
-		        <input type="hidden" name="keyword"  value="${cri.keyword}">
+	            <input type="hidden" name="pageNum" value="${socri.pageNum}">
+		        <input type="hidden" name="amount"  value="${socri.amount}">
+	            <input type="hidden" name="type" value="${socri.type}">
+		        <input type="hidden" name="keyword"  value="${socri.keyword}">
 	            
 	            <!-- 스프링 시큐리티 ( 서버에서 들어오는 정보 ) -->
 	            <!-- 서버에서 _csrf의 토큰을 받아오면서 침입인 건지 아닌지를 판별함(토큰이 없으면 침입으로 간주) -->
