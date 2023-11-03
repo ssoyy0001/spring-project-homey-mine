@@ -78,7 +78,7 @@
 								<h2>1. 어떤 건물을 인테리어 하실건가요?</h2>
 								<div class="form-group">
 									<label class="radio-inline"> <input type="radio"
-										name="buildingType" id="buildingType1" value="아파트" required>
+										name="buildingType" id="buildingType1" value="아파트" >
 										아파트 &nbsp;
 									</label> <label class="radio-inline"> <input type="radio"
 										name="buildingType" id="buildingType2" value="빌라"> 빌라
@@ -91,8 +91,11 @@
 										오피스텔 &nbsp;
 									</label> <label class="radio-inline"> <input type="radio"
 										name="buildingType" id="buildingType5" value="그 외"> 그
-										외 <input type="text" name="buildingType"
+										외 <input type="text" id="buildingEtc"
 										placeholder="건물 유형을 입력해주세요">
+										
+										<!-- 그 외를 입력할 때는 자바스크립트로 여기 value의 값으로 대체 
+										그외를 체크하고서 입력안하면 그대로 '그 외'로 들어가야함-->
 									</label>
 								</div>
 								<hr>
@@ -114,7 +117,7 @@
 								<div class="form-group">
 									<label class="radio-inline"> <input type="radio"
 										name="scheduledDate" id="scheduledDate1" value="1개월 이내"
-										required> 1개월 이내 &nbsp;
+										> 1개월 이내 &nbsp;
 									</label> <label class="radio-inline"> <input type="radio"
 										name="scheduledDate" id="scheduledDate2" value="3개월 이내">
 										3개월 이내 &nbsp;
@@ -353,6 +356,29 @@
 	<!-- ======= script ======= -->
 	<script
 		src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+		
+<script type="text/javascript">
+    window.onload = function() {
+        // 적용할 라디오 버튼과 입력 상자를 가져옵니다.
+        var radioOther = document.getElementById("buildingType5");
+        var inputOther = document.getElementById("buildingEtc");
+
+        // '그 외' 라디오 버튼을 클릭하면 입력 상자를 활성화합니다.
+        radioOther.onclick = function() {
+            inputOther.disabled = false;
+        }
+
+        // 폼 제출 시 '그 외' 라디오 버튼이 선택되어 있고 입력 상자에 텍스트가 있다면 그 값을 사용합니다.
+        document.querySelector('form').onsubmit = function() {
+            if (radioOther.checked) {
+                if (inputOther.value.trim() !== "") {
+                    radioOther.value = inputOther.value;
+                }
+            }
+        }
+    }
+</script>
+		
 	<script>
 //라디오박스, 체크박스 하나이상 체크 알림 -----------------------------------------
 document.getElementById('submit').onclick = function() {
@@ -363,12 +389,15 @@ document.getElementById('submit').onclick = function() {
     
     if (!radioBuildingType && ! radioScheduledDate) {
         alert('1. 어떤 건물을 인테리어 하실건지 체크해주세요.\n3. 공사예정일이 언제인지 체크해주세요.');
+        event.preventDefault();
     }
     else if (!radioBuildingType) {
         alert('1. 어떤 건물을 인테리어 하실건지 체크해주세요.');
+        event.preventDefault();
     }
     else if (!radioScheduledDate) {
         alert('3. 공사예정일이 언제인지 체크해주세요.');
+        event.preventDefault();
     }
     else if (!checkItem) { //checkbox는 required 하면 모든 체크박스 선택을 요구해서 대안
         alert('5. 원하시는 시공을 선택해주세요');
