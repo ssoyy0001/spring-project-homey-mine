@@ -1,6 +1,5 @@
 package org.homey.controller;
 
-import org.homey.domain.ConsultVO;
 import org.homey.domain.ItemVO;
 import org.homey.domain.QuotationVO;
 import org.homey.domain.SiRequestVO;
@@ -12,12 +11,10 @@ import org.homey.service.ItemService;
 import org.homey.service.QuotationService;
 import org.homey.service.SiRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import org.springframework.web.bind.annotation.PostMapping;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -49,6 +46,7 @@ public class SiRequestController {
 //	} 
 	
 	@GetMapping("/sireqList")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MEMBER')") // 관리자 또는 멤버일 경우에만 접근
 	public void list(Model model, SireqCriteria cri) { //시공의뢰 전체목록 + 페이징
 		log.info("list......" + cri);
 		model.addAttribute("list", sireqService.getList(cri)); //리스트 페이징
@@ -60,7 +58,7 @@ public class SiRequestController {
 	} 
 	
 	@GetMapping("/sireqRegisterForm")
-	//@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MEMBER')") // 관리자 또는 멤버일 경우에만 접근
 	public String register(@RequestParam("quoNo") int quoNo, @RequestParam("consultNo") int consultNo, @RequestParam("itemNo") int itemNo, Model model, Model model2, Model model3  ) {
         
 	// quoNo를 사용하여 해당 견적서 데이터를 가져오는 로직을 구현
@@ -70,58 +68,85 @@ public class SiRequestController {
 	     model3.addAttribute("ivo", itemService.view(itemNo));
 
 	// 모델에 데이터를 추가하여 JSP 페이지로 전달
+	    log.info("qvo: " + quotationService.view(quoNo));
+		log.info("cvo: " + consultService.view(consultNo));
+		log.info("ivo: " + itemService.view(itemNo));
 
         return "/sirequest/sireqRegisterForm";
     }
 	
 	@GetMapping(value = "/sireqRegister")
-//	@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MEMBER')") // 관리자 또는 멤버일 경우에만 접근
 	public String register(SiRequestVO sireq, RedirectAttributes redirectAttributes) { //시공의뢰 등록 + 첨부파일 등록
 		ItemVO ivo = sireq.getIvo();
 		QuotationVO qvo = sireq.getQuotationvo();
 
 		log.info("@PostMapping sireqRegister: " + sireq);
+		log.info("@PostMappint getQuotationvo: " + sireq.getQuotationvo());
+		log.info("@PostMappint getIvo: " + sireq.getIvo());
 		
 		if (sireqService.register(sireq, ivo, qvo)) {
-	        // 성공한 경우, 리다이렉션할 URL을 지정합니다.
-	        // 여기에서는 "/success"로 리다이렉션 예시를 보여줍니다.
+	        // 성공한 경우, 리다이렉션할 URL을 지정하기
 	        return "redirect:/sirequest/sireqList";
 	    } else {
-	        // 실패한 경우, 에러 메시지를 설정하여 리다이렉션할 URL을 지정합니다.
+	        // 실패한 경우, 에러 메시지를 설정하여 리다이렉션할 URL을 지정하기
 	        redirectAttributes.addFlashAttribute("error", "Registration failed");
 	        return "redirect:/error";
 	    }
 
-//		return sireqService.register(sireq, ivo, qvo) ? new ResponseEntity<>("Success", HttpStatus.OK)
-//				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	} 
 	
+	@GetMapping({"/sireqView"})
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MEMBER')") // 관리자 또는 멤버일 경우에만 접근
+	public void view(@RequestParam("sireqNo") int sireqNo, Model model) { //시공의뢰 상세페이지, 수정페이지 조회하기
+		log.info("sireqView.....sireqNo: " + sireqNo);
+		model.addAttribute("sireq", sireqService.get(sireqNo));
+	} 
 	
-	@PostMapping("/sireqModify")
-//	@PreAuthorize("principal.username == #bvo.writer")
-	public String modify(SiRequestVO sireq, Model model, RedirectAttributes rttr) { //시공의뢰내용 수정하기
-		log.info("sireqModify: " + sireq);
+	@GetMapping({"/sireqModifyForm"})
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MEMBER')") // 관리자 또는 멤버일 경우에만 접근
+	public String view(@RequestParam("sireqNo")int sireqNo, @RequestParam("quoNo") int quoNo, @RequestParam("consultNo") int consultNo, @RequestParam("itemNo") int itemNo, Model model, Model model2, Model model3, Model model4) { //시공의뢰 상세페이지, 수정페이지 조회하기
+		log.info("sireqModifyForm...." + sireqNo);
+		model.addAttribute("sireq", sireqService.get(sireqNo));
+		model2.addAttribute("qvo", sireqService.get(quoNo));
+		model3.addAttribute("cvo", sireqService.get(consultNo));
+		model4.addAttribute("ivo", sireqService.get(itemNo));
 		
-		if(sireqService.modify(sireq)) {
-			rttr.addFlashAttribute("result", "success");
-		}
-
-		return "redirect:/sirequest/sireqView";
+		log.info("qvo: " + sireqService.get(sireqNo).getQuotationvo());
+		log.info("cvo: " + sireqService.get(sireqNo).getConsultvo());
+		log.info("ivo: " + sireqService.get(sireqNo).getIvo().getItemNo());
+		return "/sirequest/sireqModifyForm";
 	} 
 	
-	@PostMapping("/sireqRemove")
-//	@Pr)eAuthorize("principal.username == #writer")
+	@GetMapping("/sireqModify")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MEMBER')") // 관리자 또는 멤버일 경우에만 접근
+	public String modify(SiRequestVO sireq, RedirectAttributes redirectAttributes) { //시공의뢰내용 수정하기 
+		int sireqNo = sireq.getSireqNo();
+		ItemVO ivo = sireq.getIvo();
+		QuotationVO qvo = sireq.getQuotationvo();
+		
+		log.info("@PostMappint sireqModify: " + sireq);
+		log.info("@PostMappint getQuotationvo: " + sireq.getQuotationvo());
+		log.info("@PostMappint getIvo: " + sireq.getIvo());
+		
+		if(sireqService.modify(sireqNo, sireq, ivo, qvo)) {
+			// 성공한 경우, 리다이렉션할 URL을 지정하기
+	        return "redirect:/sirequest/sireqList";
+		} else {
+	        // 실패한 경우, 에러 메시지를 설정하여 리다이렉션할 URL을 지정하기
+			redirectAttributes.addFlashAttribute("error", "Registration failed");
+	        return "redirect:/error";
+		}
+	} 
+	
+	@GetMapping("/sireqRemove")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MEMBER')") // 관리자 또는 멤버일 경우에만 접근
 	public String remove(@RequestParam("sireqNo") int sireqNo, RedirectAttributes rttr ) { //시공의뢰내용 삭제하기
 		log.info("remove....." + sireqNo);
 		if(sireqService.remove(sireqNo)) {
 			rttr.addFlashAttribute("result","success");
 		}
 		return "redirect:/sirequest/sireqList";
-	} 
-	
-	@GetMapping({"/sireqView", "/sireqModify"})
-	public void view(@RequestParam("sireqNo") int sireqNo, Model model) { //시공의뢰 상세페이지, 수정페이지 조회하기
-		model.addAttribute("sireq", sireqService.get(sireqNo));
 	} 
 	
 //	public void deleteFiles(List<SiRequestAttachVO> sireqAttachList) { //시공의뢰 첨부파일 삭제
@@ -132,12 +157,20 @@ public class SiRequestController {
 //	public ResponseEntity<List<SiRequestAttachVO>> sireqAttachList(int sireqNo){ //시공의뢰 첨부파일 조회
 //		return new ResponseEntity<>(sireqService.sireqAttachList(sireqNo), HttpStatus.OK);
 //	} 
-//	
-//	@GetMapping("mylist")
-//	public void list(Model model, String mid, SireqCriteria cri) { //나의 시공의뢰 전체목록 + 페이징
-//		model.addAttribute("mylist", sireqService.mylist(mid, cri)); //리스트 페이징
-//		int mytotalCount = sireqService.mytotalCount(mid, cri);
-//		model.addAttribute("pageDTO", new PageDTO(cri, mytotalCount));//나의 시공의뢰 전체 수
+	
+	@GetMapping("/mySireqList")
+	@PreAuthorize("hasAnyRole('ROLE_MEMBER')") // 관리자 또는 멤버일 경우에만 접근
+	public void mylist(Model model, @RequestParam String mid) { //나의 시공의뢰 전체목록 + 페이징
+		
+					log.info( mid + "회원의 시공의뢰 목록......");
+					model.addAttribute("mySireqList", sireqService.mylist(mid));
+	} 
+	
+//	@GetMapping({"/quotationView"})
+////	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MEMBER')") // 관리자 또는 멤버일 경우에만 접근
+//	public void quoSelect(@RequestParam("quoNo") int quoNo, SiRequestVO sireq, Model model) { //시공의뢰 상세페이지, 수정페이지 조회하기
+//		log.info("quotationView........." + quoNo);
+//		model.addAttribute("sireq", sireqService.quoSelect(quoNo));
 //	} 
 
 }
