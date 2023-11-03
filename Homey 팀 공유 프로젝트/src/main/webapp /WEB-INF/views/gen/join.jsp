@@ -21,135 +21,139 @@
 		</div>
 		<!-- End Breadcrumbs -->
 		<section id="about" class="about">
-			<div class="container">
+			<div class="container ">
+				<div class="row justify-content-between gy-4 mt-4">
+					<div class="col-lg-8 mx-auto">
+						<form action="/gen/join" method="post" class="form-horizontal">
 
-				<form action="/gen/join" method="post" class="form-horizontal">
-					<div class="form-group row">
-						<label class="col-sm-2">아이디</label>
-						<div class="col-sm-3">
-							<input type="text" class="form-control" name="mid" id="mid"
-								required="required" >
-						</div>
-						<div class="col-sm-3" id="mid-message"></div>
-					</div>
-
-					<div class="form-group row">
-						<label class="col-sm-2">비밀번호</label>
-						<div class="col-sm-3">
-							<input type="password" class="form-control" name="pw" id="pw"
-								required="required" >
-						</div>
-						<div class="col-sm-3" id="pw-message"></div>
-					</div>
-
-					<div class="form-group row">
-						<label class="col-sm-2">비밀번호 확인</label>
-						<div class="col-sm-3">
-							<input type="password" class="form-control" name="pwcheck"
-								id="pwcheck" required="required">
-						</div>
-						<div class="col-sm-3" id="pw-message2"></div>
-					</div>
-
-					<div class="form-group row">
-						<label class="col-sm-2">이름</label>
-						<div class="col-sm-3">
-							<input type="text" class="form-control" name="mname" id="mname"
-								required="required" >
-						</div>
-					</div>
-
-					<div class="form-group row">
-						<label class="col-sm-2">이메일</label>
-						<div class="col-sm-6">
-							<div class="input-group">
-								<input type="text" id="email1" class="form-control"
-									required="required" oninput="setCustomValidity('')"
-									oninvalid="this.setCustomValidity('${mailMsg }')">
-								<div class="input-group-prepend">
-									<span class="input-group-text">@</span>
+							<div class="form-group row">
+								<label class="col-sm-2">아이디</label>
+								<div class="col-sm-3">
+									<input type="text" class="form-control" name="mid" id="mid"
+										required="required">
 								</div>
-								<input type="text" id="email2" class="form-control"> <select
-									id="email3" class="form-control">
-									<option value="직접입력">직접입력</option>
-									<option value="naver.com">naver.com</option>
-									<option value="gmail.com">gmail.com</option>
-								</select>
+								<div class="col-sm-3" id="mid-message"></div>
 							</div>
-						</div>
-						<div class="col-sm-2">
-							<input type="hidden" id="memail" name="memail" value="">
-						</div>
-					</div>
 
-					<div class="form-group row">
-						<label class="col-sm-2">주소</label>
-						<div class="col-sm-3">
-							<input type="text" class="form-control" name="addr" id="addr"
-								required="required">
-						</div>
-						<div class="col-sm-3">
-							<input type="button" value="검색" class="btn btn-secondary"
-								onclick="goPopup();">
-						</div>
-					</div>
+							<div class="form-group row">
+								<label class="col-sm-2">비밀번호</label>
+								<div class="col-sm-3">
+									<input type="password" class="form-control" name="pw" id="pw"
+										required="required">
+								</div>
+								<div class="col-sm-3" id="pw-message"></div>
+							</div>
 
-					<div class="form-group row align-items-center">
-						<label class="col-sm-2">상세주소</label>
-						<div class="col-sm-4">
-							<div class="row">
-								<div class="col">
-									<input type="text" class="form-control" name="addrdetail"
-										id="addrdetail">
+							<div class="form-group row">
+								<label class="col-sm-2">비밀번호 확인</label>
+								<div class="col-sm-3">
+									<input type="password" class="form-control" name="pwcheck"
+										id="pwcheck" required="required">
+								</div>
+								<div class="col-sm-3" id="pw-message2"></div>
+							</div>
+
+							<div class="form-group row">
+								<label class="col-sm-2">이름</label>
+								<div class="col-sm-3">
+									<input type="text" class="form-control" name="mname" id="mname"
+										required="required">
 								</div>
 							</div>
-						</div>
-						<input type="hidden" name="maddr" id="maddr" value="">
-					</div>
 
-					<div class="form-group row">
-						<label class="col-sm-2">연락처</label>
-						<div class="col-sm-2 ">
-							<div class="input-group">
-								<select class="form-control" name="phone0" id="phone0">
-									<option value="직접입력">직접입력</option>
-									<option>010</option>
-									<option>011</option>
-									<option>019</option>
-								</select> <input type="text" name="phone1" id="phone1" maxlength="3"
-									class="form-control" value="" required="required"
-									>
+							<div class="form-group row">
+								<label class="col-sm-2">이메일</label>
+								<div class="col-sm-6">
+									<div class="input-group">
+										<input type="text" id="email1" class="form-control"
+											required="required" oninput="setCustomValidity('')"
+											oninvalid="this.setCustomValidity('${mailMsg }')">
+										<div class="input-group-prepend">
+											<span class="input-group-text">@</span>
+										</div>
+										<input type="text" id="email2" class="form-control"> <select
+											id="email3" class="form-control">
+											<option value="직접입력">직접입력</option>
+											<option value="naver.com">naver.com</option>
+											<option value="gmail.com">gmail.com</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-sm-2">
+									<input type="hidden" id="memail" name="memail" value="">
+								</div>
 							</div>
-						</div>
-						<div class="col-sm-2">
-							<input type="text" name="phone2" id="phone2" maxlength="4"
-								class="form-control" value="1234" required="required">
-						</div>
-						<div class="col-sm-2">
-							<input type="text" name="phone3" id="phone3" maxlength="4"
-								class="form-control" value="5678" required="required">
-						</div>
-						<input type="hidden" id="mphone" name="mphone" value="">
+
+							<div class="form-group row">
+								<label class="col-sm-2">주소</label>
+								<div class="col-sm-3">
+									<input type="text" class="form-control" name="addr" id="addr"
+										required="required">
+								</div>
+								<div class="col-sm-3">
+									<!-- <input type="button" value="검색" class="btn btn-secondary"
+								onclick="goPopup();"> csrf문제 -->
+								</div>
+							</div>
+
+							<div class="form-group row align-items-center">
+								<label class="col-sm-2">상세주소</label>
+								<div class="col-sm-4">
+									<div class="row">
+										<div class="col">
+											<input type="text" class="form-control" name="addrdetail"
+												id="addrdetail">
+										</div>
+									</div>
+								</div>
+								<input type="hidden" name="maddr" id="maddr" value="">
+							</div>
+
+							<div class="form-group row">
+								<label class="col-sm-2">연락처</label>
+								<div class="col-sm-2 ">
+									<div class="input-group">
+										<select class="form-control" name="phone0" id="phone0">
+											<option value="직접입력">직접입력</option>
+											<option>010</option>
+											<option>011</option>
+											<option>019</option>
+										</select> <input type="text" name="phone1" id="phone1" maxlength="3"
+											class="form-control" value="" required="required">
+									</div>
+								</div>
+								<div class="col-sm-2">
+									<input type="text" name="phone2" id="phone2" maxlength="4"
+										class="form-control" value="1234" required="required">
+								</div>
+								<div class="col-sm-2">
+									<input type="text" name="phone3" id="phone3" maxlength="4"
+										class="form-control" value="5678" required="required">
+								</div>
+								<input type="hidden" id="mphone" name="mphone" value="">
+							</div>
+
+							<br>
+							<hr>
+							<div class="form-group row text-center">
+								<div class="col-sm-offset-2 col-sm-10">
+									<input type="submit" class="btn btn-info" value="등록"
+										id="register-button"> <input type="button"
+										class="btn btn-secondary" onclick="history.back()" value="취소">
+								</div>
+							</div>
+							<input type="hidden" name="${_csrf.parameterName }"
+								value="${_csrf.token }">
+						</form>
 					</div>
-
-
-
-					<div class="form-group row">
-						<div class="col-sm-offset-2 col-sm-10">
-							<input type="submit" class="btn btn-info" value="등록"
-								id="register-button"> <input type="button"
-								class="btn btn-secondary" onclick="history.back()" value="취소">
-						</div>
-					</div>
-					<input type="hidden" name="${_csrf.parameterName }"
-						value="${_csrf.token }">
-				</form>
+				</div>
 			</div>
 		</section>
 	</main>
 </body>
 <!-- End #main -->
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js"
+	crossorigin="anonymous"></script>
 <!-- Font Awesome JS -->
 <script>
 	var csrfHeaderName = '${_csrf.headerName}';//csrf 토큰 관련 변수
@@ -160,10 +164,10 @@
 	var isPwCheckValid = false;
 	// 모든 검사가 통과된 경우에만 등록 버튼 활성화
 	function updateRegisterButton() {
-		if (isIdValid==true && isPwValid==true && isPwCheckValid==true) {
-			$('#register-button').prop('disabled',false );
+		if (isIdValid == true && isPwValid == true && isPwCheckValid == true) {
+			$('#register-button').prop('disabled', false);
 		} else {
-			$('#register-button').prop('disabled',true );
+			$('#register-button').prop('disabled', true);
 		}
 	}
 	$(document)
@@ -214,7 +218,8 @@
 														error : function(xhr,
 																status, er) {
 															$('#mid-message')
-																	.html('<span style="color: red;">중복된 아이디 입니다.</span>');
+																	.html(
+																			'<span style="color: red;">중복된 아이디 입니다.</span>');
 															isIdValid = false;
 															updateRegisterButton();
 														} //에러시
@@ -245,16 +250,22 @@
 											}
 
 										});
-						$('input[id="pwcheck"]').on('change',function(e) {
+						$('input[id="pwcheck"]')
+								.on(
+										'change',
+										function(e) {
 											var pwcheck = $(this).val();
-											if (pwcheck != $('input[id="pw"]').val()) {
-												$('#pw-message2').html(
+											if (pwcheck != $('input[id="pw"]')
+													.val()) {
+												$('#pw-message2')
+														.html(
 																'<span style="color: red;">일치하지 않습니다.</span>');
 												isPwCheckValid = false;
 												updateRegisterButton();
 												return;
 											} else {
-												$('#pw-message2').html(
+												$('#pw-message2')
+														.html(
 																'<span style="color: green;"><i class="fas fa-check"></span>');
 												isPwCheckValid = true;
 												updateRegisterButton();
@@ -264,11 +275,16 @@
 						//비밀번호 유효성과 비밀번호 체크 END
 						//이메일
 						// 이메일 도메인 선택 시 처리
-						$("#email2").on("input",function() {
-											var selectedDomain = $("#email2").val();
+						$("#email2")
+								.on(
+										"input",
+										function() {
+											var selectedDomain = $("#email2")
+													.val();
 											var customOption = $("#email3 option[value='직접입력']");
 											if (selectedDomain !== "") {
-												customOption.prop("selected",true);
+												customOption.prop("selected",
+														true);
 											}
 										});
 
@@ -283,7 +299,10 @@
 						});
 						//이메일 end
 						//폰 번호
-						$("#phone1").on("input",function() {
+						$("#phone1")
+								.on(
+										"input",
+										function() {
 											var selectedPhone = $("#phone1")
 													.val();
 											var customPhone = $("#phone0 option[value='직접입력']");
@@ -300,32 +319,36 @@
 							}
 						});
 						//폰 번호 end
-						$("#register-button").on("click", function(e) {
-						
-							e.preventDefault();
-							var email1 = $('#email1').val();
-							var email2 = $('#email2').val();
-							var memailVal=email1+"@"+email2;
-							var phone1= $('#phone1').val();
-							var phone2= $('#phone2').val();
-							var phone3= $('#phone3').val();
-							var mphoneVal=phone1+phone2+phone3;
-							var addr=$('#addr').val();
-							var addrdetail=	$('#addrdetail').val();		
-							var maddrVal=addr+" "+addrdetail;
-			
-							if(email1=="" || email2=="" || phone1=="" || phone2=="" || phone3=="" || addr=="" || addrdetail=="") {
-							    alert("빈칸을 모두 기입해 주세요");
-							    return;
-							}
-							$("#memail").val(memailVal);
-							$("#mphone").val(mphoneVal);
-							$("#maddr").val(maddrVal);
-							
-							$("form").submit();
-						});
+						$("#register-button").on(
+								"click",
+								function(e) {
+
+									e.preventDefault();
+									var email1 = $('#email1').val();
+									var email2 = $('#email2').val();
+									var memailVal = email1 + "@" + email2;
+									var phone1 = $('#phone1').val();
+									var phone2 = $('#phone2').val();
+									var phone3 = $('#phone3').val();
+									var mphoneVal = phone1 + phone2 + phone3;
+									var addr = $('#addr').val();
+									var addrdetail = $('#addrdetail').val();
+									var maddrVal = addr + " " + addrdetail;
+
+									if (email1 == "" || email2 == ""
+											|| phone1 == "" || phone2 == ""
+											|| phone3 == "" || addr == ""
+											|| addrdetail == "") {
+										alert("빈칸을 모두 기입해 주세요");
+										return;
+									}
+									$("#memail").val(memailVal);
+									$("#mphone").val(mphoneVal);
+									$("#maddr").val(maddrVal);
+
+									$("form").submit();
+								});
 					});
-	
 
 	//주소API사용-->csrf때문에 보류
 	/* function goPopup() {
