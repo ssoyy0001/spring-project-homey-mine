@@ -8,7 +8,8 @@
 								<li><a href="list">견적 상담관리</a></li>
 								<li><a href="sirequest/sireqList">시공의뢰</a></li>
 								<li><a href="/sischedule/sicheList">시공팀 작업 목록</a></li>
-								
+								 <li><a href="/asboard/aslist">AS 문의 게시판</a></li>
+
 							</ul>
 						</div>
 						<!-- End sidebar-item categories-->
