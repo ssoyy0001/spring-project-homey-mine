@@ -6,7 +6,7 @@
 							<ul class="mt-3">
 								<li><a href="/gen/memberList">회원 정보 목록</a></li>
 								<li><a href="list">견적 상담관리</a></li>
-								<li><a href="#">시공의뢰</a></li>
+								<li><a href="sirequest/sireqList">시공의뢰</a></li>
 								<li><a href="/sischedule/sicheList">시공팀 작업 목록</a></li>
 								
 							</ul>
