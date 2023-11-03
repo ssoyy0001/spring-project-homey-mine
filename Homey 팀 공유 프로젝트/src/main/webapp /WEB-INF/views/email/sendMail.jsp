@@ -9,7 +9,7 @@
 <style>
 	#notice {  color: red;		}
 	.regiItemNm {	width: 150px;	}
-	.regiItem {		width: 200px;	}
+	.mailItem {		width: 700px;	}
 </style>
 
 </head>
@@ -24,7 +24,7 @@
 <!-- ======= Breadcrumbs ======= -->
 <div class="breadcrumbs d-flex align-items-center" style="background-image: url('../resources/assets/img/breadcrumbs-bg.jpg');">
   <div class="container position-relative d-flex flex-column align-items-center" data-aos="fade">
-    <h2>Oneday Class</h2>
+    <h2>send mail</h2>
   </div>
 </div><!-- End Breadcrumbs -->
 
@@ -42,7 +42,7 @@
     <div class="row justify-content-between gy-4 mt-4">
     <div class="col-lg-8 mx-auto">
 	    <div class="portfolio-description">
-	        <h2>📋 메일 발송</h2>
+	        <h2>📧 메일 발송</h2>
 	        <span id="notice">* 항목은 필수 입력 항목입니다.</span>
 	        <hr>
 <!-----------------------start form----------------------->
@@ -50,12 +50,12 @@
 	            
 	            <div class="form-group mt-3">
 	                <label class="regiItemNm"><strong>* 이 메 일</strong></label>
-	                <input type="text" name="mailAddress" class="regiItem" value="${mailAddress }">
+	                <input type="text" name="mailAddress" class="mailItem" value="${mailAddress }">
 	            </div>
 	            
 	            <div class="form-group mt-3">
 	                <label class="regiItemNm"><strong>* 제    목</strong></label>
-	                <input type="text" name="mailTitle" class="regiItem" required>
+	                <input type="text" name="mailTitle" class="mailItem" required>
 	            </div>
 
 	            <div class="form-group mt-3">
@@ -71,7 +71,8 @@
 	            <br>
 	            
 	            <div class="text-center" id="btn-group">
-					<button type="button" class="btn btn-secondary" onclick="insertCancel(event);">이전으로</button>
+	            	<a href="/oneday/list" class="btn btn-secondary">원데이클래스 목록으로</a>
+	            	<a href="/freePdt/list" class="btn btn-secondary">제품 나눔 목록으로</a>
 					<button type="submit" class="btn btn-warning regBtn">전송</button>
 	            </div>
 	            
