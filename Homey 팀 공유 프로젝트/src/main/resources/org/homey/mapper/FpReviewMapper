@@ -57,13 +57,13 @@
 <!-- 나의 게시물 전체조회 -->
 	<select id="selectMine" resultType="org.homey.domain.FpReviewVO">
 	    <![CDATA[ 
-	    	SELECT ((#{cri.pageNum} - 1) * #{cri.amount}) + rownum prRn, prNo, mid, fpNo, prTitle, prContent, prDate, prHit
+	    	SELECT ((#{socri.pageNum} - 1) * #{socri.amount}) + rownum prRn, prNo, mid, fpNo, prTitle, prContent, prDate, prHit
 	    	FROM	(	SELECT	rownum rn, prNo, mid, fpNo, prTitle, prContent, prDate, prHit
 	    					FROM	( SELECT * FROM fpReview WHERE mid = #{mid} ORDER BY prNo DESC )
 	    					WHERE	]]>
-	   <![CDATA[ 		rownum <= #{cri.amount}	*	#{cri.pageNum}
+	   <![CDATA[ 		rownum <= #{socri.amount}	*	#{socri.pageNum}
 	   						ORDER BY prNo DESC		 )
-	    	WHERE		rn		>	#{cri.amount}	*	(	#{cri.pageNum}	 -1	)
+	    	WHERE		rn		>	#{socri.amount}	*	(	#{socri.pageNum}	 -1	)
 	  	]]>
 	  </select>
 
