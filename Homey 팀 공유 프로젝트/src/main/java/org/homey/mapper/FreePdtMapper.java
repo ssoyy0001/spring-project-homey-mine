@@ -12,8 +12,8 @@ public interface FreePdtMapper {
 	// 제품 나눔 게시글 관련 맵퍼
 	
 	//페이징
-	public int fpTotalCount(SoCriteria cri);								//제품 나눔 게시글 개수
-	public List<FreePdtVO> fpSelectAllPaging(SoCriteria cri);	//제품 나눔 게시글 전체조회
+	public int fpTotalCount(SoCriteria socri);								//제품 나눔 게시글 개수
+	public List<FreePdtVO> fpSelectAllPaging(SoCriteria socri);	//제품 나눔 게시글 전체조회
 	
 	public FreePdtVO fpSelect(int fpNo);									//제품 나눔 게시글 상세조회
 	public int fpInsert(FreePdtVO fpvo);									//제품 나눔 게시글 등록
