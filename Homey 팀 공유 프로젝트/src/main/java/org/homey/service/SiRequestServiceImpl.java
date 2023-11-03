@@ -2,7 +2,9 @@ package org.homey.service;
 
 import java.util.List;
 
+import org.homey.domain.ConsultVO;
 import org.homey.domain.ItemVO;
+import org.homey.domain.MemberVO;
 import org.homey.domain.QuotationVO;
 import org.homey.domain.SiRequestVO;
 import org.homey.domain.SireqCriteria;
@@ -44,7 +46,7 @@ public class SiRequestServiceImpl implements SiRequestService {
 		int result = sireqMapper.insertSelectkey(sireq);
 		log.info("시공의뢰 register...." + sireq);	
 		if (result > 0) {
-      	 // sireqVO 등록에 성공한 경우 Ivo에서는 ItmeNo, consult와 qutation에서는 consultNo를 얻어옴
+      	 // sireqVO 등록에 성공한 경우 Ivo에서는 ItmeNo, consult와 consultNo, qutation에서는 quoNo를 얻어옴
 		int ItemNo = sireq.getIvo().getItemNo();
       	 int consultNo = sireq.getConsultvo().getConsultNo();
       	 int quotationNo = sireq.getQuotationvo().getQuoNo();
@@ -75,9 +77,32 @@ public class SiRequestServiceImpl implements SiRequestService {
 	}
 	
 	@Override
-	public boolean modify(SiRequestVO sireq) {//시공의뢰내용 수정 + 기존 첨부파일 모두 삭제 + 다시 첨부파일 데이터 추가
-		log.info("modify....." + sireq);
-		return sireqMapper.update(sireq)==1;
+	public boolean modify(int sireqNo, SiRequestVO sireq, ItemVO ivo, QuotationVO qvo) {//시공의뢰내용 수정 + 기존 첨부파일 모두 삭제 + 다시 첨부파일 데이터 추가	
+		//sireqVO 수정
+		int result = sireqMapper.update(sireqNo, sireq);//, 
+//				sireq.getQuotationvo().getQuoNo(), 
+//				sireq.getIvo().getItemNo(), 
+//				sireq.getConsultvo().getConsultNo(),
+//				sireq.getMvo().getMid(),
+//				sireq.getMvo().getMname());
+		log.info("시공의뢰 modify 할 시공의뢰번호 : " + sireqNo);	
+		log.info("시공의뢰 modify : " + sireq);	
+		if (result > 0) {
+      	 // sireqVO 수정에 성공한 경우 Ivo에서는 ItmeNo, consult와 consultNo, qutation에서는 quoNo를 얻어옴
+		int ItemNo = sireq.getIvo().getItemNo();
+      	 int consultNo = sireq.getConsultvo().getConsultNo();
+      	 int quotationNo = sireq.getQuotationvo().getQuoNo();
+           // 그 후 ItemVO에 consultNo 설정, QuotationVO에 consultNo 설정
+           ivo.setConsultNo(consultNo);
+           qvo.setConsultNo(ItemNo);
+           // item 테이블에 데이터 업데이트
+           int itemResult = sireqMapper.updateItem(ivo);
+           int qutationResult = sireqMapper.updateQuotationTable(qvo);
+           if (itemResult == 1 && qutationResult ==1) { // 성공하면 true 반환
+               return true;
+           }
+		}
+       return false; // 등록에 실패한 경우 false 반환
 	}
 	
 	@Override
@@ -96,14 +121,16 @@ public class SiRequestServiceImpl implements SiRequestService {
 //		return sireqAttachMapper.select(sireqNo);
 //	}
 //	
-//	@Override
-//	public List<SiRequestVO> mylist(String mid, Criteria cri){ //나의 시공의뢰 전체목록 + 페이징
-//		return sireqMapper.myselectAllPaging(mid, cri);
-//	} 
-//	
-//	@Override
-//	public int mytotalCount(String mid, Criteria cri){ //나의 시공의뢰 전체 수
-//		return sireqMapper.mytotalCount(mid, cri);
-//	} 
+	@Override
+	public List<SiRequestVO> mylist(String mid){ //나의 시공의뢰 전체목록 + 페이징
+		log.info("get MyList with crieteria: " + mid);
+		return sireqMapper.myselectAllPaging(mid);
+	} 
+
+	@Override
+	public SiRequestVO quoSelect(int quoNo) {
+		log.info("quoSelect......" + quoNo);
+		return sireqMapper.select(quoNo);
+	}
 
 }
