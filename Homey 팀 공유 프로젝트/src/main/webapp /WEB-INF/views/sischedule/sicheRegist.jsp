@@ -203,8 +203,15 @@ $("#regiBtn").on("click",function(e){
     var inputStartDate = new Date($("input[name=startDateStr]").val());
     var inputEndDate = new Date($("input[name=endDateStr]").val());
     var today = new Date(); // 오늘 날짜
+     today.setHours(0,0,0,0); // 시간을 제거
+    inputStartDate.setHours(0,0,0,0); 
+    inputEndDate.setHours(0,0,0,0); 
+    // 오늘 이후의 날짜만 등록할 수 있게
+    if (inputStartDate <= today || inputEndDate <= today) {
+        alert('오늘 날짜나 이전 날짜로는 예약할 수 없습니다.');
+        return;
+    }
 
-   
     $.ajax({
         url: '/sischedule/checkDate', // 서버의 URL
         type: 'POST',
@@ -219,7 +226,8 @@ $("#regiBtn").on("click",function(e){
             // JSON 형식이므로, 직접 'start'와 'end' 값을 가져올 수 있습니다.
             var dbStartDate = new Date(data[i].start);
             var dbEndDate = new Date(data[i].end);
-			console.log(dbEndDate);
+		dbStartDate.setHours(0,0,0,0);
+		dbEndDate.setHours(0,0,0,0);
             if ((dbStartDate >= inputStartDate && dbStartDate <= inputEndDate) ||
                 (dbEndDate >= inputStartDate && dbEndDate <= inputEndDate) ||
                 (dbStartDate <= inputStartDate && dbEndDate >= inputEndDate)) {
@@ -228,11 +236,7 @@ $("#regiBtn").on("click",function(e){
             }
 
         }
-	 // 오늘 이후의 날짜만 등록할 수 있게
-    if (inputStartDate <= today || inputEndDate <= today) {
-        alert('오늘 날짜나 이전 날짜로는 예약할 수 없습니다.');
-        return;
-    }
+
         if(confirm('등록하시겠습니까?')){
             $("#actionFrm").submit();
         }
