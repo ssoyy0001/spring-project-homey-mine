@@ -202,7 +202,7 @@ $("#regiBtn").on("click",function(e){
 	var workcrew=$('#workCrew').val();
     var inputStartDate = new Date($("input[name=startDateStr]").val());
     var inputEndDate = new Date($("input[name=endDateStr]").val());
-    var today = new Date(); // 오늘 날짜를 가져옵니다.
+    var today = new Date(); // 오늘 날짜
 
     // 오늘 이후의 날짜만 등록할 수 있게
     if (inputStartDate <= today || inputEndDate <= today) {
