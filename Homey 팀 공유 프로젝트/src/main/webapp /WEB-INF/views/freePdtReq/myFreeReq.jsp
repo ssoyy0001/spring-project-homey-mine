@@ -111,7 +111,7 @@ table td.title {    	text-align: left;
 					        <td class="title"><a href="/freePdt/view?fpNo=${fpvo.fpNo }&mid=<sec:authentication property="principal.Username"/>">${fpvo.fpTitle }</a>	</td>
 					   		<td>${fpvo.fpGetDate }</td>
 					        <td>${fpvo.fpGetPlace }</td>
-					        <td><a href="/fpReview/register?fpNo=${fpvo.fpNo }" class="btn btn-success btn-sm">후기작성</a></td>
+					        <td><button class="btn btn-success btn-sm" id="regiReviewBtn" data-fpno="${fpvo.fpNo}">후기 작성</button></td>
 					    </tr>
 					</c:forEach>
                     <!------------- END Model 데이터 출력 ----------->
@@ -151,6 +151,38 @@ table td.title {    	text-align: left;
   <script src="../resources/assets/vendor/php-email-form/validate.js"></script>
   <!-- Template Main JS File -->
   <script src="../resources/assets/js/main.js"></script>
+
+
+<script>
+
+//[후기작성]버튼이 클릭됐을 때, 이미 작성된 후기가 있는지 체크
+
+$(document).ready(function () {
+        $("#regiReviewBtn").click(function () {
+            var fpNo = $(this).data("fpno");
+            var mid = '<sec:authentication property="principal.Username"/>';
+			console.log('버튼 클릭됨');
+			console.log(fpNo);
+            $.ajax({
+                type: "GET",
+                url: "/fpReview/checkReview",
+                data: { mid: mid, fpNo: fpNo },
+                success: function (result) {
+                    if (result === "true") {
+                        // 이미 후기 작성한 경우
+                        alert("이미 리뷰를 작성한 게시글입니다.");
+                    } else {
+                        // 아직 후기 작성하지 않은 경우, 해당 후기 작성 페이지로 이동
+                        window.location.href = "/fpReview/register?fpNo=" + fpNo;
+                    }
+                }
+            });
+        });
+    });
+
+//END [후기작성]버튼이 클릭됐을 때, 이미 작성된 후기가 있는지 체크
+
+</script>
 
 
 </body>
