@@ -109,4 +109,13 @@
   </select>
   
   
+<!-- 내가 쓴 리뷰가 이미 존재하는지 확인 -->
+	<select id="searchMine" resultType="int">
+		SELECT COUNT(*) FROM fpReview
+		WHERE mid = #{mid} 
+		AND fpNo = #{fpNo}
+	</select>
+  
+  
+  
 </mapper>
