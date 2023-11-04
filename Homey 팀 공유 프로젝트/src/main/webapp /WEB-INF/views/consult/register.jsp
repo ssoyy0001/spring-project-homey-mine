@@ -93,7 +93,6 @@
 										name="buildingType" id="buildingType5" value="그 외"> 그
 										외 <input type="text" id="buildingEtc"
 										placeholder="건물 유형을 입력해주세요">
-										
 										<!-- 그 외를 입력할 때는 자바스크립트로 여기 value의 값으로 대체 
 										그외를 체크하고서 입력안하면 그대로 '그 외'로 들어가야함-->
 									</label>
@@ -300,7 +299,7 @@
 								<div class="position-absolute end-50">
 									<button type="reset" class="btn btn-light">Reset</button>
 									<button type="button" class="btn btn-secondary"
-										onclick="history.back()">Cancel</button>
+										onclick="insertCancel(event);">Cancel</button>
 									<button type="submit" class="btn btn-warning" id="submit">
 										견적상담 신청</button>
 								</div>
@@ -365,18 +364,18 @@
 
 
 	<!-- ======= script ======= -->
-	<script
-		src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-		
+<!-- 카카오 주소 APi  -->
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<!-- 그 외 값 입력 -->		
 <script type="text/javascript">
     window.onload = function() {
-        // 적용할 라디오 버튼과 입력 상자를 가져옵니다.
+        // 적용할 라디오 버튼과 입력 상자
         var radioOther = document.getElementById("buildingType5");
         var inputOther = document.getElementById("buildingEtc");
         var radioOther2 = document.getElementById("scheduledDate4");
         var inputOther2 = document.getElementById("scheduledDateEtc");
 
-        // '그 외' 라디오 버튼을 클릭하면 입력 상자를 활성화합니다.
+        // '그 외' 라디오 버튼을 클릭하면 입력 상자를 활성화
         radioOther.onclick = function() {
             inputOther.disabled = false;
         }
@@ -384,7 +383,7 @@
         	inputOther2.disabled = false;
         }
 
-        // 폼 제출 시 '그 외' 라디오 버튼이 선택되어 있고 입력 상자에 텍스트가 있다면 그 값을 사용합니다.
+        // 폼 제출 시 '그 외' 라디오 버튼이 선택되어 있고 입력 상자에 텍스트가 있다면 그 값을 사용
         document.querySelector('form').onsubmit = function() {
             if (radioOther2.checked) {
                 if (inputOther2.value.trim() !== "") {
@@ -394,8 +393,17 @@
         }
     }
 </script>
-		
-	<script>
+<script>
+//취소 버튼 누를 시 ----------------------------
+function insertCancel(event){
+	if(confirm('작성하던 견적상담 신청이 모두 사라집니다.\n취소하시겠습니까?')){
+		 history.back(); 
+    }else if(!cancel){
+        	  event.preventDefault();
+    };
+}
+//END 취소 버튼 누를 시 ----------------------------
+
 //라디오박스, 체크박스 하나이상 체크 알림 -----------------------------------------
 document.getElementById('submit').onclick = function() {
     var radioBuildingType = document.querySelector('input[type=radio][name=buildingType]:checked');
