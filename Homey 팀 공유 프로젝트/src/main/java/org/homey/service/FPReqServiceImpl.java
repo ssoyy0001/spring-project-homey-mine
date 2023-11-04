@@ -2,11 +2,9 @@ package org.homey.service;
 
 import java.util.List;
 
-import org.homey.domain.SoCriteria;
-import org.homey.domain.FpReviewAttachVO;
-import org.homey.domain.FpReviewVO;
-import org.homey.mapper.FpReviewAttachMapper;
-import org.homey.mapper.FpReviewMapper;
+import org.homey.domain.FPReqVO;
+import org.homey.mapper.FpReqMapper;
+import org.homey.mapper.FreePdtMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,105 +14,54 @@ import lombok.extern.log4j.Log4j;
 
 @Service
 @Log4j
-public class FpReviewServiceImpl implements FpReviewService {
-
-	private boolean result;					//result 필요한 메서드에서 공용으로 쓸 수 있도록 클래스변수로 선언
+public class FPReqServiceImpl implements FPReqService {
+	
+	private boolean result;									//boolean으로 리턴된 것 담을 result 변수
 	
 	@Setter(onMethod_ = @Autowired)
-	   private FpReviewMapper fpReviewMapper;
+	   private FpReqMapper fpReqMapper;				//제품 나눔 신청 CRUD 맵퍼
+	
 	
 	@Setter(onMethod_ = @Autowired)
-	   private FpReviewAttachMapper praMapper;
+	   private FreePdtMapper freePdtMapper;			//제품 나눔 게시글 CRUD 맵퍼 -> 신청서 등록 후 현재 신청자 수 증가시키려고
+	
 
 	@Override
-	public List<FpReviewVO> listPaging(SoCriteria socri) {
-		log.info("listPaging.......");
-		return fpReviewMapper.selectAllPaging(socri);
+	public List<FPReqVO> fpWinList(int fpNo) {
+		log.info("OdReqService의 (" + fpNo +  "번 게시물)에 대한 당첨자목록......");		
+		return fpReqMapper.fpWinSelect(fpNo);
 	}
 
 	@Override
-	public int totalCount(SoCriteria socri) {
-		log.info("totalCount.......");
-		return fpReviewMapper.totalCount(socri);
+	public List<FPReqVO> fpWinListAll() {
+		log.info("OdReqService의 (모든 게시물)에 대한 당첨자목록......");		
+		return fpReqMapper.fpWinSelectAll();
 	}
 
 	@Override
-	public List<FpReviewVO> listMine(String mid, SoCriteria socri) {
-		log.info( mid + "가 작성한 리뷰 list.......");
-		return fpReviewMapper.selectMine(mid, socri);
+	public List<FPReqVO> fpListMine(String sid) {
+		log.info("OdReqService의 (" + sid +  " 회원)의 제품 나눔 신청목록......");		
+		return fpReqMapper.fpSelectMine(sid);
 	}
 
 	@Override
-	public int mineCount(String mid, SoCriteria socri) {
-		log.info("totalCount.......");
-		return fpReviewMapper.mineCount(mid, socri);
-	}
-
-	@Override
-	@Transactional											//게시글 조회 후, 조회수 +1 처리
-	public FpReviewVO view(int prNo) {
-		log.info("view......" + prNo);
-		fpReviewMapper.updateHit(prNo);
+	@Transactional																//제품나눔 신청 후, 신청자 수도 1 증가되도록
+	public boolean fpReqRegister(FPReqVO fprvo) {
 		
-		return fpReviewMapper.select(prNo);
-	}
-
-	@Override
-	@Transactional											//게시글 등록 & 첨부파일 등록 작업이 함께 이뤄져야 함
-	public boolean register(FpReviewVO prvo) {
-		 log.info("서비스의 register...." + prvo);									//vo가 잘 넘어왔는지 확인
-	      result = fpReviewMapper.insertSelectKey(prvo) == 1;		//게시물 등록 결과
-		  
-	      if(prvo.getPrAttachList() != null && prvo.getPrAttachList().size() > 0) {		//prvo 안에 첨부파일리스트가 비어있지 않다면
-	    	  
-	    	  prvo.getPrAttachList().forEach( pravo ->{												//pravo에는 FpReviewAttachVO 들어있음
-	    		  												pravo.setPrNo(prvo.getPrNo());			//AttachVO에는 게시물번호가 안들어있으므로, prvo에서 꺼내서 넣어줌		
-	    		  												praMapper.insert(pravo);					//첨부파일리스트를 순회하면서 pravo로 등록-> pravo의 각 변수명과 DB 컬럼명이 일치하므로 일일이 setter안해도 됨
-										    	  			});
-	      };
-	      return result;
-	}
-
-	@Override
-	@Transactional											//게시물 지울 때, 그 게시물의 첨부파일도 함께 삭제
-	public boolean remove(int prNo) {
-		log.info("remove........" + prNo);
+		log.info("register...." + fprvo);
+		result = fpReqMapper.fpReqInsert(fprvo) == 1;
 		
-		praMapper.deleteAll(prNo);								//게시물에 있는 첨부파일 삭제
-		return fpReviewMapper.delete(prNo) == 1;		//게시물 삭제
-	}
-
-	@Override
-	@Transactional
-	public boolean modify(FpReviewVO prvo) {
-		log.info("modify....." + prvo);	
-		
-		praMapper.deleteAll(prvo.getPrNo());						//기존 첨부파일 모두 삭제
-		result  = fpReviewMapper.update(prvo) ==1;			//게시물 수정
-		
-		//첨부파일이 있는 경우 테이블에 추가
-		if(prvo.getPrAttachList() != null && prvo.getPrAttachList().size() > 0) {	//넘겨받은 prvo 안에 첨부파일이 들어있다면
-			prvo.getPrAttachList().forEach( pravo ->{										
-															pravo.setPrNo(prvo.getPrNo());			//AttachVO에는 게시물번호가 안들어있으므로, prvo에서 꺼내서 넣어줌		
-															praMapper.insert(pravo);					//첨부파일 리스트 안에 들어있는 첨부파일들을 돌면서 pravo로 등록
-														});
+		if(result) {				//나눔 신청이 잘 되었다면,
+			freePdtMapper.plusNowPeople(fprvo.getFpNo());
 		}
 		return result;
 	}
 
-	@Override
-	public List<FpReviewAttachVO> attachList(int prNo) {	//prNo번 리뷰글에 첨부돼있는 파일목록 가져오기
-		log.info("attachList.......");
-		return praMapper.select(prNo);
-	}
-
 	
-	@Override	
-	public int searchMine(String mid, int fpNo) {			//내가 쓴 리뷰가 이미 존재하는지 확인
-		System.out.println(mid + fpNo);
-		return fpReviewMapper.searchMine(mid, fpNo);
+	@Override
+	public int fpReqCheck(int fpNo, String mid) {
+		
+		return fpReqMapper.fpReqCheck(fpNo, mid);
 	}
-
-
 
 }
