@@ -365,91 +365,79 @@
 												<label class="col-sm-2">시공항목</label>
 												<div class="col-sm-5">
 													<!-- item이 0이 아니면 표시하고 쉼표 `,`로 구분 -->
-													<c:if test="${quotationItem.tiling != 0}">도배/벽</c:if>
-													<c:if test="${quotationItem.flooring != 0}">
-														<c:if test="${quotationItem.tiling != 0}">, </c:if>바닥
-													</c:if>
-
-													<c:if test="${quotationItem.kitchen != 0}">
-														<c:if
-															test="${quotationItem.tiling != 0 or quotationItem.flooring != 0}">, </c:if>주방
-													</c:if>
-
-													<c:if test="${quotationItem.bathroom != 0}">
-														<c:if
-															test="${quotationItem.tiling != 0 or quotationItem.flooring != 0 or quotationItem.kitchen != 0}">, </c:if>욕실
-													</c:if>
-
-													<c:if test="${quotationItem.entrance != 0}">
-														<c:if
-															test="${quotationItem.tiling != 0 or quotationItem.flooring != 0 or quotationItem.kitchen != 0 or quotationItem.bathroom != 0}">, </c:if>현관
-													</c:if>
-
-													<c:if test="${quotationItem.balcony != 0}">
-														<c:if
-															test="${quotationItem.tiling != 0 or quotationItem.flooring != 0 or quotationItem.kitchen != 0 or quotationItem.bathroom != 0 or quotationItem.entrance != 0}">, </c:if>발코니
-													</c:if>
-
-													<c:if test="${quotationItem.lighting != 0}">
-														<c:if
-															test="${quotationItem.tiling != 0 or quotationItem.flooring != 0 or quotationItem.kitchen != 0 or quotationItem.bathroom != 0 or quotationItem.entrance != 0 or quotationItem.balcony != 0}">, </c:if>조명
-													</c:if>
-
-													<c:if test="${quotationItem.door != 0}">
-														<c:if
-															test="${quotationItem.tiling != 0 or quotationItem.flooring != 0 or quotationItem.kitchen != 0 or quotationItem.bathroom != 0 or quotationItem.entrance != 0 or quotationItem.balcony != 0 or quotationItem.lighting != 0}">, </c:if>문
-													</c:if>
-
-													<c:if test="${quotationItem.etc != 0}">
-														<c:if
-															test="${quotationItem.tiling != 0 or quotationItem.flooring != 0 or quotationItem.kitchen != 0 or quotationItem.bathroom != 0 or quotationItem.entrance != 0 or quotationItem.balcony != 0 or quotationItem.lighting != 0 or quotationItem.door != 0}">, </c:if>그 외
-													</c:if>
+														<c:if test="${quotationItem.tiling != 0}">도배/벽: <fmt:formatNumber value="${quotationItem.tiling}" pattern="#,###" />원</c:if>
+														
+														<c:if test="${quotationItem.flooring != 0}">
+														    <c:if test="${quotationItem.tiling != 0}">, </c:if>바닥: <fmt:formatNumber value="${quotationItem.flooring}" pattern="#,###" />원
+														</c:if>
+														
+														<c:if test="${quotationItem.kitchen != 0}">
+														    <c:if test="${quotationItem.tiling != 0 or quotationItem.flooring != 0}">, </c:if>주방: <fmt:formatNumber value="${quotationItem.kitchen}" pattern="#,###" />원
+														</c:if>
+														
+														<c:if test="${quotationItem.bathroom != 0}">
+														    <c:if test="${quotationItem.tiling != 0 or quotationItem.flooring != 0 or quotationItem.kitchen != 0}">, </c:if>욕실: <fmt:formatNumber value="${quotationItem.bathroom}" pattern="#,###" />원
+														</c:if>
+														
+														<c:if test="${quotationItem.entrance != 0}">
+														    <c:if test="${quotationItem.tiling != 0 or quotationItem.flooring != 0 or quotationItem.kitchen != 0 or quotationItem.bathroom != 0}">, </c:if>현관: <fmt:formatNumber value="${quotationItem.entrance}" pattern="#,###" />원
+														</c:if>
+														
+														<c:if test="${quotationItem.balcony != 0}">
+														    <c:if test="${quotationItem.tiling != 0 or quotationItem.flooring != 0 or quotationItem.kitchen != 0 or quotationItem.bathroom != 0 or quotationItem.entrance != 0}">, </c:if>발코니: <fmt:formatNumber value="${quotationItem.balcony}" pattern="#,###" />원
+														</c:if>
+														
+														<c:if test="${quotationItem.lighting != 0}">
+														    <c:if test="${quotationItem.tiling != 0 or quotationItem.flooring != 0 or quotationItem.kitchen != 0 or quotationItem.bathroom != 0 or quotationItem.entrance != 0 or quotationItem.balcony != 0}">, </c:if>조명: <fmt:formatNumber value="${quotationItem.lighting}" pattern="#,###" />원
+														</c:if>
+														
+														<c:if test="${quotationItem.door != 0}">
+														    <c:if test="${quotationItem.tiling != 0 or quotationItem.flooring != 0 or quotationItem.kitchen != 0 or quotationItem.bathroom != 0 or quotationItem.entrance != 0 or quotationItem.balcony != 0 or quotationItem.lighting != 0}">, </c:if>문: <fmt:formatNumber value="${quotationItem.door}" pattern="#,###" />원
+														</c:if>
+														
+														<c:if test="${quotationItem.etc != 0}">
+														    <c:if test="${quotationItem.tiling != 0 or quotationItem.flooring != 0 or quotationItem.kitchen != 0 or quotationItem.bathroom != 0 or quotationItem.entrance != 0 or quotationItem.balcony != 0 or quotationItem.lighting != 0 or quotationItem.door != 0}">, </c:if>그 외: <fmt:formatNumber value="${quotationItem.etc}" pattern="#,###" />원
+														</c:if>
 
 												</div>
 											</div>
+											
 											<div class="form-group row" style="margin-bottom: 10px">
 												<label class="col-sm-2">철거항목</label>
 												<div class="col-sm-5">
-													<c:if test="${quotationItem.tilingD != 0}">도배/벽</c:if>
+													<c:if test="${quotationItem.tilingD != 0}">도배/벽: <fmt:formatNumber value="${quotationItem.tilingD}" pattern="#,###" />원</c:if>
+													
 													<c:if test="${quotationItem.flooringD != 0}">
-														<c:if test="${quotationItem.tilingD != 0}">, </c:if>바닥
+													    <c:if test="${quotationItem.tilingD != 0}">, </c:if>바닥: <fmt:formatNumber value="${quotationItem.flooringD}" pattern="#,###" />원
 													</c:if>
-
+													
 													<c:if test="${quotationItem.kitchenD != 0}">
-														<c:if
-															test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0}">, </c:if>주방
+													    <c:if test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0}">, </c:if>주방: <fmt:formatNumber value="${quotationItem.kitchenD}" pattern="#,###" />원
 													</c:if>
-
+													
 													<c:if test="${quotationItem.bathroomD != 0}">
-														<c:if
-															test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0 or quotationItem.kitchenD != 0}">, </c:if>욕실
+													    <c:if test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0 or quotationItem.kitchenD != 0}">, </c:if>욕실: <fmt:formatNumber value="${quotationItem.bathroomD}" pattern="#,###" />원
 													</c:if>
-
+													
 													<c:if test="${quotationItem.entranceD != 0}">
-														<c:if
-															test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0 or quotationItem.kitchenD != 0 or quotationItem.bathroomD != 0}">, </c:if>현관
+													    <c:if test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0 or quotationItem.kitchenD != 0 or quotationItem.bathroomD != 0}">, </c:if>현관: <fmt:formatNumber value="${quotationItem.entranceD}" pattern="#,###" />원
 													</c:if>
-
+													
 													<c:if test="${quotationItem.balconyD != 0}">
-														<c:if
-															test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0 or quotationItem.kitchenD != 0 or quotationItem.bathroomD != 0 or quotationItem.entranceD != 0}">, </c:if>발코니
+													    <c:if test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0 or quotationItem.kitchenD != 0 or quotationItem.bathroomD != 0 or quotationItem.entranceD != 0}">, </c:if>발코니: <fmt:formatNumber value="${quotationItem.balconyD}" pattern="#,###" />원
 													</c:if>
-
+													
 													<c:if test="${quotationItem.lightingD != 0}">
-														<c:if
-															test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0 or quotationItem.kitchenD != 0 or quotationItem.bathroomD != 0 or quotationItem.entranceD != 0 or quotationItem.balconyD != 0}">, </c:if>조명
+													    <c:if test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0 or quotationItem.kitchenD != 0 or quotationItem.bathroomD != 0 or quotationItem.entranceD != 0 or quotationItem.balconyD != 0}">, </c:if>조명: <fmt:formatNumber value="${quotationItem.lightingD}" pattern="#,###" />원
 													</c:if>
-
+													
 													<c:if test="${quotationItem.doorD != 0}">
-														<c:if
-															test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0 or quotationItem.kitchenD != 0 or quotationItem.bathroomD != 0 or quotationItem.entranceD != 0 or quotationItem.balconyD != 0 or quotationItem.lightingD != 0}">, </c:if>문
+													    <c:if test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0 or quotationItem.kitchenD != 0 or quotationItem.bathroomD != 0 or quotationItem.entranceD != 0 or quotationItem.balconyD != 0 or quotationItem.lightingD != 0}">, </c:if>문: <fmt:formatNumber value="${quotationItem.doorD}" pattern="#,###" />원
 													</c:if>
-
+													
 													<c:if test="${quotationItem.etcD != 0}">
-														<c:if
-															test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0 or quotationItem.kitchenD != 0 or quotationItem.bathroomD != 0 or quotationItem.entranceD != 0 or quotationItem.balconyD != 0 or quotationItem.lightingD != 0 or quotationItem.doorD != 0}">, </c:if>그 외
+													    <c:if test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0 or quotationItem.kitchenD != 0 or quotationItem.bathroomD != 0 or quotationItem.entranceD != 0 or quotationItem.balconyD != 0 or quotationItem.lightingD != 0 or quotationItem.doorD != 0}">, </c:if>그 외: <fmt:formatNumber value="${quotationItem.etcD}" pattern="#,###" />원
 													</c:if>
-
 												</div>
 											</div>
 											<div class="form-group row" style="margin-bottom: 10px">
