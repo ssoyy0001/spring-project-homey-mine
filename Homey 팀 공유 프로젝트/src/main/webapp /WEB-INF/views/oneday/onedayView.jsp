@@ -166,8 +166,10 @@
 			</sec:authorize>
 		</div>
 	</form>
+	<br><br><br>
     				
     <!-- ======= 원데이클래스 신청 폼 ======= -->
+    <sec:authorize access="not hasRole('ROLE_ADMIN')"><!-- 관리자가 아닐 경우에 신청폼 표시 -->
     <section id="blog" class="blog">
       <div class="container" data-aos="fade-up" data-aos-delay="100">
         <div class="row g-5">
@@ -229,11 +231,9 @@
 					        <h3 class="reqNotice">　<span class="badge bg-success"> 이미 신청한 이벤트입니다. </span></h3>
 					    </c:when>
 					    <c:otherwise>
-					    	<sec:authorize access="not hasRole('ROLE_ADMIN')"><!-- 관리자가 아닐 경우에 신청버튼 표시 -->
 					        <div class="text-center" id="btn-group">
 					            <button type="submit" id="reqBtn" class="btn btn-warning">신청하기</button>
 					        </div>
-					        </sec:authorize>
 					    </c:otherwise>
 					</c:choose>
 					
@@ -248,7 +248,7 @@
         </div>
       </div>
     </section><!-- End Blog Details Section -->
-
+	</sec:authorize>
 
 </main><!-- End #main -->
 
