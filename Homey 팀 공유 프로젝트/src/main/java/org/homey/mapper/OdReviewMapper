@@ -23,5 +23,6 @@ public interface OdReviewMapper {
 	public int update(OdReviewVO orvo);												//리뷰 수정
 	
 	public int updateHit(@Param("orNo")int orNo);								//리뷰 조회수 업데이트	
+	public int searchMine(@Param("mid")String mid, @Param("odNo")int odNo);			//내가 쓴 리뷰가 이미 존재하는지 확인
 	
 }
