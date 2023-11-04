@@ -111,6 +111,12 @@ public class OdReviewServiceImpl implements OdReviewService {
 		return oraMapper.select(orNo);
 	}
 
+	@Override
+	public int searchMine(String mid, int odNo) {						//내가 쓴 리뷰가 이미 존재하는지 확인
+		System.out.println(mid + odNo);
+		return odReviewMapper.searchMine(mid, odNo);
+	}
+
 
 
 
