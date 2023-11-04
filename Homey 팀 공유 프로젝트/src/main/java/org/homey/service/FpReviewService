@@ -23,5 +23,6 @@ public interface FpReviewService {
 	public boolean modify(FpReviewVO prvo);								//게시물 수정
 	
 	public List<FpReviewAttachVO> attachList(int prNo);				//첨부파일리스트 조회
+	public int searchMine(String mid, int fpNo);							//내가 쓴 리뷰가 이미 존재하는지 건수로 확인
 
 }
