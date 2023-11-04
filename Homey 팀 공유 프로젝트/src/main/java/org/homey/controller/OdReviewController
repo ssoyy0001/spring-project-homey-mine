@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import lombok.Setter;
@@ -84,6 +85,17 @@ public class OdReviewController {
 		log.info("AttachList......"+orNo);		
 		return new ResponseEntity<List<OdReviewAttachVO>>(odReviewService.attachList(orNo), HttpStatus.OK);
 	}
+	
+	
+	//내가 쓴 리뷰가 이미 존재하는지 확인 - ajax
+	@GetMapping(value = "checkReview")
+    @ResponseBody
+    public String checkReview(@RequestParam("mid") String mid, @RequestParam("odNo") int odNo) {
+        int count = odReviewService.searchMine(mid, odNo);
+        String result = count > 0 ? "true" : "false";
+        System.out.println("존재여부 : " + result);
+        return result;
+    }
 	
 	
 	
