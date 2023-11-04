@@ -48,6 +48,11 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
+/* 모달창 고정항목 스타일 */
+.inputZero{
+			width: 200px;	
+			border: #dcdcdc; 
+} 
 </style>
 
 <!-- fullCalendar -->
@@ -501,11 +506,12 @@
 								</c:if>
 							</sec:authorize>
 							
-														<sec:authorize access="hasRole('ROLE_MEMBER')">
+						<sec:authorize access="hasRole('ROLE_MEMBER')">
 							<c:if test="${!empty cvo.qvoList}">
 							<c:forEach items="${cvo.qvoList}" var="qvo">
-<a href="/sirequest/sireqRegisterForm?quoNo=${qvo.quoNo }&consultNo=${cvo.consultNo}&itemNo=${cvo.item.itemNo}" class="btn btn-danger"
-                                 style="margin-top: 5px">시공의뢰 등록</a>							   	 </c:forEach>
+								<a href="/sirequest/sireqRegisterForm?quoNo=${qvo.quoNo }&consultNo=${cvo.consultNo}&itemNo=${cvo.item.itemNo}" class="btn btn-danger"
+                                 style="margin-top: 5px">시공의뢰 등록</a>							   	 
+                            </c:forEach>
 							</c:if>
 							</sec:authorize>
 							
@@ -573,9 +579,8 @@
 				<div class="modal-body">
 					<div class="form-group">
 						<label>견적 상담 번호</label>
-						<!-- readonly -->
 						<input type="text" name="consultNo" id="consultNo"
-							class="form-control" readonly>
+							 class="inputZero" readonly style="margin-bottom: 5px">
 					</div>
 					<div class="form-group">
 						<label>시공일정</label> <input type="date" name="constScheduleStart"
@@ -586,9 +591,9 @@
 					</div>
 					<hr>
 					<div class="form-group">
-						<label>선택했던 시공 항목 : </label>
+						<label>선택했던 <strong>시공</strong> 항목 : </label>
 						<!-- 견적상담에서 선택했던 시공 항목 표시 -->
-						<div style="color: gray">
+						<div style="color: #ffc107">
 							<c:if test="${cvo.item.tiling != 0}">도배/벽 : <c:out
 									value="${cvo.item.tiling}"></c:out>
 								<br>
@@ -631,7 +636,8 @@
 					<!-- 시공 항목 -->
 					<div class="form-group">
 						<div class="input-group">
-							<label>시공 항목 &nbsp; </label> <select name="item" id="item">
+							<label><strong>시공</strong> 항목 &nbsp; </label> 
+							<select name="item" id="item" style="margin-right: 10px">
 								<option value="tiling">도배/벽</option>
 								<option value="flooring">바닥</option>
 								<option value="kitchen">주방</option>
@@ -652,9 +658,9 @@
 						<!-- 철거 항목 -->
 						<hr>
 						<div class="form-group">
-							<label>선택했던 철거 항목 : </label>
+							<label>선택했던 <strong>철거</strong> 항목 : </label>
 							<!-- 견적서에서 선택했던 철거 항목 표시 -->
-							<div style="color: gray">
+							<div style="color: #ffc107">
 								<c:if test="${cvo.item.tilingD != 0}">도배/벽 : <c:out
 										value="${cvo.item.tilingD}"></c:out>
 									<br>
@@ -697,7 +703,8 @@
 
 						<div class="form-group">
 							<div class="input-group">
-								<label>철거 항목 &nbsp; </label> <select name="itemD" id="itemD">
+								<label><strong>철거</strong> 항목 &nbsp; </label> 
+								<select name="itemD" id="itemD" style="margin-right: 10px">
 									<option value="tilingD">도배/벽</option>
 									<option value="flooringD">바닥</option>
 									<option value="kitchenD">주방</option>
@@ -707,7 +714,7 @@
 									<option value="lightingD">조명</option>
 									<option value="doorD">문</option>
 									<option value="etcD">그 외</option>
-								</select> <i id="demoPlusBtn" class="far fa-plus-square"></i>
+								</select><i id="demoPlusBtn" class="far fa-plus-square"></i>
 							</div>
 							<div id="demoItembox">
 								<!-- 추가된 철거 항목이 여기에 표시 -->
@@ -716,16 +723,16 @@
 						<hr>
 						<div class="form-group">
 							<label>시공 비용</label> <input type="text" name="constTotal"
-								id="constTotal" class="form-control" readonly>
+								id="constTotal" class="inputZero" readonly>
 						</div>
 						<div class="form-group">
 							<label>철거 비용</label> <input type="text" name="demolTotal"
-								id="demolTotal" class="form-control" readonly>
+								id="demolTotal" class="inputZero"  readonly>
 						</div>
 						<hr>
-						<div class="form-group">
+						<div class="form-group" style="margin-bottom: 5px">
 							<label>총 견적 금액</label> <input type="text" name="total" id="total"
-								class="form-control" readonly>
+								 class="inputZero"  readonly>
 						</div>
 					</div>
 					<!-- END 견적서 관련 내용 -->
@@ -735,10 +742,9 @@
 						<button id="remBtn" type="button" class="btn btn-danger">Remove</button>
 						<button id="modBtn" type="button" class="btn btn-warning">Modify</button>
 						<button id="addBtn" type="button" class="btn btn-primary">Add</button>
-						<button id="closeBtn" type="button" class="btn btn-default"
+						<button id="closeBtn" type="button" class="btn btn-light"
 							data-dismiss="modal">Close</button>
 					</div>
-
 				</div>
 				<!-- /.modal-content -->
 			</div>
@@ -1315,10 +1321,18 @@ document.addEventListener('DOMContentLoaded', function() {
 								plusItembox.appendChild(newItem);
 
 								// 추가된 항목을 삭제할 버튼 추가
-								var deleteButton = document
-										.createElement("button");
-								deleteButton.textContent = "X";
+								var deleteButton = document.createElement("button");
+								deleteButton.textContent = "x";
 								newItem.appendChild(deleteButton);
+								
+								// - 버튼에 스타일 적용
+								deleteButton.style.backgroundColor = "white";
+								deleteButton.style.color = "black";
+								deleteButton.style.marginLeft = "5px";
+								deleteButton.style.border = "1px solid black";
+								deleteButton.style.width = "20px";
+								deleteButton.style.height = "15px";
+								deleteButton.style.lineHeight = "5px";
 
 								// 삭제 버튼 클릭 이벤트
 								deleteButton.addEventListener('click',
