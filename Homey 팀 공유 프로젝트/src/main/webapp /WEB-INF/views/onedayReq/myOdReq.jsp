@@ -119,7 +119,7 @@ table td.title {    	text-align: left;
 					        </td>
 					        <td><fmt:formatDate value="${odrvo.odReqDate}" pattern="yyyy-MM-dd" /></td>
 					        <c:if test="${odrvo.odReqWin == 1}"><!-- 당첨일 때에만 후기작성버튼 표시 -->
-					        <td><a href="/odReview/register?odNo=${odrvo.odNo }" class="badge bg-success">후기작성</a></td>
+					        <td><button class="btn btn-success btn-sm" id="regiReviewBtn" data-fpno="${fpvo.fpNo}">후기 작성</button></td>
 					        </c:if>
 					    </tr>
 					</c:forEach>
@@ -163,6 +163,35 @@ table td.title {    	text-align: left;
   <script src="../resources/assets/vendor/php-email-form/validate.js"></script>
   <!-- Template Main JS File -->
   <script src="../resources/assets/js/main.js"></script>
+
+
+<script>
+//[후기작성]버튼이 클릭됐을 때, 이미 작성된 후기가 있는지 체크
+
+$(document).ready(function () {
+        $("#regiReviewBtn").click(function () {
+            var odNo = $(this).data("odno");
+            var mid = '<sec:authentication property="principal.Username"/>';
+            $.ajax({
+                type: "GET",
+                url: "/odReview/checkReview",
+                data: { mid: mid, odNo: odNo },
+                success: function (result) {
+                    if (result === "true") {
+                        // 이미 후기 작성한 경우
+                        alert("이미 리뷰를 작성한 게시글입니다.");
+                    } else {
+                        // 아직 후기 작성하지 않은 경우, 해당 후기 작성 페이지로 이동
+                        window.location.href = "/odReview/register?odNo=" + odNo;
+                    }
+                }
+            });
+        });
+    });
+
+//END [후기작성]버튼이 클릭됐을 때, 이미 작성된 후기가 있는지 체크
+
+</script>
 
 
 </body>
