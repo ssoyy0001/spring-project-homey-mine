@@ -71,9 +71,9 @@
 								<div class="icon">
 									<i class="fa-solid fa-mountain-city"></i>
 								</div>
-								<h3>${cvo.buildingType},${cvo.address}</h3>
+								<h3>${cvo.buildingType},<br>${cvo.address}</h3>
 								<!-- 제목 -->
-								<p>견적 상담 번호 : ${cvo.consultNo}</p>
+								<p>견적 상담 번호 : <strong>${cvo.consultNo}</strong></p>
 								<p>
 									견적 신청 날짜 :
 									<fmt:formatDate value="${cvo.consultDate}" pattern="yyyy-MM-dd" />
