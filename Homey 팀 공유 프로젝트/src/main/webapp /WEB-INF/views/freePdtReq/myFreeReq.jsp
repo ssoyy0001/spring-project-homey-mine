@@ -13,8 +13,8 @@
 /*	게시글 제목(링크) 색상 */
 tbody a { color : 	#333333; }
 
-/* 게시글 제목(링크)에 마우스 올리면 진회색으로 표시 */
-tbody a:hover { color : black; }			
+/* 게시글 제목(링크)에 마우스 올리면 주황색으로 표시 */
+tbody a:hover { color : orange; }			
 
 
 /* 테이블의 텍스트 가운데 정렬, 제목만 왼쪽 정렬 */
@@ -151,12 +151,6 @@ table td.title {    	text-align: left;
   <script src="../resources/assets/vendor/php-email-form/validate.js"></script>
   <!-- Template Main JS File -->
   <script src="../resources/assets/js/main.js"></script>
-
-
-<script>
-
-
-</script>
 
 
 </body>
