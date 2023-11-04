@@ -71,6 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			},
 			initialView: 'dayGridMonth',
 			locale: 'ko',
+			timezone: 'UTC',
 			firstDay: 1,
 			weekends: true,
 			selectable: true,
