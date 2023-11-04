@@ -363,12 +363,14 @@ rgba
 											</div>
 											<br>
 											<div class="form-group">
-												<label>시공일정</label> <input name="constScheduleStart"
-													value='<c:out value="${sireq.quotationvo.constScheduleStart}" />'
-													readonly pattern="yyyy-MM-dd" class="form-control">
-												~ <input name="constScheduleEnd"
-													value='<c:out value="${sireq.quotationvo.constScheduleEnd}" />'
-													readonly pattern="yyyy-MM-dd" class="form-control">
+											    <label>시공일정</label>
+											    <input name="constScheduleStart" 
+											           value='<fmt:formatDate pattern="yyyy-MM-dd" value="${sireq.quotationvo.constScheduleStart}" />' 
+											           readonly class="form-control">
+											    ~
+											    <input name="constScheduleEnd" 
+											           value='<fmt:formatDate pattern="yyyy-MM-dd" value="${sireq.quotationvo.constScheduleEnd}" />' 
+											           readonly class="form-control">
 											</div>
 											<br>
 											<div class="form-group">
