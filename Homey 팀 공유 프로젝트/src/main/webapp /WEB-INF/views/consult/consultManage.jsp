@@ -308,6 +308,7 @@
 
 						</article>
 						<!-- END 방문 실측 스케줄 -->
+						
 						<!-- 견적서 -->
 						<article class="blog-details">
 							<h2>견적서 📝</h2>
@@ -784,18 +785,20 @@
     var isAdmin = <sec:authorize access="hasRole('ROLE_ADMIN')">true</sec:authorize><sec:authorize access="!hasRole('ROLE_ADMIN')">false</sec:authorize>;
     // JavaScript에서 isAdmin 변수를 사용하여 관리자인지 아닌지를 판단
 </script>
-	<script>
+
+<script>
 //사용자의 권한 정보를 가져옵니다. (예: "ROLE_ADMIN", "ROLE_USER" 등)
 var consultNo = "${param.consultNo}";
-var visitNoElement = document.getElementById("visitNo");
-var visitNo = visitNoElement ? visitNoElement.textContent : null;
+
 document.addEventListener('DOMContentLoaded', function() {
+	
     $(function () {
         var request = $.ajax({
             url: "/visit/", // 변경하기
             method: "GET",
             dataType: "json"
         });
+        
         request.done(function (data) {
         console.log(data); // log 로 데이터 찍어주기
             
@@ -843,7 +846,6 @@ document.addEventListener('DOMContentLoaded', function() {
                    var obj = new Object();     // Json 을 담기 위해 Object 선언
 			        obj.title = title; 
                     obj.consultNo = title; // consultNo로 title 값을 설정	
-
                     obj.start = date; // 시작
 			        obj.description = description; // 서버에 보낼 데이터에 설명 추가
                    events.push(obj);
@@ -859,14 +861,9 @@ document.addEventListener('DOMContentLoaded', function() {
                    dataType: "json",
                    data: JSON.stringify(events),
                    contentType: 'application/json',
-               })
-                   .done(function (result) {
-                       alert(result);
-                   })
-                   .fail(function (request, status, error) {
-                        alert("완료");
-                   });
-               calendar.unselect()
+               });
+               calendar.unselect();
+               location.reload(); // 페이지 새로고침
                });
               }, // END navLinkDayClick
 
@@ -882,17 +879,14 @@ document.addEventListener('DOMContentLoaded', function() {
            	    if(confirm("'"+ info.event.title +"' 번의 일정을 삭제하시겠습니까 ?")){
            	        // 확인 클릭 시
            	        info.event.remove();
-           	        console.log(visitNo);
                	    $(function deleteData(){
                	        $.ajax({
-               	            url: "/visit/" + visitNo,
+               	            url: "/visit/" + info.event.title,
                	            method: "DELETE",
                	            contentType: 'application/json',
                	        })
                	    })
            	    } else { //삭제 안하면 stauts 수정의사 묻기
-           	    	const visitNoElement = document.getElementById("visitNo");
-           	    	const visitNo = visitNoElement ? visitNoElement.textContent : null;	
            	    	var description = prompt('새로운 일정 설명을 입력해주세요'); // 설명 입력 받기
            	     if (description) {
          	        info.event.setExtendedProp('description', description);
@@ -902,19 +896,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
          	        obj.title = info.event.title;
          	        obj.consultNo = consultNo;
-         	        obj.visitNo = visitNo;
+         	        obj.visitNo = info.event.title;
          	        obj.start = info.event.start;
          	        obj.end = info.event.end;
          	        obj.description = description; // 변경된 상태를 서버에 반영하기 위해 추가
          	        events.push(obj);
 
          	        $.ajax({
-         	            url: "/visit/" + visitNo,
+         	            url: "/visit/" + info.event.title,
          	            method: "PATCH",
          	            dataType: "json",
          	            data: JSON.stringify(events),
          	            contentType: 'application/json',
          	        	});
+         	       location.reload(); // 페이지 새로고침
          	    	}
 				}
                	}, // END  eventClick
@@ -936,8 +931,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 	        alert('관리자만 일정을 수정할 수 있습니다.');
                 	        return;
                 	    }
-                	
-                      console.log(info);
+                		console.log(info.event)
                       if(confirm("'"+ info.event.title +"' 번의 일정을 수정하시겠습니까 ?")){
                       }
                       var events = new Array(); // Json 데이터를 받기 위한 배열 선언
@@ -945,15 +939,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
                       obj.title = info.event._def.title;
                       obj.consultNo = consultNo;
-                      obj.visitNo = visitNo;
+                      obj.visitNo = info.event.title;
                       obj.start = info.event._instance.range.start;
                       obj.end = info.event._instance.range.end;
+                      obj.description = info.event._def.extendedProps.description; // 변경된 상태를 서버에 반영하기 위해 추가
                       events.push(obj);
 
                       console.log(events);
                       $(function deleteData() {
                           $.ajax({
-                              url: "/visit/" + visitNo,
+                              url: "/visit/" + info.event.title,
                               method: "PATCH",
                               dataType: "json",
                               data: JSON.stringify(events),
