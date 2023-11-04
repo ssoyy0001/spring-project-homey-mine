@@ -90,7 +90,7 @@ select {
 		</div>
 		<!-- End Breadcrumbs -->
 
-		<!-- 원데이클래스 신청완료 메시지가 있는 경우, qnaListAll.jsp로 돌아오면서 msg내용을 alert으로 띄우기 -->
+		
 		<c:if test="${!empty msg }">
 			<script>
 				alert('${msg}');
@@ -206,11 +206,7 @@ $("#regiBtn").on("click",function(e){
      today.setHours(0,0,0,0); // 시간을 제거
     inputStartDate.setHours(0,0,0,0); 
     inputEndDate.setHours(0,0,0,0); 
-    // 오늘 이후의 날짜만 등록할 수 있게
-    if (inputStartDate <= today || inputEndDate <= today) {
-        alert('오늘 날짜나 이전 날짜로는 예약할 수 없습니다.');
-        return;
-    }
+  
 
     $.ajax({
         url: '/sischedule/checkDate', // 서버의 URL
@@ -236,6 +232,11 @@ $("#regiBtn").on("click",function(e){
             }
 
         }
+	  // 오늘 이후의 날짜만 등록할 수 있게
+    if (inputStartDate <= today || inputEndDate <= today) {
+        alert('오늘 날짜나 이전 날짜로는 예약할 수 없습니다.');
+        return;
+    }
 
         if(confirm('등록하시겠습니까?')){
             $("#actionFrm").submit();
