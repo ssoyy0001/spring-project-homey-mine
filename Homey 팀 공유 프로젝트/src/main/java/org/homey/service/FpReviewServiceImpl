@@ -108,6 +108,13 @@ public class FpReviewServiceImpl implements FpReviewService {
 		return praMapper.select(prNo);
 	}
 
+	
+	@Override	
+	public int searchMine(String mid, int fpNo) {			//내가 쓴 리뷰가 이미 존재하는지 확인
+		System.out.println(mid + fpNo);
+		return fpReviewMapper.searchMine(mid, fpNo);
+	}
+
 
 
 }
