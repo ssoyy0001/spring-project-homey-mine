@@ -251,7 +251,8 @@
 									<!-- fmt :  2023-10-18T12:30  >> 2023-10-18 오후 12시 30분 -->
 								</div>
 								<!-- 해피콜 희망 일시 수정  -->
-								<div class="form-group row" style="margin-bottom: 10px">
+								<c:if test="${empty cvo.qvoList}">
+								<div class="form-group row" style="margin-bottom: 10px" id="happyCallEditInput">
 									<label class="col-sm-5"
 										style="font-weight: bold; color: green;">수정할 해피콜 날짜와
 										시간을 선택하세요.</label>
@@ -260,6 +261,7 @@
 											value="${cvo.happyCall}" oninput="validateDateTime(this)">
 									</div>
 								</div>
+								</c:if>
 								<div class="alert alert-warning">
 									<p align="center">⚠️ 확인해주세요 ⚠️</p>
 									<p>✔️ 해피콜 운영시간은 평일 9시 ~ 오후 5시입니다. 10분 단위로만 선택해주세요.</p>
@@ -444,14 +446,14 @@
 											</div>
 											<div class="form-group row" style="margin-bottom: 10px">
 												<label class="col-sm-2">시공 비용</label>
-												<div class="col-sm-5">
+												<div class="col-sm-5" style="font-weight: bold;">
 													<fmt:formatNumber value="${qvo.constTotal}" pattern="#,###" />
 													원
 												</div>
 											</div>
 											<div class="form-group row" style="margin-bottom: 10px">
 												<label class="col-sm-2">철거 비용</label>
-												<div class="col-sm-5">
+												<div class="col-sm-5" style="font-weight: bold;">
 													<fmt:formatNumber value="${qvo.demolTotal}" pattern="#,###" />
 													원
 												</div>
@@ -460,7 +462,7 @@
 											<!-- 구분 -->
 											<div class="form-group row" style="margin-bottom: 10px">
 												<label class="col-sm-2">총 견적 금액</label>
-												<div class="col-sm-5">
+												<div class="col-sm-5" style="font-weight: bold; color:red ;">
 													<fmt:formatNumber value="${qvo.total}" pattern="#,###" />
 													원
 												</div>
@@ -991,6 +993,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	document.addEventListener("DOMContentLoaded", function() {
 	    var cancleButton = document.getElementById('CancleButton');
 	    var happycallEdit = document.getElementById('happycallEdit');
+	    var happyCallEditInput = document.getElementById('happyCallEditInput');
 	    var newBtn = document.getElementById('newBtn');
 	    if (statusVal === "상담 취소") {
 	        if(cancleButton) {
@@ -998,6 +1001,9 @@ document.addEventListener('DOMContentLoaded', function() {
 	        }
 	        if(happycallEdit) {
 	            happycallEdit.style.display = "none";
+	        }
+	        if(happyCallEditInput) {
+	        	happyCallEditInput.style.display = "none";
 	        }
 	        if(newBtn) {
 	        	newBtn.style.display = "none";
