@@ -11,16 +11,13 @@
 /*	게시글 제목(링크) 색상 */
 tbody a { color : 	#333333; }
 
-/* 게시글 제목(링크)에 마우스 올리면 진회색으로 표시 */
-tbody a:hover { color : black; }			
+/* 링크에 마우스 올리면 주황색으로 표시 */
+tbody a:hover { color : orange; }			
 
 
 /* 테이블의 텍스트 가운데 정렬, 제목만 왼쪽 정렬 */
 table {  text-align: center; }
 table td.title {    text-align: left;	}
-
-/* 당첨자 ID에 마우스 올릴 때 색상 변경 */
-table a:hover { color : orange; }	
 
 
 /* 클래스명 표시할 때 */
@@ -156,15 +153,6 @@ table a:hover { color : orange; }
 
   <a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
   <div id="preloader"></div>
-
-
-
-<script>
-
-
-
-
-</script>
 
 
 </body>
