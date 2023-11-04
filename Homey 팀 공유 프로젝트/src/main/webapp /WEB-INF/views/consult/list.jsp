@@ -107,6 +107,7 @@
                            견적 신청 날짜 :
                            <fmt:formatDate value="${cvo.consultDate}" pattern="yyyy-MM-dd" />
                         </p>
+                        <p>처리현황 : <strong>${cvo.status}</strong></p>
                         <a href="/consult/consultManage?consultNo=${cvo.consultNo}"
                            class="readmore stretched-link"
                            data-consultno="${cvo.consultNo}">상세조회 <i
