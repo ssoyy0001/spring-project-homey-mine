@@ -24,6 +24,6 @@ public interface OdReviewService {
 	public boolean remove(int orNo);												//삭제
 	public boolean modify(OdReviewVO orvo);									//수정
 	
-	public List<OdReviewAttachVO> attachList(int orNo);					//특정 리뷰의 첨부파일리스트 조회
-
+	public List<OdReviewAttachVO> attachList(int orNo);				//특정 리뷰의 첨부파일리스트 조회
+	public int searchMine(String mid, int odNo);							//내가 쓴 리뷰가 이미 존재하는지 건수로 확인
 }
