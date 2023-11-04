@@ -267,8 +267,12 @@ odDate.addEventListener('change', function () {
 var odDeadline = document.querySelector('input[name="odDeadline"]');
 odDeadline.setAttribute('data-original', odDeadline.value); 		//초기값 저장
 odDeadline.addEventListener('change', function () {
-    checkDate(this.value, this);
-
+	if (new Date(this.value) > new Date(odDate.value)) {
+        alert("진행일이 모집마감일보다 빠릅니다. \n 모집마감일을 다시 확인하세요.");
+        this.value = this.getAttribute('data-original');					 // 이전 값 그대로 유지
+    } else {
+        checkDate(this.value, this);
+    }
 
 });
 
