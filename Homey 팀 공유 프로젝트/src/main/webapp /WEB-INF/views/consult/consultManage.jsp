@@ -91,7 +91,7 @@
 						<article class="blog-details">
 							<!-- 견적상담 해피콜 및 처리현황 수정 폼 -->
 							<form action="/consult/modify" method="post" id="CancleForm">
-								<h2>견적 신청 내용 📒</h2>
+								<h2 id="consult"><strong>견적 상담 신청 내용 📒</strong></h2>
 								<!-- 4개 항목 시작  -->
 								<!-- https://icons.getbootstrap.com/ -->
 								<section id="stats-counter" class="stats-counter"
@@ -275,11 +275,13 @@
 										type="hidden" name="amount" value="${cri.amount}"> <input
 										type="hidden" name="type" value="${cri.type}"> <input
 										type="hidden" name="keyword" value="${cri.keyword}">
+									<!-- 견적서가 이미 등록됐다면 이 버튼도 안보여야함 -->
+									<c:if test="${empty cvo.qvoList}">
 									<!-- 해피콜 수정 -->
 									<button type="submit" class="btn btn-success" id="happycallEdit">해피콜 수정</button>
 									<!-- 견적상담 취소 -->
-									<button type="button" class="btn btn-danger" id="CancleButton"
-										>견적상담 취소</button>
+									<button type="button" class="btn btn-danger" id="CancleButton">견적상담 취소</button>
+									</c:if>
 								</div>
 							</form>
 						</article>
@@ -287,7 +289,7 @@
 
 						<!-- 방문 실측 스케줄 -->
 						<article class="blog-details" id="visit">
-							<h2>방문 실측 스케줄 📅</h2>
+							<h2><strong>방문 실측 스케줄 📅</strong></h2>
 							<div id='loading'>loading...</div>
 							<div id='calendar'></div>
 							<div id='script-warning'>
@@ -301,7 +303,7 @@
 						
 						<!-- 견적서 -->
 						<article class="blog-details">
-							<h2>견적서 📝</h2>
+							<h2><strong>견적서 📝</strong></h2>
 							<%-- 							<c:out value="${cvo.qvoList} "></c:out> --%>
 							<!-- 견적서 정보 표시 -->
 							<br>
@@ -405,39 +407,39 @@
 											<div class="form-group row" style="margin-bottom: 10px">
 												<label class="col-sm-2">철거항목</label>
 												<div class="col-sm-5">
-													<c:if test="${quotationItem.tilingD != 0}">도배/벽: <fmt:formatNumber value="${quotationItem.tilingD}" pattern="#,###" />원</c:if>
-													
-													<c:if test="${quotationItem.flooringD != 0}">
-													    <c:if test="${quotationItem.tilingD != 0}">, </c:if>바닥: <fmt:formatNumber value="${quotationItem.flooringD}" pattern="#,###" />원
-													</c:if>
-													
-													<c:if test="${quotationItem.kitchenD != 0}">
-													    <c:if test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0}">, </c:if>주방: <fmt:formatNumber value="${quotationItem.kitchenD}" pattern="#,###" />원
-													</c:if>
-													
-													<c:if test="${quotationItem.bathroomD != 0}">
-													    <c:if test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0 or quotationItem.kitchenD != 0}">, </c:if>욕실: <fmt:formatNumber value="${quotationItem.bathroomD}" pattern="#,###" />원
-													</c:if>
-													
-													<c:if test="${quotationItem.entranceD != 0}">
-													    <c:if test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0 or quotationItem.kitchenD != 0 or quotationItem.bathroomD != 0}">, </c:if>현관: <fmt:formatNumber value="${quotationItem.entranceD}" pattern="#,###" />원
-													</c:if>
-													
-													<c:if test="${quotationItem.balconyD != 0}">
-													    <c:if test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0 or quotationItem.kitchenD != 0 or quotationItem.bathroomD != 0 or quotationItem.entranceD != 0}">, </c:if>발코니: <fmt:formatNumber value="${quotationItem.balconyD}" pattern="#,###" />원
-													</c:if>
-													
-													<c:if test="${quotationItem.lightingD != 0}">
-													    <c:if test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0 or quotationItem.kitchenD != 0 or quotationItem.bathroomD != 0 or quotationItem.entranceD != 0 or quotationItem.balconyD != 0}">, </c:if>조명: <fmt:formatNumber value="${quotationItem.lightingD}" pattern="#,###" />원
-													</c:if>
-													
-													<c:if test="${quotationItem.doorD != 0}">
-													    <c:if test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0 or quotationItem.kitchenD != 0 or quotationItem.bathroomD != 0 or quotationItem.entranceD != 0 or quotationItem.balconyD != 0 or quotationItem.lightingD != 0}">, </c:if>문: <fmt:formatNumber value="${quotationItem.doorD}" pattern="#,###" />원
-													</c:if>
-													
-													<c:if test="${quotationItem.etcD != 0}">
-													    <c:if test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0 or quotationItem.kitchenD != 0 or quotationItem.bathroomD != 0 or quotationItem.entranceD != 0 or quotationItem.balconyD != 0 or quotationItem.lightingD != 0 or quotationItem.doorD != 0}">, </c:if>그 외: <fmt:formatNumber value="${quotationItem.etcD}" pattern="#,###" />원
-													</c:if>
+												<c:if test="${quotationItem.tilingD != 0}">도배/벽: <fmt:formatNumber value="${quotationItem.tilingD}" pattern="#,###" />원</c:if>
+												
+												<c:if test="${quotationItem.flooringD != 0}">
+												    <c:if test="${quotationItem.tilingD != 0}">, </c:if>바닥: <fmt:formatNumber value="${quotationItem.flooringD}" pattern="#,###" />원
+												</c:if>
+												
+												<c:if test="${quotationItem.kitchenD != 0}">
+												    <c:if test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0}">, </c:if>주방: <fmt:formatNumber value="${quotationItem.kitchenD}" pattern="#,###" />원
+												</c:if>
+												
+												<c:if test="${quotationItem.bathroomD != 0}">
+												    <c:if test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0 or quotationItem.kitchenD != 0}">, </c:if>욕실: <fmt:formatNumber value="${quotationItem.bathroomD}" pattern="#,###" />원
+												</c:if>
+												
+												<c:if test="${quotationItem.entranceD != 0}">
+												    <c:if test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0 or quotationItem.kitchenD != 0 or quotationItem.bathroomD != 0}">, </c:if>현관: <fmt:formatNumber value="${quotationItem.entranceD}" pattern="#,###" />원
+												</c:if>
+												
+												<c:if test="${quotationItem.balconyD != 0}">
+												    <c:if test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0 or quotationItem.kitchenD != 0 or quotationItem.bathroomD != 0 or quotationItem.entranceD != 0}">, </c:if>발코니: <fmt:formatNumber value="${quotationItem.balconyD}" pattern="#,###" />원
+												</c:if>
+												
+												<c:if test="${quotationItem.lightingD != 0}">
+												    <c:if test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0 or quotationItem.kitchenD != 0 or quotationItem.bathroomD != 0 or quotationItem.entranceD != 0 or quotationItem.balconyD != 0}">, </c:if>조명: <fmt:formatNumber value="${quotationItem.lightingD}" pattern="#,###" />원
+												</c:if>
+												
+												<c:if test="${quotationItem.doorD != 0}">
+												    <c:if test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0 or quotationItem.kitchenD != 0 or quotationItem.bathroomD != 0 or quotationItem.entranceD != 0 or quotationItem.balconyD != 0 or quotationItem.lightingD != 0}">, </c:if>문: <fmt:formatNumber value="${quotationItem.doorD}" pattern="#,###" />원
+												</c:if>
+												
+												<c:if test="${quotationItem.etcD != 0}">
+												    <c:if test="${quotationItem.tilingD != 0 or quotationItem.flooringD != 0 or quotationItem.kitchenD != 0 or quotationItem.bathroomD != 0 or quotationItem.entranceD != 0 or quotationItem.balconyD != 0 or quotationItem.lightingD != 0 or quotationItem.doorD != 0}">, </c:if>그 외: <fmt:formatNumber value="${quotationItem.etcD}" pattern="#,###" />원
+												</c:if>
 												</div>
 											</div>
 											<div class="form-group row" style="margin-bottom: 10px">
@@ -521,7 +523,9 @@
 							<!-- END 견적상담 삭제 -->
 						</div>
 						<a href="#visit" class="btn btn-primary float-end"
-							style="margin-top: 5px">방문 실측 스케줄 보기</a>
+							style="margin-top: 5px; margin-left: 5px">방문 실측 스케줄 보기</a>
+						<a href="#consult" class="btn btn-primary float-end"
+							style="margin-top: 5px">견적 상담 내용 보기</a>
 						<!-- END 견적상담 관리 버튼들 모음-->
 
 					</div>
@@ -970,23 +974,35 @@ document.addEventListener('DOMContentLoaded', function() {
 	<script src="/resources/js/quotation.js"></script>
 	<script>
 	// -------------------------------- 견적상담 관련 --------------------------------
-	
 	// 견적상담 취소 버튼 클릭 시 의사 재확인 ---------------------
-	document.getElementById('CancleButton').addEventListener('click', function(event) {
-    var confirmation = confirm('정말로 이 견적상담을 취소하시겠습니까?\n취소 사유를 좌측 하단의 문의톡을 통해 알려주시면\nHOMEY 서비스의 발전에 많은 도움이 됩니다. 😊');
-    if (confirmation) {
-        cancelConsult();
-    	}
-	});
+	var cancleButton = document.getElementById('CancleButton');
+	if(cancleButton) {
+	    cancleButton.addEventListener('click', function(event) {
+	    var confirmation = confirm('정말로 이 견적상담을 취소하시겠습니까?\n취소 사유를 좌측 하단의 문의톡을 통해 알려주시면\nHOMEY 서비스의 발전에 많은 도움이 됩니다. 😊');
+	    if (confirmation) {
+	        cancelConsult();
+	        }
+	    });
+	}
 	// END 견적상담 취소 버튼 클릭 시 의사 재확인  ---------------------
 	
 	// 페이지 로드 시 처리현황에 따라 상담 취소 버튼 숨김 처리
 	var statusVal = '${cvo.status}'
 	document.addEventListener("DOMContentLoaded", function() {
-		if (statusVal === "상담 취소") {
-			document.getElementById("CancleButton").style.display = "none";
-			document.getElementById("happycallEdit").style.display = "none";
-		}
+	    var cancleButton = document.getElementById('CancleButton');
+	    var happycallEdit = document.getElementById('happycallEdit');
+	    var newBtn = document.getElementById('newBtn');
+	    if (statusVal === "상담 취소") {
+	        if(cancleButton) {
+	            cancleButton.style.display = "none";
+	        }
+	        if(happycallEdit) {
+	            happycallEdit.style.display = "none";
+	        }
+	        if(newBtn) {
+	        	newBtn.style.display = "none";
+	        }
+	    }
 	});
 	// END 페이지 로드 시 처리현황에 따라 상담 취소 버튼 숨김 처리
 	
