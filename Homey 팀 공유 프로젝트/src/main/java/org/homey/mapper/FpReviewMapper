@@ -23,6 +23,7 @@ public interface FpReviewMapper {
 	public int delete(int prNo);											//리뷰 삭제
 	public int update(FpReviewVO prvo);								//리뷰 수정
 	
-	public int updateHit(@Param("prNo")int prNo);				//조회수 업데이트	
+	public int updateHit(@Param("prNo")int prNo);													//조회수 업데이트
+	public int searchMine(@Param("mid")String mid, @Param("fpNo")int fpNo);			//내가 쓴 리뷰가 이미 존재하는지 확인
 	
 }
