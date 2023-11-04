@@ -18,11 +18,11 @@ public class SiScheduleVO {
 	@JsonProperty("title")//json으로 값반환시 이름 지정  풀캘린더사용을 위함
 	private String workCrew;
 	@JsonProperty("start")
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "UTC")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
 	//timezone을 Asia/Seoul로 하게되면 풀캘린더에 끝나는 날짜가 하루적게 보여지게됨 DB시간대와 안맞아서 그러는듯  
 	private Date startDate;
 	@JsonProperty("end")
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "UTC")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
 	private Date endDate;
 	
 	private String startDateStr;//input type="date"의 값을 Date로 전환시 사용
