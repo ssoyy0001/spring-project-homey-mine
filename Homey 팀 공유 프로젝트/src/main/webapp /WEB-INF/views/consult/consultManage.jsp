@@ -278,8 +278,8 @@
 									<!-- 해피콜 수정 -->
 									<button type="submit" class="btn btn-success" id="happycallEdit">해피콜 수정</button>
 									<!-- 견적상담 취소 -->
-									<button type="submit" class="btn btn-danger" id="CancleButton"
-										onclick="cancelConsult()">견적상담 취소</button>
+									<button type="button" class="btn btn-danger" id="CancleButton"
+										>견적상담 취소</button>
 								</div>
 							</form>
 						</article>
@@ -293,19 +293,9 @@
 							<div id='script-warning'>
 								<code>fail</code>
 							</div>
-							<c:forEach items="${cvo.vvoList}" var="vvo">
-								<div id="visitNo" style="display: none;">${vvo.visitNo}</div>
-							</c:forEach>
-							<!-- 실험  -->
-							<%-- 							<c:forEach items="${cvo.vvoList}" var="vvo"> --%>
-							<!-- 								<div class="alert alert-light"> -->
-							<!-- 									<div class="form-group row" style="margin-bottom: 10px"> -->
-							<!-- 										<label class="col-sm-2">방문 실측 스케줄 번호</label> -->
-							<%-- 										<div class="col-sm-5">${vvo.visitNo}</div> --%>
-							<!-- 									</div> -->
-							<!-- 								</div> -->
-							<%-- 							</c:forEach> --%>
-
+<%-- 							<c:forEach items="${cvo.vvoList}" var="vvo"> --%>
+<%-- 								<div id="visitNo" style="display: none;">${vvo.visitNo}</div> --%>
+<%-- 							</c:forEach> --%>
 						</article>
 						<!-- END 방문 실측 스케줄 -->
 						
@@ -983,6 +973,15 @@ document.addEventListener('DOMContentLoaded', function() {
 	<script src="/resources/js/quotation.js"></script>
 	<script>
 	// -------------------------------- 견적상담 관련 --------------------------------
+	
+	// 견적상담 취소 버튼 클릭 시 의사 재확인 ---------------------
+	document.getElementById('CancleButton').addEventListener('click', function(event) {
+    var confirmation = confirm('정말로 이 견적상담을 취소하시겠습니까?\n취소 사유를 좌측 하단의 문의톡을 통해 알려주시면\nHOMEY 서비스의 발전에 많은 도움이 됩니다. 😊');
+    if (confirmation) {
+        cancelConsult();
+    	}
+	});
+	// END 견적상담 취소 버튼 클릭 시 의사 재확인  ---------------------
 	
 	// 페이지 로드 시 처리현황에 따라 상담 취소 버튼 숨김 처리
 	var statusVal = '${cvo.status}'
