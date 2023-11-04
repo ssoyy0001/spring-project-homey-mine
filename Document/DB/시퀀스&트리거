@@ -27,7 +27,7 @@ CREATE SEQUENCE scrab_seq INCREMENT BY 1 START WITH 1;
 
 
 
--- visit 트리거
+-- (visit 트리거)
 CREATE OR REPLACE TRIGGER visit_insert_trigger
 AFTER INSERT ON visit
 FOR EACH ROW
@@ -37,7 +37,7 @@ BEGIN
    WHERE consultNo = :new.consultNo;
 END;
 
--- quotation 트리거
+-- (quotation 트리거)
 CREATE OR REPLACE TRIGGER quotation_insert_trigger
 AFTER INSERT ON quotation
 FOR EACH ROW
@@ -47,7 +47,17 @@ BEGIN
    WHERE consultNo = :new.consultNo;
 END;
 
--- 회원가입시 권한테이블추가
+--(견적서 삭제 시 status 변경)
+create or replace TRIGGER quotation_delete_trigger
+AFTER DELETE ON quotation
+FOR EACH ROW
+BEGIN
+   UPDATE consult
+   SET status = '방문 실측 예정'
+   WHERE consultNo = :old.consultNo;
+END;
+
+-- (회원가입시 권한테이블추가)
 CREATE OR REPLACE TRIGGER member_insert_trigger
 AFTER INSERT ON member
 FOR EACH ROW
@@ -55,5 +65,5 @@ BEGIN
   INSERT INTO memberauth (mid, auth) VALUES (:new.mid, 'ROLE_MEMBER');
 END;
 
--- AS 문의 트리거
+-- (AS 문의 시퀀스)
 CREATE SEQUENCE bno_seq  INCREMENT BY 1 START WITH 1;
