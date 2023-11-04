@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
 <%@ include file="../includes/header.jsp" %>	
 
 
@@ -67,20 +69,24 @@
 <div class="d-flex justify-content-center">
     <form action="/asboard/aslist" id="searchFrm" class="d-inline">
         <select name="type">
-            <option value="mid" <c:if test="${pageDTO.cri.type == 'mid'}">selected</c:if>>작성자</option>
-            <option value="status" <c:if test="${pageDTO.cri.type == 'status'}">selected</c:if>>처리 상황</option>
-            <option value="regdate" <c:if test="${pageDTO.cri.type == 'regdate'}">selected</c:if>>작상얼자</option>
-        </select>
+    <option value="mid" <c:if test="${pageDTO.cri.type == 'mid'}">selected</c:if>>작성자</option>
+    <option value="status" <c:if test="${pageDTO.cri.type == 'status'}">selected</c:if>>처리 상황</option>
+    <option value="regdate" <c:if test="${pageDTO.cri.type == 'regdate'}">selected</c:if>>등록일</option>
+    <option value="title" <c:if test="${pageDTO.cri.type == 'title'}">selected</c:if>>제목</option>
+</select>
         <input type="text" name="keyword" value="${pageDTO.cri.keyword}" placeholder="검색어를 입력하세요">
-        <button class="btn btn-default btn-sm searchBtn" type="submit"><i class= "bi bi-search"></i></button>
-        <input type= "hidden"name= "pageNum"value= "${pageDTO.cri.pageNum}">
-        <input type= "hidden"name= "amount"value= "${pageDTO.cri.amount}">
+        <<button class="btn btn-default btn-sm searchBtn" type="submit" onclick="document.getElementById('pageNum').value=1; document.getElementById('actionFrmPageNum').value=1;"><i class="bi bi-search"></i></button>
+<input type="hidden" id="pageNum" name="pageNum" value="${pageDTO.cri.pageNum}">
+<input type="hidden" id="actionFrmPageNum" name="pageNum" form="actionFrm" value="${pageDTO.cri.pageNum}">
+
     </form>
 </div>
 
 <div class = "d-flex justify-content-end mt-3">
     <!-- AS 문의하기 버튼 -->
+<sec:authorize access="!hasRole('ROLE_ADMIN')">
     <a href="/asboard/asregister"class = "btn btn-primary">AS 문의하기</a>
+</sec:authorize>ㄴ
     <!-- END AS 문의하기 버튼 -->
 </div> 
 <!-- END 검색 :: AS 번호 -->
@@ -92,12 +98,12 @@
 <ul class="pagination justify-content-center">
 <c:if test="${pageDTO.prev}">
 <li class="page-item">
-<a href="/asboard/asmylist?pageNum=${pageDTO.start - 1}" class="page-link">« Previous</a>
+<a href="/asboard/aslist?pageNum=${pageDTO.start - 1}" class="page-link">« Previous</a>
 </li>
 </c:if>
 <c:forEach begin="${pageDTO.start}" end="${pageDTO.end}" var="i">
 <li class="page-item ${pageDTO.cri.pageNum == i ? 'active' : ''}">
-<a href="/asboard/asmylist?pageNum=${i}" class="page-link">${i}</a>
+<a href="/asboard/aslist?pageNum=${i}" class="page-link">${i}</a>
 </li>
 </c:forEach>
 <c:if test="${pageDTO.next}">
