@@ -24,6 +24,10 @@
    justify-content: center;
    margin-top: 10px;
 }
+/* 총 견적신청내역 개수 강조 */
+#totalSpan {
+	color: #ffc107
+}
 </style>
 </head>
 <body>
@@ -53,7 +57,7 @@
             <div class="row g-3">
             <div class="col-lg-9 mx-auto">
                <!-- 견적상담 개수 표시 구간  -->
-               <h3>견적 신청내역 ${totalCount }개</h3>
+               <h3>견적 신청내역 <span id="totalSpan">${totalCount }개</span></h3>
                <hr>
                <!-- END 견적상담 개수 표시 구간  -->
 
@@ -75,6 +79,7 @@
                   <input type="hidden" name="pageNum" value="${pageDTO.cri.pageNum}">
                   <input type="hidden" name="amount" value="${pageDTO.cri.amount}">
                </form>
+               <br>
                <!-- 페이지 번호와 페이지에 표시할 게시물의 수 -->
                <!-- END 검색 :: 견적 상담번호 -->
 
@@ -95,9 +100,9 @@
                         <div class="icon">
                            <i class="fa-solid fa-mountain-city"></i>
                         </div>
-                        <h3>${cvo.buildingType},${cvo.address}</h3>
+                        <h3>${cvo.buildingType},<br>${cvo.address}</h3>
                         <!-- 제목 -->
-                        <p>견적 상담 번호 : ${cvo.consultNo}</p>
+                        <p>견적 상담 번호 : <strong>${cvo.consultNo}</strong></p>
                         <p>
                            견적 신청 날짜 :
                            <fmt:formatDate value="${cvo.consultDate}" pattern="yyyy-MM-dd" />
@@ -114,6 +119,7 @@
                <!-- 반복될 구간 END -->
 </div>
                <!-- 페이징 -->
+               <br>
                <div>
                   <ul class="pagination custom-pagination">
                      <!-- bootstrap4부터는 pull이 아니라 float , float-end는 오른쪽 끝-->
