@@ -65,5 +65,16 @@ BEGIN
   INSERT INTO memberauth (mid, auth) VALUES (:new.mid, 'ROLE_MEMBER');
 END;
 
--- (AS 문의 시퀀스)
+-- (AS 문의 트리거)
 CREATE SEQUENCE bno_seq  INCREMENT BY 1 START WITH 1;
+
+
+-- (제품 나눔 게시글의 나눔현황 변경 트리거)
+CREATE TRIGGER update_fpState_trigger
+BEFORE UPDATE ON freePdt
+FOR EACH ROW
+BEGIN
+    IF :NEW.fpNowPeople = :NEW.fpPeople THEN
+        :NEW.fpState := 1;
+    END IF;
+END;
