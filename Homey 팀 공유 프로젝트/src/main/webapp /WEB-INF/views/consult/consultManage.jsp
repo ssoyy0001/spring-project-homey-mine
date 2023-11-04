@@ -845,15 +845,24 @@ document.addEventListener('DOMContentLoaded', function() {
                console.log(jsondata);
                
                $(function saveData(jsondata) {
-               $.ajax({
-                   url: "/visit/add", // 변경하기
-                   method: "POST",
-                   dataType: "json",
-                   data: JSON.stringify(events),
-                   contentType: 'application/json',
-               });
-               calendar.unselect();
-               location.reload(); // 페이지 새로고침
+            	   $.ajax({
+            		    url: "/visit/add", // 변경하기
+            		    method: "POST",
+            		    dataType: "json",
+            		    data: JSON.stringify(events),
+            		    contentType: 'application/json',
+            		    success: function() {
+            		    },
+            		    error: function(xhr) {
+            		        // 오류가 발생한 경우
+            		        if (xhr.status === 400) {
+            		            // BadRequest 오류인 경우
+            		            alert("해당 견적상담번호가 존재하지 않습니다.");
+            		        }
+            		            location.reload();
+            		    }
+            		});
+            	   //
                });
               }, // END navLinkDayClick
 
