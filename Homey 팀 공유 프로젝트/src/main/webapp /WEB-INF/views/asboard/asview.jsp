@@ -94,6 +94,12 @@
         </div>
     </fieldset>
 </c:if>
+<sec:authorize access="hasRole('ROLE_ADMIN')">
+    <input type="hidden" id="isAdmin" value="true">
+</sec:authorize>
+<sec:authorize access="!hasRole('ROLE_ADMIN')">
+    <input type="hidden" id="isAdmin" value="false">
+</sec:authorize>
 
 
                         <div class="text-center">
@@ -131,12 +137,14 @@ var bno = '${asBoardVO.bno}'; //bno 값을 설정해주세요.
 $(document).ready(function() {
     $('.btn-warning').on('click', function(e) { // 수정 버튼에 이벤트 핸들러를 추가합니다.
         var replyContent = '${asBoardVO.replyContent}'; // 답변의 내용을 가져옵니다.
-        if (replyContent) { // 답변이 존재하면
+        var isAdmin = $('#isAdmin').val() === 'true'; // 사용자가 관리자인지 확인합니다.
+        if (replyContent && !isAdmin) { // 답변이 존재하고 사용자가 관리자가 아니면
             e.preventDefault(); // 버튼의 기본 동작(폼 제출)을 막습니다.
             alert('관리자가 답변을 작성했습니다. 수정할 수 없습니다.'); // 알림을 띄웁니다.
         }
     });
 });
+
 
 $('.removeBtn').on('click', function() {
     if(confirm('삭제하시겠습니까?')) {
