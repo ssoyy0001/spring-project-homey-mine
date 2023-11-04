@@ -39,7 +39,7 @@
 				class="container position-relative d-flex flex-column align-items-center"
 				data-aos="fade">
 				<h2>
-					<a href="/consult/list">나의 견적상담 전체 조회</a>
+					<a>나의 견적상담 전체 조회</a>
 				</h2>
 				<!-- 클릭시 초기 리스트로 -->
 			</div>
