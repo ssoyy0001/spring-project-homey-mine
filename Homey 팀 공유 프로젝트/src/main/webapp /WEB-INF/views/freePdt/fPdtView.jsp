@@ -178,8 +178,11 @@
 			</sec:authorize>
 		</div>
 	</form>
-    				
+    <br><br><br>
+    
+    			
     <!-- ======= 제품 나눔 신청 폼 ======= -->
+    <sec:authorize access="not hasRole('ROLE_ADMIN')"><!-- 관리자가 아닐 경우에 신청폼 표시 -->
     <section id="blog" class="blog">
       <div class="container" data-aos="fade-up" data-aos-delay="100">
         <div class="row g-5">
@@ -237,7 +240,7 @@
         </div>
       </div>
     </section><!-- End Blog Details Section -->
-
+	</sec:authorize>
 
 </main><!-- End #main -->
 
