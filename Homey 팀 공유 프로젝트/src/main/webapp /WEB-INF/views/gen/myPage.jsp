@@ -74,7 +74,7 @@
               </div>
               <h3>나의 AS 문의</h3>
                <br><br>
-              <a href="service-details.html" class="readmore stretched-link">Learn more <i class="bi bi-arrow-right"></i></a>
+              <a href="/asboard/myList" class="readmore stretched-link">Learn more <i class="bi bi-arrow-right"></i></a>
             </div>
           </div><!-- End Service Item -->
 	  <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="600">
