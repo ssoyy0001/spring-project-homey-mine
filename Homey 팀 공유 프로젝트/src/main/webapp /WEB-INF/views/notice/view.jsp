@@ -65,7 +65,7 @@
 			</div><!-- End meta top -->
 
 		<div class="content">
-			<p>${nvo.notCont }</p>
+			<pre>${nvo.notCont }</pre>
 		</div>
 				<br>
 				<hr>
