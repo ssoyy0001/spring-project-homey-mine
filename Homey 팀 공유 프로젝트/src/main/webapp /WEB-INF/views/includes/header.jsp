@@ -85,7 +85,6 @@
 				<ul>
 					<li><a href="/showcase/caseList">시공사례</a></li>
 					<li><a href="/consult/register">견적상담</a></li>
-					<li><a href="#">시공후기</a></li>
 					<li class="dropdown"><a href="#"><span>이벤트</span> 
 					<i class="bi bi-chevron-down dropdown-indicator"></i></a>
 					<ul>
@@ -98,19 +97,18 @@
 							<li><a href="/odReview/list">원데이클래스 리뷰</a></li>
 							<li><a href="/fpReview/list">제품 나눔 리뷰</a></li>
 						</ul></li>
-					<li><a href="#">인테리어 매거진</a></li>
 					<li class="dropdown"><a href="#"><span>기타</span> <i
 							class="bi bi-chevron-down dropdown-indicator"></i></a>
 						<ul>
-							<li><a href="#">문의게시판</a></li>
-<sec:authorize access="hasRole('ROLE_ADMIN')">
-   <li><a href="/asboard/aslist">AS 문의 게시판</a></li>
-</sec:authorize>
-
-<sec:authorize access="hasRole('ROLE_MEMBER')">
-   <li><a href="/asboard/asmylist">나의 AS 문의 게시판</a></li>
-</sec:authorize>							<li><a href="/notice/list">공지게시판</a></li>
-						</ul></li>
+					<sec:authorize access="hasRole('ROLE_ADMIN')">
+					   <li><a href="/asboard/aslist">AS 문의 게시판</a></li>
+					</sec:authorize>
+					
+					<sec:authorize access="hasRole('ROLE_MEMBER')">
+					   <li><a href="/asboard/asmylist">나의 AS 문의 게시판</a></li>
+					</sec:authorize>
+					<li><a href="/notice/list">공지게시판</a></li>
+											</ul></li>
 				</ul>
 			</nav>
 						<!-- common 시작, 보이는건 c:if문으로 판별해주세요 -->
