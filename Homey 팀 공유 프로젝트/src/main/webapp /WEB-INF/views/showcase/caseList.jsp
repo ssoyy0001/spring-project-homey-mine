@@ -21,7 +21,16 @@
 		</div>
 	</div>
 	<!-- End Breadcrumbs -->
-
+		<c:if test="${empty showcase }">
+				<div class="row">
+				<div class="col" align="center"> 
+					<p class="alert alert-warning p-5">
+						등록된 게시글이 없습니다.
+					</p>
+				</div>
+				</div>
+			</c:if>	
+	<c:if test="${!empty showcase }">
 	<!-- ======= Our Projects Section ======= -->
 	<section id="projects" class="projects">
 		<div class="container" data-aos="fade-up">
@@ -170,6 +179,7 @@
 
 		</div>
 	</section>
+</c:if>
 	<div class="pull-right">
 		<ul class="pagination justify-content-center custom-pagination">
 			<%-- 이전 버튼 --%>
