@@ -119,7 +119,7 @@ table td.title {    	text-align: left;
 					        </td>
 					        <td><fmt:formatDate value="${odrvo.odReqDate}" pattern="yyyy-MM-dd" /></td>
 					        <c:if test="${odrvo.odReqWin == 1}"><!-- 당첨일 때에만 후기작성버튼 표시 -->
-					        <td><button class="btn btn-success btn-sm" id="regiReviewBtn" data-fpno="${fpvo.fpNo}">후기 작성</button></td>
+					        <td><button class="btn btn-success btn-sm regiReviewBtn" data-odno="${odrvo.odNo}">후기 작성</button></td>
 					        </c:if>
 					    </tr>
 					</c:forEach>
@@ -169,7 +169,7 @@ table td.title {    	text-align: left;
 //[후기작성]버튼이 클릭됐을 때, 이미 작성된 후기가 있는지 체크
 
 $(document).ready(function () {
-        $("#regiReviewBtn").click(function () {
+        $(".regiReviewBtn").click(function () {
             var odNo = $(this).data("odno");
             var mid = '<sec:authentication property="principal.Username"/>';
             $.ajax({
