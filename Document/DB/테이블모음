@@ -95,7 +95,7 @@ CREATE TABLE notice (
     mid VARCHAR2(50) NOT NULL,
     notCategory VARCHAR2(50) NOT NULL,
     notTitle VARCHAR2(999) NOT NULL,
-    notCont VARCHAR2(999) NOT NULL,
+    notCont CLOB NOT NULL,
     notHit NUMBER NOT NULL,
     notDate DATE DEFAULT SYSDATE NOT NULL
 );
