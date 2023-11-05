@@ -45,7 +45,7 @@
 								<div class="swiper-slide">
 
 									<img src="/display?fileName=" id="image_${status.index}">
-									<!--이새끼 이상함  -->
+									
 
 								</div>
 								<script type="text/javascript">
@@ -129,7 +129,17 @@
 	<!-- End #main -->
 
 	<%@ include file="../includes/footer.jsp"%>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
 	<script type="text/javascript">
+$('.fa-star').hover(
+  function() {
+    $(this).addClass('animate__animated animate__heartBeat');
+  },
+  function() {
+    $(this).removeClass('animate__animated animate__heartBeat');
+  }
+);
 	var mid=$('#mid').val();
 	var scid='${view.scid}';
 	var csrfHeaderName = '${_csrf.headerName}';//csrf 토큰 관련 변수
