@@ -56,6 +56,8 @@
 		</div>
 	</section>
 </main>
+<link href="../resources/fullcalendar/main.css" rel="stylesheet" />
+<script src="../resources/fullcalendar/main.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
 	$(function() {
