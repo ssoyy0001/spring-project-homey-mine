@@ -82,7 +82,8 @@
 										<i class="fa-solid fa-star fa-beat" id="star_${status.index}" style="background-color: none"></i>
 									<div  style="margin-left: auto;justify-content: center;">
 									<c:if test="${status.index<3}"	>
-									<span style="background-color: black;color: white;font-weight: bold;">　BEST　</span></c:if>
+									<c:if test="${showcase.scrabCnt != 0}"	>
+									<span style="background-color: black;color: white;font-weight: bold;">　BEST　</span></c:if></c:if>
 									</div></div>
 									<p>${showcase.scTitle}</p>
 									<a href="${showcase.scid }" title="More Details"
