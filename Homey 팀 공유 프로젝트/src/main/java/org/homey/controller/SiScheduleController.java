@@ -2,6 +2,7 @@ package org.homey.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -30,18 +31,25 @@ import lombok.extern.log4j.Log4j;
 public class SiScheduleController {
 	private SiScheduleService sicheService;
 	private SiRequestService sireqService;
+	
 	@GetMapping("sicheList")
-
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public void sicheList() {
-
 	}
 
-	@GetMapping("list")//풀켈린더에서 사용되는 ajax ,list를 반환
+	@GetMapping("list")
 	@ResponseBody
 	public ResponseEntity<List<SiScheduleVO>> getAllSchedules() {
 		List<SiScheduleVO> list = sicheService.sicheList();
+		for (SiScheduleVO siche : list) {
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(siche.getEndDate());
+			cal.add(Calendar.DAY_OF_MONTH, 1);
+			siche.setEndDate(cal.getTime());
+		}
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
+	
 	@GetMapping("sicheMyList")
 	public void sicheMyList(String mid) {
 		
