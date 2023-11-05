@@ -32,7 +32,8 @@
 					<li><select class="buildingType">
 							<option value=""
 								${pageDTO.cri.buildingType == null ? '' : (pageDTO.cri.buildingType eq '' ? 'selected' : '')}>주거유형(전체)</option>
-							<option ${pageDTO.cri.buildingType == '빌라' ? 'selected' : ''}>빌라</option>
+							<option ${pageDTO.cri.buildingType == '아파트' ? 'selected' : ''}>아파트</option>							
+							<option ${pageDTO.cri.buildingType == '빌라' ? 'selected' : ''}>빌라</option>	
 							<option ${pageDTO.cri.buildingType == '주택' ? 'selected' : ''}>주택</option>
 							<option ${pageDTO.cri.buildingType == '오피스텔' ? 'selected' : ''}>오피스텔</option>
 							<option ${pageDTO.cri.buildingType == '그외' ? 'selected' : ''}>그외</option>
