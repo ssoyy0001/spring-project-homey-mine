@@ -76,7 +76,7 @@
 						<div class="portfolio-description">
 							<div style="display: flex; align-items: baseline;">
 								<h1>${view.scTitle }</h1>
-								<p>　　${view.scDate }</p>
+								<p>　　<fmt:formatDate value="${view.scDate }" pattern="yyyy-MM-dd" /></p>
 								<div style="margin-left: auto;">
 									<i class="fa-solid fa-star fa-2x" id="star"style="color:black;">${view.scrabCnt}</i>
 								</div>
