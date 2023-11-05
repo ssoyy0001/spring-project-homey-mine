@@ -51,6 +51,7 @@ public class SiScheduleController {
 	}
 	
 	@GetMapping("sicheMyList")
+	@PreAuthorize("isAuthenticated()")
 	public void sicheMyList(String mid) {
 		
 	}
@@ -62,6 +63,7 @@ public class SiScheduleController {
 	}
 	
 	@GetMapping({"sicheView","sicheModify"})
+	@PreAuthorize("isAuthenticated()")
 	public void view(int sicheNo,Model model) {
 		model.addAttribute("sicheVO",sicheService.sicheView(sicheNo));
 	}
@@ -95,6 +97,7 @@ public class SiScheduleController {
 		
 		}
 	@GetMapping("sicheRegist")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public void sicheRegist(int sireqNo,Model model) {
 		model.addAttribute("sireqVO",sireqService.get(sireqNo));
 	}
