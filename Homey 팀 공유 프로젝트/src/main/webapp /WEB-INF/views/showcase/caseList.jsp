@@ -21,7 +21,7 @@
 		</div>
 	</div>
 	<!-- End Breadcrumbs -->
-		<c:if test="${empty showcase }">
+		<c:if test="${empty list }">
 				<div class="row">
 				<div class="col" align="center"> 
 					<p class="alert alert-warning p-5">
@@ -30,7 +30,7 @@
 				</div>
 				</div>
 			</c:if>	
-	<c:if test="${!empty showcase }">
+	<c:if test="${!empty list }">
 	<!-- ======= Our Projects Section ======= -->
 	<section id="projects" class="projects">
 		<div class="container" data-aos="fade-up">
