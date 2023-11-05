@@ -43,10 +43,12 @@ public class GenController {
 	}
 
 	@GetMapping("admin")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public void adminPage() {
 	}
 
 	@GetMapping("myPage")
+	@PreAuthorize("isAuthenticated()")
 	public void myPage() {
 	}
 
@@ -67,9 +69,6 @@ public class GenController {
 		log.info(mvo);
 		return "redirect:/gen/login";
 	}
-	@GetMapping("jusoPopup")//csrf문제로 취소
-	public void jusoApi() {}
-
 	@PostMapping("checkId")
 	@ResponseBody
 	public ResponseEntity<String> checkId(@RequestParam("mid") String mid) {// 아이디 중복체크
