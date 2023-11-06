@@ -12,8 +12,8 @@
 	.regiItem {		width: 200px;	}
 	.imgNotice {	font-size: 10px; color: lightcoral;   }
 	.odWriter{		width: 200px;	
-						border: none; /* 테두리 없음 */
-        				outline: none; /* 포커스 표시 없음 */	}
+						border: none;
+        				outline: none;	}
 </style>
 
 </head>
@@ -61,7 +61,7 @@
 	            
 	            <div class="form-group mt-3">
 	                <label class="regiItemNm"><strong>* 진행일시</strong></label>
-	                <input type="text" name="odDate" class="regiItem" value="${odvo.odDate}">
+	                <input type="datetime-local" name="odDate" class="regiItem" value="${odvo.odDate}">
 	            </div>
 	            
 	            <div class="form-group mt-3">
@@ -86,7 +86,7 @@
 	            
 	            <div class="form-group mt-3">
 	                <label class="regiItemNm"><strong>* 모집마감일</strong></label>
-	                <input type="date" name="odDeadline" value="${odvo.odDeadline}" min="2020-01-01" max="2030-12-31">
+	                <input type="date" name="odDeadline" class="regiItem" value="${odvo.odDeadline}" min="2020-01-01" max="2030-12-31">
 	            </div>
 	            
 	            <div class="form-group mt-3">
