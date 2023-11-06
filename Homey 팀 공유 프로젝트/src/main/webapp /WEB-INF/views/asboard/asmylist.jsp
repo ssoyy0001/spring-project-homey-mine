@@ -63,20 +63,6 @@
         </table>
     </div>
 </section>
-<!-- End AS 목록 표시 구간 -->
-<div class="d-flex justify-content-center">
-    <form action="/asboard/asmylist" id="searchFrm" class="d-inline">
-        <select name="type">
-            <option value="mid" <c:if test="${pageDTO.cri.type == 'mid'}">selected</c:if>>작성자</option>
-            <option value="status" <c:if test="${pageDTO.cri.type == 'status'}">selected</c:if>>처리 상황</option>
-            <option value="regdate" <c:if test="${pageDTO.cri.type == 'regdate'}">selected</c:if>>작성 일자</option>
-        </select>
-        <input type="text" name="keyword" value="${pageDTO.cri.keyword}" placeholder="검색어를 입력하세요">
-        <button class="btn btn-default btn-sm searchBtn" type="submit"><i class= "bi bi-search"></i></button>
-        <input type= "hidden"name= "pageNum"value= "${pageDTO.cri.pageNum}">
-        <input type= "hidden"name= "amount"value= "${pageDTO.cri.amount}">
-    </form>
-</div>
 
 <div class = "d-flex justify-content-end mt-3">
     <!-- AS 문의하기 버튼 -->
