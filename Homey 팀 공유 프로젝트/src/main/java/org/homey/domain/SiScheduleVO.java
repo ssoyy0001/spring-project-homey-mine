@@ -32,12 +32,6 @@ public class SiScheduleVO {
    private int total;//견적서,시공의뢰에서 값을 받기위함
    private String buildingType;
    private int pyeongsu;
-   
-   public void setEndDate(Date endDate) {
-       Calendar cal = Calendar.getInstance();
-       cal.setTime(endDate);
-       cal.add(Calendar.DAY_OF_MONTH, 1);
-       this.endDate = cal.getTime();
-   }
+
 
 }
