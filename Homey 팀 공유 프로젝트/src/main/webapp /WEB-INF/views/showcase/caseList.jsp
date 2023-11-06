@@ -45,7 +45,7 @@
 							<option ${pageDTO.cri.buildingType == '빌라' ? 'selected' : ''}>빌라</option>	
 							<option ${pageDTO.cri.buildingType == '주택' ? 'selected' : ''}>주택</option>
 							<option ${pageDTO.cri.buildingType == '오피스텔' ? 'selected' : ''}>오피스텔</option>
-							<option ${pageDTO.cri.buildingType == '그외' ? 'selected' : ''}>그외</option>
+							<option ${pageDTO.cri.buildingType == '그 외' ? 'selected' : ''}>그 외</option>
 					</select></li>
 					<li><select class="sizeRange">
 							<option value=""
