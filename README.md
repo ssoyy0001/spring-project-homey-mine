@@ -44,5 +44,8 @@ Spring Framework 의 MVC 패턴 기법을 적용하여 제작한 인테리어 �
 
 ## 📕 DB구성- ERD
 
+## 📕 폴더 구조
+
+                
 ## 📕 노션 주소
 https://www.notion.so/spring-Homey-230921-a9a5c333415343f18e46b4ef6af407f7
