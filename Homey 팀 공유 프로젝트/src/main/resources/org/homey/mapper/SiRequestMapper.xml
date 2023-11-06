@@ -107,10 +107,11 @@
 		WHERE quoNo = #{quoNo}  
 	  </update>
 	  
+	  <!-- 시공의뢰 등록 -->
 	  <!-- insert -->
 		<insert id="insert">
 	   		INSERT INTO SIREQ(sireqNo, quoNo, itemNo, consultNo, mid, mname, sireqDate, sigongTotal, sireqStatus, payStatus, sireqUpdateDate)
-	   		VALUES(sireq_seq.nextval, #{qvo.quoNo}, #{itemNo}, #{consultNo}, #{mid}, #{mname}, SYSDATE, #{sigongTotal}, DEFAULT, DEFAULT, SYSDATE)
+	   		VALUES(sireq_seq.nextval, #{quotationvo.quoNo}, #{ivo.itemNo}, #{consultvo.consultNo}, #{mvo.mid}, #{mvo.mname}, SYSDATE, #{sigongTotal}, DEFAULT, DEFAULT, SYSDATE)
 		
 	  	</insert>	
 	  
@@ -150,31 +151,36 @@
 		 	  <trim prefix="OR">
 		 		<choose>
 		 			<when test="type == 'N'.toString()">
-		 				mname LIKE '%'||#{keyword}||'%'
+		 				sireqNo LIKE '%'||#{keyword}||'%'
 		 			</when>
-		 			<when test="type == 'Q'.toString()">
-		 				quoNo LIKE '%'||#{keyword}||'%'
+		 			<when test="type == 'S'.toString()">
+		 				sireqStatus LIKE '%'||#{keyword}||'%'
+		 			</when>
+		 			<when test="type == 'P'.toString()">
+		 				payStatus LIKE '%'||#{keyword}||'%'
 		 			</when>
 				</choose>
 		 	  </trim>
 		 	</foreach>
 		 </trim>
 	  </sql>
+	  
+	  <!-- <include refid="SireqCriteria"></include>	 -->
 		
 		<!-- 시공의뢰 전체조회 -->
 	   <select id="getListWithPaging" resultMap="sireqMap">    
 	  			<![CDATA[ SELECT
 					    sireqNo, quoNo, mid, mname, sireqDate, sireqStatus, payStatus, sireqUpdateDate
 					FROM
-					    (
-					    SELECT 
-					         /*+INDEX_DESC(sireq PK_SIREQ) */
-					        rownum rn, s.sireqNo, q.quoNo, m.mid, m.mname, s.sireqDate, s.sireqStatus, s.payStatus, s.sireqUpdateDate
+					    ( SELECT /*+INDEX_DESC(sireq PK_SIREQ) */
+					        rownum rn, s.sireqNo, q.quoNo, m.mid, 
+					        m.mname, s.sireqDate, s.sireqStatus, 
+					        s.payStatus, s.sireqUpdateDate
 					    FROM sireq s
 					    JOIN member m ON s.mid = m.mid
 						JOIN quotation q ON s.quoNo = q.quoNo
 						WHERE ]]>
-	    			 	    
+								<include refid="SireqCriteria"></include>
 	    			 	<![CDATA[   rownum <= #{amount} * #{pageNum})										
 						WHERE rn > #{amount} * ( #{pageNum} - 1 )
 	   					ORDER BY sireqDate DESC
@@ -196,10 +202,10 @@
 				    i.tiling, i.tilingD, i.flooring, i.flooringD, i.kitchen, i.kitchenD, i.bathroom, i.bathroomD, i.entrance, i.entranceD, i.balcony, i.balconyD, i.lighting, i.lightingD, i.door, i.doorD, i.etc, i.etcD, 
 				    q.demolTotal, q.constTotal, s.sigongTotal, s.sireqStatus, s.payStatus
 				    FROM sireq s
-                    join MEMBER m on s.mid = m.mid
-                    join CONSULT c on m.mid = c.mid
-                    join ITEM i on c.consultNo = i.consultNo
-                    join QUOTATION q on i.itemNo = q.itemNo )
+                    join member m on s.mid = m.mid
+                    join QUOTATION q on s.quoNo = q.quoNo
+                    join CONSULT c on q.consultNo = c.consultNo
+                    join ITEM i on c.consultNo = i.consultNo   )
     	WHERE sireqNo = #{sireqNo}
 
   	</select>
@@ -213,17 +219,12 @@
   	<update id="update">
 	UPDATE 	SIREQ
 	SET		
-			quoNo = #{sireq.quotationvo.quoNo}, 
-			itemNo = #{sireq.ivo.itemNo}, 
-			consultNo = #{sireq.consultvo.consultNo},
-			mid = #{sireq.mvo.mid}, 
-			mname = #{sireq.mvo.mname},
-			sigongTotal = #{sireq.sigongTotal},
-			sireqStatus= #{sireq.sireqStatus}, 
-			payStatus = #{sireq.payStatus},
+			sigongTotal = #{sigongTotal, jdbcType=NUMERIC},
+			sireqStatus= #{sireqStatus, jdbcType=VARCHAR}, 
+			payStatus = #{payStatus, jdbcType=VARCHAR},
 			sireqUpdateDate = SYSDATE
 			
-	WHERE	sireqNo = #{sireqNo}  
+	WHERE	sireqNo = #{sireqNo, jdbcType=NUMERIC}  
   	</update>
   	
   	<!-- 나의 시공의뢰 전체조회 -->
