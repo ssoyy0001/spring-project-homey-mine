@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="../includes/header.jsp"%>
-
+<!-- fullCalendar -->
+<link href="../resources/fullcalendar/main.css" rel="stylesheet" />
+<script src="../resources/fullcalendar/main.js"></script>
 <style>
 #loading {
 	display: none;
@@ -56,9 +58,7 @@
 		</div>
 	</section>
 </main>
-<!-- fullCalendar -->
-<link href="../resources/fullcalendar/main.css" rel="stylesheet" />
-<script src="../resources/fullcalendar/main.js"></script>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
 	$(function() {
