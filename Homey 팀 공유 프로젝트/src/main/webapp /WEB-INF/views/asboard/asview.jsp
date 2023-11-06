@@ -7,7 +7,7 @@
     <!-- ======= Breadcrumbs ======= -->
     <div class="breadcrumbs d-flex align-items-center" style="background-image: url('../resources/assets/img/breadcrumbs-bg.jpg');">
         <div class="container position-relative d-flex flex-column align-items-center" data-aos="fade">
-            <h2>AS 문의 등록</h2>
+            <h2>AS 문의글</h2>
         </div>
     </div>
     <!-- End Breadcrumbs -->
@@ -26,6 +26,8 @@
                     <form action="/asboard/asmodify">
                         <div class="form-group" style="border: 1px solid #000; background-color: #f2f2f2; padding: 10px;">
                             <h2> 제목: ${asBoardVO.title}</h2>
+                            <h3>AS 번호: ${asBoardVO.bno}</h3>
+                            
                             <table style="width: 100%;">
                                 <tr>
                                     <td style="width: 10%;"><strong>작성자:</strong> ${asBoardVO.mid}</td>

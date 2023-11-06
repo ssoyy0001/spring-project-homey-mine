@@ -17,39 +17,41 @@
              <form action="/asboard/asmodify" method="post" role="form" enctype="multipart/form-data">
 <div class="form-group" style="border: 1px solid #000; background-color: #f2f2f2; padding: 10px;">
     <label for="title">제목:</label>
-    <input type="text" id="title" name="title" value="${asBoardVO.title}" required/>
+    <input type="text" id="title" name="title" value="${asBoardVO.title}" required style="margin-bottom: 10px;"/> <!-- CSS를 추가하여 제목 아래에 마진을 추가합니다. -->
     <table style="width: 100%;">
         <tr>
+        <td style="width: 20%;">
+                <label for="bno">AS 번호:</label>
+                <input type="text" id="bno" name="bno" value="${asBoardVO.bno}" disabled/>
+            </td>
             <td style="width: 10%;">
                 <strong>작성자:</strong>
-                <input type="text" name="mid" value="${asBoardVO.mid}" readonly/>
+                <input type="text" name="mid" value="${asBoardVO.mid}" disabled/>
             </td>
         <td style="width: 10%;">
-<strong>작성일:</strong>
-<input type="text" name="regDate" value="<fmt:formatDate value="${asBoardVO.regDate}" pattern="yyyy-MM-dd"/>"disabled>
-
-</td>
- <c:if test="${asBoardVO.regDate != asBoardVO.updateDate}">
-    <td style="width: 10%;"><strong>수정일:</strong> <fmt:formatDate value="${asBoardVO.updateDate}" pattern="yyyy-MM-dd (E)"/></td>
-</c:if>
-    <strong>처리상황:</strong>
-    <sec:authorize access="hasRole('ROLE_ADMIN')">
-        <!-- 관리자인 경우 -->
-        <select name="status">
-            <option value="답변 대기중" ${asBoardVO.status == '답변 대기중' ? 'selected' : ''}>답변 대기중</option>
-            <option value="답변 완료" ${asBoardVO.status == '답변 완료' ? 'selected' : ''}>답변 완료</option>
-        </select>
-    </sec:authorize>
-    <sec:authorize access="!hasRole('ROLE_ADMIN')">
-        <!-- 관리자가 아닌 경우 -->
-        <p>${asBoardVO.status}</p>
-    </sec:authorize>
-</td>
-
-
+            <strong>작성일:</strong>
+            <input type="text" name="regDate" value="<fmt:formatDate value="${asBoardVO.regDate}" pattern="yyyy-MM-dd"/>"disabled>
+        </td>
+        <c:if test="${asBoardVO.regDate != asBoardVO.updateDate}">
+            <td style="width: 10%;"><strong>수정일:</strong> <fmt:formatDate value="${asBoardVO.updateDate}" pattern="yyyy-MM-dd (E)"/></td>
+        </c:if>
+        <td style="width: 10%;"><strong>처리상황:</strong>
+            <sec:authorize access="hasRole('ROLE_ADMIN')">
+                <!-- 관리자인 경우 -->
+                <select name="status">
+                    <option value="답변 대기중" ${asBoardVO.status == '답변 대기중' ? 'selected' : ''}>답변 대기중</option>
+                    <option value="답변 완료" ${asBoardVO.status == '답변 완료' ? 'selected' : ''}>답변 완료</option>
+                </select>
+            </sec:authorize>
+            <sec:authorize access="!hasRole('ROLE_ADMIN')">
+                <!-- 관리자가 아닌 경우 -->
+                <p>${asBoardVO.status}</p>
+            </sec:authorize>
+        </td>
         </tr>
     </table>
 </div>
+
                     <div class="form-group" style="border: 1px solid #000; background-color: #f2f2f2; padding: 20px; margin-bottom: 20px;">
     <div class="row">
         <div class="col-lg-6">
