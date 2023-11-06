@@ -12,4 +12,5 @@ public interface SiScheduleService {
 	public List<SiScheduleVO> checkDate(String workCrew);
 	public boolean sicheRegister(SiScheduleVO sicheVO);
 	public boolean sicheRemove(int sicheNo);
+	public int checkSicheRegist(int sireqNo);
 }
