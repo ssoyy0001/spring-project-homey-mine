@@ -65,7 +65,7 @@
 
 	            <div class="form-group mt-3">
 		            <label class="regiItemNm"><strong>* 내    용</strong></label>
-		            <textarea class="form-control" name="mailContent" id="" rows="10"  placeholder=""></textarea>
+		            <textarea class="form-control" name="mailContent" id="" rows="10"  placeholder="문의 답변 알림 메일 내용을 입력하세요"></textarea>
 	        	</div>
 	            
 	            <br>
@@ -78,6 +78,8 @@
 	            <div class="text-center" id="btn-group">
 	            	<a href="/asboard/aslist" class="btn btn-secondary">목록으로</a>
 				<button type="submit" class="btn btn-warning regBtn">전송</button>
+				<button type="button" class="btn btn-danger" id="cancelBtn">취소</button>
+				
 	            </div>
 	            
 	        </form>
@@ -113,13 +115,12 @@
 <script>
 
 //메일 전송 폼에서 [취소] 버튼 클릭 시 
-function insertCancel(event){
-	if(confirm('작성하던 글이 모두 사라집니다. \n메일 작성을 취소하시겠습니까?')){
-		 history.back(); 
-    }else if(!cancel){
-        	  event.preventDefault();
-    };
-}
+$('#cancelBtn').click(function() {
+    if (confirm('작성하던 글이 모두 사라집니다.메일 작성을 취소하시겠습니까?')) {
+        history.back(); 
+    }
+});
+
 
 
 //원데이클래스 등록 폼에서 [등록] 버튼 클릭 시
