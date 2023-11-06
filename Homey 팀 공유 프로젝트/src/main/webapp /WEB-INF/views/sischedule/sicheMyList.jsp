@@ -43,7 +43,7 @@
 
 		</div>
 	</div>
-	<section id="projects" class="projects">
+	<section id="projects"  class="projects blog">
 		<div class="container" data-aos="fade-up">
 			<div class="row justify-content-between gy-4 mt-4">
 				<div class="col-lg-9 mx-auto">
@@ -56,8 +56,6 @@
 		</div>
 	</section>
 </main>
-<link href="../resources/fullcalendar/main.css" rel="stylesheet" />
-<script src="../resources/fullcalendar/main.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
 	$(function() {
