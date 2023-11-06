@@ -2,14 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ include file="../includes/header.jsp" %>   
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js"></script>
 
-<style>
-
-               
-
-
-
-</style>
 <!--======= main ======= -->
 	<main id="main">
 
@@ -49,7 +43,7 @@
                
                <div class="form-group" style="display: flex; justify-content: center;">
    <button type="reset" class="btn btn-default">새로 고침</button>
-   <button type="button" class="btn btn-warning" onclick="history.back()">취소</button>
+<button type="button" class="btn btn-warning" onclick="return confirmCancel()">취소</button>
    <button type="submit" class="btn btn-primary">등록</button>
 </div>
 
@@ -119,8 +113,23 @@
 		
 		frm.append(hiddenTag);
 		frm.submit();
+		// 서버로부터 응답이 온 후 실행할 코드
+	    frm.ajaxSubmit({
+	        success: function() {
+	            alert('문의가 작성되었습니다.'); // 알림 띄우기
+	        }
+	    });
 	});//END submit 버튼 이벤트 처리 -------------
 	
+	function confirmCancel() {
+	    var result = confirm('주의! 작성한 글이 삭제됩니다.');
+	    if (result) {
+	        history.back();
+	    } else {
+	        return false;
+	    }
+	}
+
 	
 	//업로드 제한 확인 ------------------------
  	var regEx = new RegExp("(.*?)\.(exe|sh|zip)$");  

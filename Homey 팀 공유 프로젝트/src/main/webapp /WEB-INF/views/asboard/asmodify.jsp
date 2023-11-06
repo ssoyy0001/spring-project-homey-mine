@@ -129,7 +129,9 @@
 
     $('button[type="submit"]').on('click', function(e){
         e.preventDefault();
-
+        if (!confirm('수정하시겠습니까?')) {
+            return;
+        }
         var title = $('input[name="title"]').val();
         var content = $('textarea[name="content"]').val();
 
@@ -147,6 +149,11 @@
         });
         frm.append(hiddenTag);
         frm.submit();
+        frm.ajaxSubmit({
+            success: function() {
+                alert('문의가 수정되었습니다.'); // 알림 띄우기
+            }
+        });
     });
 
     var regEx = new RegExp("(.*?)\.(exe|sh|zip)$");

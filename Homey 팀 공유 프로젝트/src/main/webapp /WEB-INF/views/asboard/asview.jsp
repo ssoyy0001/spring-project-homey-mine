@@ -27,7 +27,7 @@
                         <div class="form-group" style="border: 1px solid #000; background-color: #f2f2f2; padding: 10px;">
                             <h2> 제목: ${asBoardVO.title}</h2>
                             <h3>AS 번호: ${asBoardVO.bno}</h3>
-                            
+                           
                             <table style="width: 100%;">
                                 <tr>
                                     <td style="width: 10%;"><strong>작성자:</strong> ${asBoardVO.mid}</td>
