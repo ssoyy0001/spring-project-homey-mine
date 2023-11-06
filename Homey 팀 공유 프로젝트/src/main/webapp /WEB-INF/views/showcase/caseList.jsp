@@ -21,16 +21,8 @@
 		</div>
 	</div>
 	<!-- End Breadcrumbs -->
-		<c:if test="${empty list }">
-				<div class="row">
-				<div class="col" align="center"> 
-					<p class="alert alert-warning p-5">
-						등록된 게시글이 없습니다.
-					</p>
-				</div>
-				</div>
-			</c:if>	
-	<c:if test="${!empty list }">
+
+
 	<!-- ======= Our Projects Section ======= -->
 	<section id="projects" class="projects">
 		<div class="container" data-aos="fade-up">
@@ -41,11 +33,12 @@
 					<li><select class="buildingType">
 							<option value=""
 								${pageDTO.cri.buildingType == null ? '' : (pageDTO.cri.buildingType eq '' ? 'selected' : '')}>주거유형(전체)</option>
-							<option ${pageDTO.cri.buildingType == '아파트' ? 'selected' : ''}>아파트</option>							
-							<option ${pageDTO.cri.buildingType == '빌라' ? 'selected' : ''}>빌라</option>	
+							<option ${pageDTO.cri.buildingType == '아파트' ? 'selected' : ''}>아파트</option>
+							<option ${pageDTO.cri.buildingType == '빌라' ? 'selected' : ''}>빌라</option>
 							<option ${pageDTO.cri.buildingType == '주택' ? 'selected' : ''}>주택</option>
 							<option ${pageDTO.cri.buildingType == '오피스텔' ? 'selected' : ''}>오피스텔</option>
-							<option ${pageDTO.cri.buildingType == '그 외' ? 'selected' : ''} value="그 외">그외</option>
+							<option ${pageDTO.cri.buildingType == '그 외' ? 'selected' : ''}
+								value="그 외">그외</option>
 					</select></li>
 					<li><select class="sizeRange">
 							<option value=""
@@ -58,9 +51,8 @@
 					<li><select class="totalRange">
 							<option value=""
 								${pageDTO.cri.totalRange == null ? '' : (pageDTO.cri.totalRange eq '' ? 'selected' : '')}>비용(전체)</option>
-							<option
-								${pageDTO.cri.totalRange == '1000만원이하' ? 'selected' : ''} value="1000만원이하">1000만원
-								이하</option>
+							<option ${pageDTO.cri.totalRange == '1000만원이하' ? 'selected' : ''}
+								value="1000만원이하">1000만원 이하</option>
 							<option ${pageDTO.cri.totalRange == '1000만원+' ? 'selected' : ''}>1000만원+</option>
 							<option ${pageDTO.cri.totalRange == '2000만원+' ? 'selected' : ''}>2000만원+</option>
 							<option ${pageDTO.cri.totalRange == '3000만원+' ? 'selected' : ''}>3000만원+</option>
@@ -68,41 +60,57 @@
 					</select></li>
 
 				</ul>
-				<!-- End Projects Filters -->
-				<!-- End Projects Filters -->
-						<sec:authorize access="isAuthenticated()">
-							<input type="hidden" id="mid"
-								value="<sec:authentication property='principal.username' />">
-						</sec:authorize>
-						<sec:authorize access="!isAuthenticated()">
-							<input type="hidden" id="mid" value="">
-						</sec:authorize>
-				<div class="row gy-4 portfolio-container" data-aos="fade-up"
-					data-aos-delay="200">
-					<c:forEach items="${list}" var="showcase" varStatus="status">
-						<div class="col-lg-4 col-md-6 portfolio-item filter-remodeling">
-							<div class="portfolio-content h-100">
-								<!-- imageId 변수로 img 태그의 id 속성 값을 설정합니다. -->
-								<img src="../resources/assets/img/projects/construction-1.jpg"
-									class="img-fluid" id="image_${status.index}"
-									style="height: 300px">
-								<div class="portfolio-info">
-								<div style="display: flex; ">
-										<i class="fa-solid fa-star fa-beat" id="star_${status.index}" style="background-color: none"></i>
-									<div  style="margin-left: auto;justify-content: center;">
-									<c:if test="${status.index<3}"	>
-									<c:if test="${showcase.scrabCnt != 0}"	>
-									<span style="background-color: black;color: white;font-weight: bold;">　BEST　</span></c:if></c:if>
-									</div></div>
-									<p>${showcase.scTitle}</p>
-									<a href="${showcase.scid }" title="More Details"
-										class="details-link" style="left: 45%"> <i
-										class="fa-solid fa-plus"></i></a>
+				<!--등록된 게시물 없을시  -->
+				<c:if test="${empty list }">
+					<div class="row">
+						<div class="col" align="center">
+							<p class="alert alert-warning p-5">등록된 게시글이 없습니다.</p>
+						</div>
+					</div>
+				</c:if>
+				<!--END -->
+				
+			
+					<sec:authorize access="isAuthenticated()">
+						<input type="hidden" id="mid"
+							value="<sec:authentication property='principal.username' />">
+					</sec:authorize>
+					<sec:authorize access="!isAuthenticated()">
+						<input type="hidden" id="mid" value="">
+					</sec:authorize>
+					<c:if test="${!empty list }">
+					<div class="row gy-4 portfolio-container" data-aos="fade-up"
+						data-aos-delay="200">
+						<c:forEach items="${list}" var="showcase" varStatus="status">
+							<div class="col-lg-4 col-md-6 portfolio-item filter-remodeling">
+								<div class="portfolio-content h-100">
+									<!-- imageId 변수로 img 태그의 id 속성 값을 설정합니다. -->
+									<img src="../resources/assets/img/projects/construction-1.jpg"
+										class="img-fluid" id="image_${status.index}"
+										style="height: 300px">
+									<div class="portfolio-info">
+										<div style="display: flex;">
+											<i class="fa-solid fa-star fa-beat" id="star_${status.index}"
+												style="background-color: none"></i>
+											<div style="margin-left: auto; justify-content: center;">
+												<c:if test="${status.index<3}">
+													<c:if test="${showcase.scrabCnt != 0}">
+														<span
+															style="background-color: black; color: white; font-weight: bold;">
+															BEST </span>
+													</c:if>
+												</c:if>
+											</div>
+										</div>
+										<p>${showcase.scTitle}</p>
+										<a href="${showcase.scid }" title="More Details"
+											class="details-link" style="left: 45%"> <i
+											class="fa-solid fa-plus"></i></a>
+									</div>
 								</div>
-							</div>
 
-							<!-- JavaScript 코드를 여기에 배치합니다 -->
-							<script type="text/javascript">
+								<!-- JavaScript 코드를 여기에 배치합니다 -->
+								<script type="text/javascript">
      var upFolder = "${showcase.attachList[0].upFolder.replace("\\", "/")}";
       var uuid = "${showcase.attachList[0].uuid}";
       var fileName = "${showcase.attachList[0].fileName}";
@@ -167,19 +175,19 @@
 	updateStar(starId);
     </script>
 
-						</div>
-						<!-- End Projects Item -->
-					</c:forEach>
+							</div>
+							<!-- End Projects Item -->
+						</c:forEach>
 
 
-				</div>
-				<!-- End Projects Container -->
-
+					</div>
+					<!-- End Projects Container -->
+				</c:if>
 			</div>
 
 		</div>
 	</section>
-</c:if>
+
 	<div class="pull-right">
 		<ul class="pagination justify-content-center custom-pagination">
 			<%-- 이전 버튼 --%>
@@ -212,8 +220,8 @@
 			value="${pageDTO.cri.totalRange}"> <input type="hidden"
 			name="sizeRange" value="${pageDTO.cri.sizeRange}"> <input
 			type="hidden" name="buildingType" value="${pageDTO.cri.buildingType}">
-			<input type="hidden" name="${_csrf.parameterName }"
-									value="${_csrf.token }">
+		<input type="hidden" name="${_csrf.parameterName }"
+			value="${_csrf.token }">
 	</form>
 	<!-- End Our Projects Section -->
 
