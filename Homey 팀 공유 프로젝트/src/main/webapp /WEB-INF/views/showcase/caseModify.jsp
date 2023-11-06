@@ -129,7 +129,7 @@
 								<div class="text-center" id="btn-group">
 									<button type="button" class="btn btn-secondary"
 										onclick="insertCancel(event);">취소</button>
-									<button type="submit" class="btn btn-warning regBtn">등록</button>
+									<button type="submit" class="btn btn-warning regBtn">수정</button>
 								</div>
 
 							</form>
