@@ -65,7 +65,7 @@
 
 	            <div class="form-group mt-3">
 		            <label class="regiItemNm"><strong>* 내    용</strong></label>
-		            <textarea class="form-control" name="mailContent" id="" rows="10"  placeholder="당첨 안내 고지"></textarea>
+		            <textarea class="form-control" name="mailContent" id="" rows="10"  placeholder=""></textarea>
 	        	</div>
 	            
 	            <br>
