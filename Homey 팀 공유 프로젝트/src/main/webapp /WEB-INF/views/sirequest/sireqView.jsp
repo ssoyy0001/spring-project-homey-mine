@@ -639,8 +639,12 @@ rgba
 											<button type="submit" data-oper="remove"
 												class="btn btn-danger"
 												onclick="location.href='/sirequest/sireqRemove?sireqNo=<c:out value="${sireq.sireqNo }"/>'">삭제</button>
-											<a href="/sischedule/sicheRegist?sireqNo=${sireq.sireqNo}">시공팀
-												작업 등록</a>
+											<c:if test="${checkRegist ==0}">
+											<a href="/sischedule/sicheRegist?sireqNo=${sireq.sireqNo}"class="btn btn-primary">시공팀
+												작업 등록</a></c:if>
+											<c:if test="${checkRegist > 0}">
+											<button type="button" class="btn btn-outline-primary" disabled>작업등록 완료</button>
+											</c:if>
 
 											<!-- 페이지 번호와 페이지에 표시할 게시물의 수, 검색 타입, 키워드 -->
 											<input type="hidden" name="type" value="${cri.type}">
