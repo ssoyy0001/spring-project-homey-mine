@@ -12,4 +12,5 @@ public interface SiScheduleMapper {
 	public int sicheUpdate(SiScheduleVO sicheVO);
 	public List<SiScheduleVO> checkDate(String workCrew);
 	public int sicheDelete (int sicheNo);
+	public int checkSicheRegist(int sireqNo);//시공의뢰에서  시공팀 작업이 등록이 되엇나 확인;
 }
