@@ -30,8 +30,8 @@
 		q.consultNo = c.consultNo
 		WHERE s.sicheNo=#{sicheNo}
 	</select>
-
-	<!-- <insert id=""> INSERT INTO siche() VALUES(); </insert> -->
+	
+	
 	<update id="sicheUpdate">
 		UPDATE siche
 		SET balanceStatus =#{balanceStatus
@@ -55,4 +55,8 @@
 	    VALUES(siche_seq.NEXTVAL,#{sireqNo},#{mid},#{startDate},#{endDate},
 	    	  #{balanceStatus},#{constructionStatus},#{workCrew},#{quoNo})
 	</insert>
+	
+	<select id="checkSicheRegist" resultType="int" >
+	SELECT COUNT(*) FROM siche WHERE sireqNo=#{sireqNo}
+	</select>
 </mapper>
