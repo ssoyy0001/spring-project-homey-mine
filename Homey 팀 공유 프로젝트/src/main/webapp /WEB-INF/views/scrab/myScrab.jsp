@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="../includes/header.jsp"%>
+<style>
+.alert{height: 300px;}
+</style>
+<body>
 <main id="main">
 	<c:if test="${!empty msg }">
 		<script>
@@ -40,6 +44,14 @@
 						<sec:authorize access="!isAuthenticated()">
 							<input type="hidden" id="mid" value="">
 						</sec:authorize>
+						<c:if test="${empty list }">
+					<div class="row">
+						<div class="col" align="center">
+							<p class="alert alert-warning p-5">등록된 게시글이 없습니다.</p>
+						</div>
+					</div>
+				</c:if>
+				<c:if test="${not empty list }">
 						<div class="row gy-4 portfolio-container" data-aos="fade-up"
 							data-aos-delay="200">
 							<c:forEach items="${list}" var="showcase" varStatus="status">
@@ -135,7 +147,7 @@
 
 						</div>
 						<!-- End Projects Container -->
-
+						</c:if>
 					</div>
 				</div><%@ include file="../includes/sideMenuMem.jsp"%></div>
 
@@ -179,6 +191,7 @@
 	<!-- End Our Projects Section -->
 
 </main>
+</body>
 <!-- End #main -->
 <script>
 var actionFrm = $('#actionFrm');
