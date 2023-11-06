@@ -78,3 +78,31 @@ BEGIN
         :NEW.fpState := 1;
     END IF;
 END;
+
+-- (시공의뢰)
+-- payStatus 값이 '계약금완료'로 업데이트되었을 때 sireqStatus를 '계약완료'로 업데이트
+create or replace TRIGGER update_sireq_status
+BEFORE UPDATE OF sireqStatus ON sireq FOR EACH ROW
+BEGIN
+  IF :new.payStatus = '계약금완료' THEN
+    :new.sireqStatus := '계약완료';
+  END IF;
+END;
+
+-- payStatus 값이 '계약금미납'로 업데이트되었을 때 sireqStatus를 '의뢰접수'로 업데이트
+create or replace TRIGGER update_sireq_status2
+BEFORE UPDATE OF sireqStatus ON sireq FOR EACH ROW
+BEGIN
+  IF :new.payStatus = '계약금미납' THEN
+    :new.sireqStatus := '의뢰접수';
+  END IF;
+END;
+
+-- payStatus 값이 '계약금환불'로 업데이트되었을 때 sireqStatus를 '계약취소'로 업데이트
+create or replace TRIGGER update_sireq_status3
+BEFORE UPDATE OF sireqStatus ON sireq FOR EACH ROW
+BEGIN
+  IF :new.payStatus = '계약금환불' THEN
+    :new.sireqStatus := '계약취소';
+  END IF;
+END;
