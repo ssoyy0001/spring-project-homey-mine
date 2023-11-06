@@ -69,7 +69,7 @@
         <select name="type">
             <option value="mid" <c:if test="${pageDTO.cri.type == 'mid'}">selected</c:if>>작성자</option>
             <option value="status" <c:if test="${pageDTO.cri.type == 'status'}">selected</c:if>>처리 상황</option>
-            <option value="regdate" <c:if test="${pageDTO.cri.type == 'regdate'}">selected</c:if>>작상얼자</option>
+            <option value="regdate" <c:if test="${pageDTO.cri.type == 'regdate'}">selected</c:if>>작성 일자</option>
         </select>
         <input type="text" name="keyword" value="${pageDTO.cri.keyword}" placeholder="검색어를 입력하세요">
         <button class="btn btn-default btn-sm searchBtn" type="submit"><i class= "bi bi-search"></i></button>
