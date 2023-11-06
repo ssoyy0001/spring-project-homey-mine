@@ -290,7 +290,7 @@
 								<br> 
 									<label for="datetime">날짜와 시간을 선택하세요 <br>
 									    <input type="datetime-local" id="happyCall" name="happyCall"
-									    value="" oninput="validateDateTime(this)">
+									    value="" oninput="validateDateTime(this)" required>
 									    <!-- 함수 사용 -->
 								</label> <br>
 								<!-- HAPPYCALL END -->
