@@ -67,19 +67,19 @@
 </section>
 <!-- End AS 목록 표시 구간 -->
 <div class="d-flex justify-content-center">
-    <form action="/asboard/aslist" id="searchFrm" class="d-inline">
-        <select name="type">
-    <option value="mid" <c:if test="${pageDTO.cri.type == 'mid'}">selected</c:if>>작성자</option>
-    <option value="status" <c:if test="${pageDTO.cri.type == 'status'}">selected</c:if>>처리 상황</option>
-    <option value="regdate" <c:if test="${pageDTO.cri.type == 'regdate'}">selected</c:if>>등록일</option>
-    <option value="title" <c:if test="${pageDTO.cri.type == 'title'}">selected</c:if>>제목</option>
-</select>
-        <input type="text" name="keyword" value="${pageDTO.cri.keyword}" placeholder="검색어를 입력하세요">
-        <<button class="btn btn-default btn-sm searchBtn" type="submit" onclick="document.getElementById('pageNum').value=1; document.getElementById('actionFrmPageNum').value=1;"><i class="bi bi-search"></i></button>
-<input type="hidden" id="pageNum" name="pageNum" value="${pageDTO.cri.pageNum}">
-<input type="hidden" id="actionFrmPageNum" name="pageNum" form="actionFrm" value="${pageDTO.cri.pageNum}">
+	    <form action="/asboard/aslist" id="searchFrm" class="d-inline">
+    <select id="searchType" name="type">
+        <option value="mid" <c:if test="${pageDTO.cri.type == 'mid'}">selected</c:if>>작성자</option>
+        <option value="status" <c:if test="${pageDTO.cri.type == 'status'}">selected</c:if>>처리 상황</option>
+        <option value="title" <c:if test="${pageDTO.cri.type == 'title'}">selected</c:if>>제목</option>
+        <option value="regdate" <c:if test="${pageDTO.cri.type == 'regdate'}">selected</c:if>>등록일</option>
+    </select>
+    <input id="searchKeyword" type="text" name="keyword" value="${pageDTO.cri.keyword}" placeholder="검색어를 입력하세요">
+    <button class="btn btn-default btn-sm searchBtn" type="submit" onclick="return validateSearch();"><i class="bi bi-search"></i></button>
+    <input type="hidden" id="pageNum" name="pageNum" value="${pageDTO.cri.pageNum}">
+    <input type="hidden" id="actionFrmPageNum" name="pageNum" form="actionFrm" value="${pageDTO.cri.pageNum}">
+</form>
 
-    </form>
 </div>
 
 <div class = "d-flex justify-content-end mt-3">
@@ -130,9 +130,28 @@
     
   
 </main>
+<script>
+function isValidDate(dateString) {
+    var regEx = /^\d{4}-\d{2}-\d{2}$/;
+    if(!dateString.match(regEx)) return false;  // Invalid format
+    var d = new Date(dateString);
+    var dNum = d.getTime();
+    if(!dNum && dNum !== 0) return false; // NaN value, Invalid date
+    return d.toISOString().slice(0,10) === dateString;
+}
 
-<!-- 스크립트 및 푸터 등의 내용은 필요에 따라 추가하세요. -->
-
+function validateSearch() {
+    var type = document.getElementById('searchType').value;
+    var keyword = document.getElementById('searchKeyword').value;
+    if (type === 'regdate' && !isValidDate(keyword)) {
+        alert('날짜 형식이 올바르지 않습니다. yyyy-mm-dd 형식으로 입력해주세요.');
+        return false;
+    }
+    document.getElementById('pageNum').value = 1;
+    document.getElementById('actionFrmPageNum').value = 1;
+    return true;
+}
+</script>
 </body>
 </html>
 
