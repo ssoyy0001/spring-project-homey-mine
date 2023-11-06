@@ -11,7 +11,7 @@
 						AND totalRange = #{totalRange}
 					</if>
 					<if test="(buildingType != null) and (buildingType != '')">
-						AND buildingType = #{buildingType}
+						AND buildingType  LIKE '%'||#{buildingType}||'%'
 					</if>			
 	</sql>
 
