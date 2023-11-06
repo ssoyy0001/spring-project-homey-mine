@@ -19,15 +19,15 @@
     <label for="title">제목:</label>
     <input type="text" id="title" name="title" value="${asBoardVO.title}" required style="margin-bottom: 10px;"/> <!-- CSS를 추가하여 제목 아래에 마진을 추가합니다. -->
     <table style="width: 100%;">
-        <tr>
+    <tr>
         <td style="width: 20%;">
-                <label for="bno">AS 번호:</label>
-                <input type="text" id="bno" name="bno" value="${asBoardVO.bno}" disabled/>
-            </td>
-            <td style="width: 10%;">
-                <strong>작성자:</strong>
-                <input type="text" name="mid" value="${asBoardVO.mid}" disabled/>
-            </td>
+            <label for="bno">AS 번호:</label>
+            <input type="text" id="bno" name="bno" value="${asBoardVO.bno}" disabled/>
+        </td>
+        <td style="width: 10%;">
+            <strong>작성자:</strong>
+            <input type="text" name="mid" value="${asBoardVO.mid}" disabled/>
+        </td>
         <td style="width: 10%;">
             <strong>작성일:</strong>
             <input type="text" name="regDate" value="<fmt:formatDate value="${asBoardVO.regDate}" pattern="yyyy-MM-dd"/>"disabled>
@@ -48,8 +48,9 @@
                 <p>${asBoardVO.status}</p>
             </sec:authorize>
         </td>
-        </tr>
-    </table>
+    </tr>
+</table> <!-- 여기에 닫는 태그를 추가했습니다. -->
+
 </div>
 
                     <div class="form-group" style="border: 1px solid #000; background-color: #f2f2f2; padding: 20px; margin-bottom: 20px;">
