@@ -41,5 +41,9 @@ public class SiScheduleServiceImpl implements SiScheduleService {
 	public List<SiScheduleVO> sicheMyList(String mid) {
 		return sicheMapper.sicheMyList(mid);
 	}
+	@Override
+	public int checkSicheRegist(int sireqNo) {
+		return sicheMapper.checkSicheRegist(sireqNo);
+	}
 
 }
