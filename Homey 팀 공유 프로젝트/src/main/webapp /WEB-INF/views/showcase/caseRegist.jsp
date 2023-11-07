@@ -188,7 +188,7 @@
         }else if(size >= 4){
         	size="40평대+"
         }else{
-        	size=size+"평대";        	
+        	size=(size*10)+"평대";        	
         }
         $('input[name=sizeRange]').val(size);
     }
