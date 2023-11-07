@@ -182,7 +182,7 @@
         $('input[name=totalRange]').val(total);
         
         var size='${siche.pyeongsu}'
-        size=Math.floor(size/10)*10;
+        size=Math.floor(size/10);
         if(size ==0){
         	size="10평대";
         }else if(size >= 4){
