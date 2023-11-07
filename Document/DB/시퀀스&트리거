@@ -25,6 +25,9 @@ CREATE SEQUENCE fpreview_seq INCREMENT BY 1 START WITH 1;
 CREATE SEQUENCE showcase_seq INCREMENT BY 1 START WITH 1;
 CREATE SEQUENCE scrab_seq INCREMENT BY 1 START WITH 1;
 
+-- (AS 문의 시퀀스)
+CREATE SEQUENCE bno_seq  INCREMENT BY 1 START WITH 1;
+
 
 
 -- (visit 트리거)
@@ -64,9 +67,6 @@ FOR EACH ROW
 BEGIN
   INSERT INTO memberauth (mid, auth) VALUES (:new.mid, 'ROLE_MEMBER');
 END;
-
--- (AS 문의 트리거)
-CREATE SEQUENCE bno_seq  INCREMENT BY 1 START WITH 1;
 
 
 -- (제품 나눔 게시글의 나눔현황 변경 트리거)
