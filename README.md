@@ -1,6 +1,6 @@
 # FinalProject_Homey
 
-<img src="https://github.com/haazzero/FinalProject_Homey/blob/main/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20%ED%95%A9%EC%B9%9C%20zip/3.png"  width="150" height="150"/>
+<img src="https://github.com/ssoyy0001/Spring-project_homey/blob/main/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20%ED%95%A9%EC%B9%9C%20zip/3.png?raw=true"  width="150" height="150"/>
 
 
 ## 🖥️ 프로젝트 소개
