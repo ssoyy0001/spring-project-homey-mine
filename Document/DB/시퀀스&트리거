@@ -1,16 +1,4 @@
 
--- notice ,consult,visit ,quotation, item 시퀀스
-
-CREATE SEQUENCE notice_seq INCREMENT BY 1 START WITH 1;
-CREATE SEQUENCE consult_seq INCREMENT BY 1 START WITH 1;
-CREATE SEQUENCE visit_seq INCREMENT BY 1 START WITH 1;
-CREATE SEQUENCE quotation_seq INCREMENT BY 1 START WITH 1;
-CREATE SEQUENCE item_seq INCREMENT BY 1 START WITH 1;
-
--- (시공의뢰, 시공작업)
-CREATE SEQUENCE SIREQ_SEQ INCREMENT BY 1 START WITH 1;
-CREATE SEQUENCE SICHE_SEQ INCREMENT BY 1 START WITH 1;
-
 -- (원데이클래스, 원데이클래스 신청, 원데이클래스 리뷰 시퀀스)
 CREATE SEQUENCE oneday_seq INCREMENT BY 1 START WITH 1;
 CREATE SEQUENCE odreq_seq INCREMENT BY 1 START WITH 1;
@@ -21,53 +9,6 @@ CREATE SEQUENCE freepdt_seq INCREMENT BY 1 START WITH 1;
 CREATE SEQUENCE fpreq_seq INCREMENT BY 1 START WITH 1;
 CREATE SEQUENCE fpreview_seq INCREMENT BY 1 START WITH 1;
 
---(시공사례,스크랩 시퀀스)
-CREATE SEQUENCE showcase_seq INCREMENT BY 1 START WITH 1;
-CREATE SEQUENCE scrab_seq INCREMENT BY 1 START WITH 1;
-
--- (AS 문의 시퀀스)
-CREATE SEQUENCE bno_seq  INCREMENT BY 1 START WITH 1;
-
-
-
--- (visit 트리거)
-CREATE OR REPLACE TRIGGER visit_insert_trigger
-AFTER INSERT ON visit
-FOR EACH ROW
-BEGIN
-   UPDATE consult
-   SET status = '방문 실측 예정'
-   WHERE consultNo = :new.consultNo;
-END;
-
--- (quotation 트리거)
-CREATE OR REPLACE TRIGGER quotation_insert_trigger
-AFTER INSERT ON quotation
-FOR EACH ROW
-BEGIN
-   UPDATE consult
-   SET status = '견적서 완료'
-   WHERE consultNo = :new.consultNo;
-END;
-
---(견적서 삭제 시 status 변경)
-create or replace TRIGGER quotation_delete_trigger
-AFTER DELETE ON quotation
-FOR EACH ROW
-BEGIN
-   UPDATE consult
-   SET status = '방문 실측 예정'
-   WHERE consultNo = :old.consultNo;
-END;
-
--- (회원가입시 권한테이블추가)
-CREATE OR REPLACE TRIGGER member_insert_trigger
-AFTER INSERT ON member
-FOR EACH ROW
-BEGIN
-  INSERT INTO memberauth (mid, auth) VALUES (:new.mid, 'ROLE_MEMBER');
-END;
-
 
 -- (제품 나눔 게시글의 나눔현황 변경 트리거)
 CREATE TRIGGER update_fpState_trigger
@@ -77,32 +18,4 @@ BEGIN
     IF :NEW.fpNowPeople = :NEW.fpPeople THEN
         :NEW.fpState := 1;
     END IF;
-END;
-
--- (시공의뢰)
--- payStatus 값이 '계약금완료'로 업데이트되었을 때 sireqStatus를 '계약완료'로 업데이트
-create or replace TRIGGER update_sireq_status
-BEFORE UPDATE OF sireqStatus ON sireq FOR EACH ROW
-BEGIN
-  IF :new.payStatus = '계약금완료' THEN
-    :new.sireqStatus := '계약완료';
-  END IF;
-END;
-
--- payStatus 값이 '계약금미납'로 업데이트되었을 때 sireqStatus를 '의뢰접수'로 업데이트
-create or replace TRIGGER update_sireq_status2
-BEFORE UPDATE OF sireqStatus ON sireq FOR EACH ROW
-BEGIN
-  IF :new.payStatus = '계약금미납' THEN
-    :new.sireqStatus := '의뢰접수';
-  END IF;
-END;
-
--- payStatus 값이 '계약금환불'로 업데이트되었을 때 sireqStatus를 '계약취소'로 업데이트
-create or replace TRIGGER update_sireq_status3
-BEFORE UPDATE OF sireqStatus ON sireq FOR EACH ROW
-BEGIN
-  IF :new.payStatus = '계약금환불' THEN
-    :new.sireqStatus := '계약취소';
-  END IF;
 END;
